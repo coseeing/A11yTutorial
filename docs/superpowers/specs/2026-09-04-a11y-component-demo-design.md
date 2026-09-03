@@ -156,26 +156,28 @@ PageHeader   元件名稱 + 一句話定位 + 適用情境
 ─────────────────────────────────────────────
 主欄（flex-1）                    │ 右側 PageToc
                                   │ (sticky, desktop 才顯示)
-1. Demo                           │ · Demo
-   互動範例 + variant/state 控制  │ · Accessibility Tree
-2. Accessibility Tree             │ · 鍵盤操作
-   Role / Name / Status 即時值    │ · ARIA 屬性
-3. 鍵盤操作                       │ · 螢幕閱讀器
+1. Demo 與 Accessibility Tree      │ · Demo 與 Accessibility Tree
+   互動範例 + Role/Name/Status    │ · 鍵盤操作
+   即時值，兩者上下相鄰           │ · ARIA 屬性
+2. 鍵盤操作                       │ · 螢幕閱讀器
    按鍵 → 行為 表格               │ · WCAG 對應
-4. ARIA 屬性                      │
+3. ARIA 屬性                      │ · 程式碼
    屬性 → 值 → 用途 表格          │
-5. 螢幕閱讀器預期行為             │
+4. 螢幕閱讀器預期行為             │
    NVDA / VoiceOver 分列          │
-6. WCAG 對應                      │
+5. WCAG 對應                      │
    條款 + 等級 + 說明 + 連結      │
-7. 程式碼                         │
+6. 程式碼                         │
    usage 片段                     │
 ```
+
+Demo 與 Accessibility Tree 合為同一區塊：面板的值必須與互動範例同時在視野內，
+讀者才看得到按下按鈕的瞬間三列數值如何改變；拆成兩區會讓因果關係斷掉。
 
 各區塊以 `DemoSection` 包裝（`<section>` + `<h2>` + `Card`），標題階層為
 h1（頁面）→ h2（區塊）→ h3（區塊內細分）。
 
-區塊 3、4、6、7 用既有的 `Table` 元件呈現，維持與 design system 一致。
+區塊 2、3 用既有的 `Table` 元件呈現，維持與 design system 一致。
 
 ## Accessibility Tree 區塊
 
