@@ -21,13 +21,18 @@ export function DialogDemo() {
           開啟對話框
         </Button>
         <p className="typography-body2 m-0 text-teal-300">
-          開啟後試試 Tab、Shift + Tab 與 Esc，下方的三列數值會跟著改變。
+          開啟後試試 Tab、Shift + Tab 與 Esc，下方的三列數值會跟著改變。關閉後數值會保留下來。
         </p>
       </DemoStage>
 
+      {/*
+        latch：對話框關閉後保留最後一次的值。開著時遮罩會壓暗這個面板，數值反而
+        看不清楚；關閉後留著值，才讀得到、也才截得下來。面板會自己標示那是舊值。
+      */}
       <A11yTree
+        latch
         selector="dialog[open]"
-        hint="觀察對象：目前開啟中的 <dialog> 元素。"
+        hint="觀察對象：目前開啟中的 <dialog> 元素。關閉後會保留最後一次的值。"
       />
 
       <Dialog
