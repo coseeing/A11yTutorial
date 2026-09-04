@@ -16,7 +16,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col">
         <a
           href="#main"
-          className="typography-strong2 sr-only rounded-8 bg-teal-PRIMARY px-16 py-12 text-neutral-white focus:not-sr-only focus:absolute focus:left-16 focus:top-16 focus:z-50"
+          className="typography-strong2 sr-only rounded-8 bg-teal-PRIMARY px-16 py-12 text-neutral-white focus:not-sr-only focus:absolute focus:left-16 focus:top-16 focus:z-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY"
         >
           跳到主要內容
         </a>

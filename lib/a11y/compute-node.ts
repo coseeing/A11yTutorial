@@ -45,6 +45,10 @@ function collectStatus(el: Element): string[] {
 
   if (el.hasAttribute("open")) found.add("open")
   if (attr("aria-modal") === "true") found.add("modal")
+  // 原生 showModal() 不會在 DOM 上留下 aria-modal — 那是無障礙樹層級的隱含值。
+  // :modal 只匹配以 showModal() 開啟的 dialog，是唯一能從 DOM 分辨它與 show()
+  // 的方式；少了這一行，modal dialog 會被誤報成非 modal。
+  if (isModalDialog(el)) found.add("modal")
 
   const expanded = attr("aria-expanded")
   if (expanded === "true") found.add("expanded")
@@ -84,6 +88,30 @@ function collectStatus(el: Element): string[] {
   }
 
   return ordered
+}
+
+// :modal 的支援度只探測一次。每次呼叫都 try/catch 的話，在不支援的環境（jsdom）
+// 裡每個元素都要付一次丟出並攔截 SyntaxError 的代價，測試會慢上一個量級。
+let modalSelectorSupported: boolean | null = null
+
+function supportsModalSelector(el: Element): boolean {
+  if (modalSelectorSupported === null) {
+    try {
+      el.matches(":modal")
+      modalSelectorSupported = true
+    } catch {
+      modalSelectorSupported = false
+    }
+  }
+  return modalSelectorSupported
+}
+
+function isModalDialog(el: Element): boolean {
+  // 先用 tagName 擋掉絕大多數元素：只有 <dialog> 可能是 modal，而 matches()
+  // 每次都要重新編譯選擇器，對每個元素都跑一次相當昂貴。
+  if (el.tagName.toLowerCase() !== "dialog") return false
+  if (!supportsModalSelector(el)) return false
+  return el.matches(":modal")
 }
 
 function isInAccessibilityTree(el: Element): boolean {

@@ -104,6 +104,13 @@ describe("computeA11yNode", () => {
     expect(node!.status).toEqual(expect.arrayContaining(["open", "modal"]))
   })
 
+  it(":modal 不被環境支援時不會炸掉，仍回報 open", () => {
+    // jsdom 不認得 :modal pseudo-class，matches() 會丟 SyntaxError。
+    const node = computeA11yNode(mount('<dialog open aria-label="設定"></dialog>'))
+    expect(node!.status).toContain("open")
+    expect(node!.status).not.toContain("modal")
+  })
+
   it("沒有任何狀態時 status 是空陣列", () => {
     expect(computeA11yNode(mount("<button>送出</button>"))!.status).toEqual([])
   })
