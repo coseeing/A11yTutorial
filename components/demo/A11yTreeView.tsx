@@ -74,47 +74,46 @@ export function A11yTreeView({
       </p>
       {hint ? <p className="typography-body2 mt-4 text-teal-300">{hint}</p> : null}
 
-      <div data-testid="a11y-tree-values" aria-live="polite" className="mt-24">
+      {/*
+        data-stale 不是給讀者看的，是給測試用的：舊值在畫面上不另外標示，
+        但那個狀態仍需要能被驗證。
+      */}
+      <div
+        data-testid="a11y-tree-values"
+        data-stale={stale ? "true" : undefined}
+        aria-live="polite"
+        className="mt-24"
+      >
         {node ? (
-          <>
-            {stale ? (
-              <p
-                data-testid="a11y-tree-stale"
-                className="typography-body2 mb-16 rounded-8 border border-orange-300 bg-orange-100/40 px-16 py-12 text-teal-700"
+          <dl className="m-0 grid gap-16">
+            {ROWS.map((row) => (
+              <div
+                key={row.key}
+                className="flex flex-col gap-8 tablet:flex-row tablet:items-center"
               >
-                目標已離開無障礙樹，以下是最後一次觀察到的值。
-              </p>
-            ) : null}
-            <dl className="m-0 grid gap-16">
-              {ROWS.map((row) => (
-                <div
-                  key={row.key}
-                  className="flex flex-col gap-8 tablet:flex-row tablet:items-center"
+                <dt
+                  className={cn(
+                    "typography-strong2 flex h-40 w-[10rem] shrink-0 items-center justify-center rounded-8",
+                    row.chip,
+                    // 舊值整組調淡，一眼看得出它不是此刻的狀態。
+                    stale && "opacity-60",
+                  )}
                 >
-                  <dt
-                    className={cn(
-                      "typography-strong2 flex h-40 w-[10rem] shrink-0 items-center justify-center rounded-8",
-                      row.chip,
-                      // 舊值整組調淡，一眼看得出它不是此刻的狀態。
-                      stale && "opacity-60",
-                    )}
-                  >
-                    {row.label}
-                  </dt>
-                  <dd
-                    data-testid={`a11y-tree-${row.key}`}
-                    className={cn(
-                      "typography-body2 m-0 flex min-h-40 flex-1 items-center overflow-x-auto rounded-8 border-2 bg-neutral-white px-16 py-8 font-mono text-teal-700",
-                      row.frame,
-                      stale && "opacity-60",
-                    )}
-                  >
-                    {formatValue(row.key, node)}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </>
+                  {row.label}
+                </dt>
+                <dd
+                  data-testid={`a11y-tree-${row.key}`}
+                  className={cn(
+                    "typography-body2 m-0 flex min-h-40 flex-1 items-center overflow-x-auto rounded-8 border-2 bg-neutral-white px-16 py-8 font-mono text-teal-700",
+                    row.frame,
+                    stale && "opacity-60",
+                  )}
+                >
+                  {formatValue(row.key, node)}
+                </dd>
+              </div>
+            ))}
+          </dl>
         ) : (
           <p data-testid="a11y-tree-empty" className="typography-body2 m-0 text-teal-300">
             元素目前不在無障礙樹中。
