@@ -2,3 +2,7 @@ node_modules
 .next
 .DS_Store
 *.tsbuildinfo
+
+# Next.js 自動產生給 AI agent 的檔案，不納入版控
+AGENTS.md
+CLAUDE.md
