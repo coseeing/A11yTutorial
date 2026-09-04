@@ -20,7 +20,7 @@ type A11yTreeViewProps = {
 }
 
 type Row = {
-  key: "role" | "name" | "status"
+  key: "role" | "name" | "description" | "status"
   label: string
   /** 標籤色塊 */
   chip: string
@@ -48,6 +48,12 @@ const ROWS: Row[] = [
     label: "Name",
     chip: "bg-teal-100/25 text-teal-700",
     frame: "border-teal-100",
+  },
+  {
+    key: "description",
+    label: "Description",
+    chip: "bg-blue-100 text-teal-700",
+    frame: "border-blue-300",
   },
 ]
 
@@ -86,7 +92,11 @@ export function A11yTreeView({
       >
         {node ? (
           <dl className="m-0 grid gap-16">
-            {ROWS.map((row) => (
+            {/*
+              Description 只在真的有描述時出現。多數元件沒有 aria-describedby，
+              硬留一列空白只會讓人以為那是漏填的欄位。
+            */}
+            {ROWS.filter((row) => row.key !== "description" || node.description).map((row) => (
               <div
                 key={row.key}
                 className="flex flex-col gap-8 tablet:flex-row tablet:items-center"
@@ -128,5 +138,6 @@ function formatValue(key: Row["key"], node: A11yNode): string {
   if (key === "role") return node.role
   // 空字串在等寬字裡看起來像壞掉，所以明講「（無）」。
   if (key === "name") return node.name || "（無 accessible name）"
+  if (key === "description") return node.description
   return node.status.length > 0 ? node.status.join(", ") : "（無狀態）"
 }

@@ -1,4 +1,7 @@
-import { computeAccessibleName } from "dom-accessibility-api"
+import {
+  computeAccessibleDescription,
+  computeAccessibleName,
+} from "dom-accessibility-api"
 import { implicitRole } from "./implicit-roles"
 
 export type A11yNode = {
@@ -6,6 +9,12 @@ export type A11yNode = {
   role: string
   /** Accessible name，依 accname 規範計算；沒有名稱時為空字串。 */
   name: string
+  /**
+   * Accessible description，通常來自 aria-describedby。與 name 是兩回事：
+   * name 是「這是什麼」，description 是輔助科技在名稱之後補充播報的說明。
+   * 沒有描述時為空字串。
+   */
+  description: string
   /** 目前的狀態，例如 ["open", "modal"]。順序固定，見 STATUS_ORDER。 */
   status: string[]
 }
@@ -134,6 +143,7 @@ export function computeA11yNode(el: Element | null | undefined): A11yNode | null
   return {
     role: resolveRole(el),
     name: computeAccessibleName(el),
+    description: computeAccessibleDescription(el),
     status: collectStatus(el),
   }
 }

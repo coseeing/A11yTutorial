@@ -56,6 +56,21 @@ describe("computeA11yNode", () => {
     expect(node!.name).toBe("關閉對話框")
   })
 
+  it("aria-describedby 取得描述，與 name 是兩回事", () => {
+    const node = computeA11yNode(
+      mount(`<dialog open aria-labelledby="t" aria-describedby="d">
+        <h2 id="t">刪除這筆紀錄？</h2>
+        <p id="d">刪除後無法復原。</p>
+      </dialog>`),
+    )
+    expect(node!.name).toBe("刪除這筆紀錄？")
+    expect(node!.description).toBe("刪除後無法復原。")
+  })
+
+  it("沒有描述時 description 為空字串", () => {
+    expect(computeA11yNode(mount("<button>送出</button>"))!.description).toBe("")
+  })
+
   it("沒有名稱時 name 為空字串", () => {
     const node = computeA11yNode(mount("<div></div>"))
     expect(node!.name).toBe("")

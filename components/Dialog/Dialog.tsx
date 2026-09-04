@@ -34,6 +34,7 @@ export function Dialog({
 }: DialogProps) {
   const ref = useRef<HTMLDialogElement>(null)
   const titleId = useId()
+  const descriptionId = useId()
 
   useEffect(() => {
     const el = ref.current
@@ -46,6 +47,9 @@ export function Dialog({
     <dialog
       ref={ref}
       aria-labelledby={titleId}
+      // 說明文字若只是視覺上擺在標題下方，輔助科技在開啟時不會播報它 —— 使用者
+      // 得自行往下瀏覽才讀得到那句警告。aria-describedby 讓它跟著名稱一起唸出。
+      aria-describedby={description ? descriptionId : undefined}
       onClose={onClose}
       onClick={(e) => {
         // The inner panel covers the whole dialog box, so the dialog element
@@ -74,7 +78,9 @@ export function Dialog({
           </button>
         </div>
         {description ? (
-          <p className="typography-body1 mt-8 text-teal-300">{description}</p>
+          <p id={descriptionId} className="typography-body1 mt-8 text-teal-300">
+            {description}
+          </p>
         ) : null}
         {children ? <div className="mt-16">{children}</div> : null}
         {actions ? (

@@ -100,6 +100,7 @@ function sameNode(a: A11yNode | null, b: A11yNode | null): boolean {
   return (
     a.role === b.role &&
     a.name === b.name &&
+    a.description === b.description &&
     a.status.length === b.status.length &&
     a.status.every((s, i) => s === b.status[i])
   )

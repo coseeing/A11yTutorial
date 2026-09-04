@@ -58,6 +58,12 @@ describe("A11yTree", () => {
     })
   })
 
+  it("目標沒有描述時不顯示 Description 列", async () => {
+    render(<Harness />)
+    await screen.findByTestId("a11y-tree-role")
+    expect(screen.queryByTestId("a11y-tree-description")).not.toBeInTheDocument()
+  })
+
   it("目標元素不存在時說明它不在無障礙樹中", async () => {
     render(<A11yTree selector="#沒有這個元素" />)
     expect(await screen.findByTestId("a11y-tree-empty")).toHaveTextContent(

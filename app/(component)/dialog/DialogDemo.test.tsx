@@ -55,5 +55,9 @@ describe("DialogDemo", () => {
 
     expect(await screen.findByTestId("a11y-tree-role")).toHaveTextContent("dialog")
     expect(screen.getByTestId("a11y-tree-name")).toHaveTextContent("刪除這筆紀錄？")
+    // name 是「這是什麼」，description 是名稱之後補充播報的說明 —— 兩者不同。
+    expect(screen.getByTestId("a11y-tree-description")).toHaveTextContent(
+      "刪除後無法復原，確定要繼續嗎？",
+    )
   })
 })

@@ -3,7 +3,6 @@ import { AriaTable } from "@/components/demo/AriaTable"
 import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
-import { ScreenReaderNotes } from "@/components/demo/ScreenReaderNotes"
 import { WcagList } from "@/components/demo/WcagList"
 import { DialogDemo } from "./DialogDemo"
 
@@ -91,6 +90,12 @@ export default function DialogPage() {
                   purpose: "讓對話框的 accessible name 取自可見標題，兩者不會不一致。",
                 },
                 {
+                  attr: "aria-describedby",
+                  value: "說明元素的 id",
+                  purpose:
+                    "讓說明文字跟著名稱一起播報；少了它，那句警告只有往下瀏覽才讀得到。",
+                },
+                {
                   attr: "aria-label",
                   value: "關閉",
                   purpose: "關閉鈕內只有圖示，需要文字名稱才有可用的按鈕標籤。",
@@ -100,24 +105,6 @@ export default function DialogPage() {
                   value: "true",
                   purpose: "頂部橘色裝飾條與關閉鈕圖示都是純視覺，不應進入無障礙樹。",
                 },
-              ]}
-            />
-          ),
-        },
-        {
-          id: "screen-reader",
-          title: "螢幕閱讀器預期行為",
-          content: (
-            <ScreenReaderNotes
-              nvda={[
-                "刪除這筆紀錄？ 對話方塊",
-                "刪除後無法復原，確定要繼續嗎？",
-                "取消 按鈕",
-              ]}
-              voiceOver={[
-                "刪除這筆紀錄？，網頁對話方塊",
-                "刪除後無法復原，確定要繼續嗎？",
-                "取消，按鈕",
               ]}
             />
           ),

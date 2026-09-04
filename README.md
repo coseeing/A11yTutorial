@@ -47,6 +47,8 @@ npm run build      # 正式建置
 
 - Role 由 `lib/a11y/implicit-roles.ts` 推導（明寫的 `role` 屬性優先）
 - Name 由 `dom-accessibility-api` 依 accname 規範計算
+- Description 同樣由 `dom-accessibility-api` 計算，通常來自 `aria-describedby`。
+  面板只在真的有描述時才顯示這一列
 - Status 收集 `aria-expanded`、`aria-checked` 等狀態屬性，順序固定
 - 以 `MutationObserver` 加事件監聽重算，互動時即時更新
 
