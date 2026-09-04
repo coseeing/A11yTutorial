@@ -34,8 +34,16 @@ npm run build      # 正式建置
 
 ## Accessibility Tree 面板
 
-`components/demo/A11yTree.tsx` 觀察一個 CSS selector 指到的元素，即時顯示它在
-無障礙樹中的 Role / Name / Status。
+面板拆成三層，各自只做一件事：
+
+- `lib/a11y/use-a11y-node.ts` — 觀察。持續算出目標元素的 `{ role, name, status }`
+- `components/demo/A11yTreeView.tsx` — 呈現。純函式，吃一個 `A11yNode | null`
+- `components/demo/A11yTree.tsx` — 組合上面兩者
+
+拆開的好處是餵給 view 的值可以來自即時觀察、保留下來的舊值，或手寫的宣告值
+（用於尚未實作的元件頁，或與實際值並排對照）。
+
+值本身這樣算出來：
 
 - Role 由 `lib/a11y/implicit-roles.ts` 推導（明寫的 `role` 屬性優先）
 - Name 由 `dom-accessibility-api` 依 accname 規範計算
@@ -43,6 +51,14 @@ npm run build      # 正式建置
 - 以 `MutationObserver` 加事件監聽重算，互動時即時更新
 
 用 selector 而非 ref，是因為目標元素可能在關閉時整個離開 DOM。
+
+### latch 模式
+
+`<A11yTree latch />` 會在目標離開無障礙樹後保留最後一次的值，並以橘色提示條
+標明那是舊值。用於 Dialog、Toast 這類會整個離開 DOM 的元件：開啟時遮罩壓暗
+面板反而讀不到數值，關閉後留著值才看得清、也才截得下來。
+
+長駐頁面的元件（Button、Checkbox）不要開 latch，維持即時才誠實。
 
 ## 目錄結構
 
