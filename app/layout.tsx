@@ -1,4 +1,6 @@
 import type { Metadata } from "next"
+import { DemoFooter } from "@/components/demo/DemoFooter"
+import { SiteNav } from "@/components/SiteNav/SiteNav"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -12,9 +14,17 @@ export default function RootLayout({
   return (
     <html lang="zh-Hant">
       <body className="flex min-h-screen flex-col">
-        <main id="main" className="demo-shell flex-1">
+        <a
+          href="#main"
+          className="typography-strong2 sr-only rounded-8 bg-teal-PRIMARY px-16 py-12 text-neutral-white focus:not-sr-only focus:absolute focus:left-16 focus:top-16 focus:z-50"
+        >
+          跳到主要內容
+        </a>
+        <SiteNav />
+        <main id="main" className="flex-1">
           {children}
         </main>
+        <DemoFooter />
       </body>
     </html>
   )
