@@ -1,4 +1,4 @@
-# A11y 元件 Demo 站 — 設計文件
+# A11y Tutorial — 設計文件
 
 日期：2026-09-04
 
@@ -34,7 +34,7 @@
 ## 專案結構
 
 ```
-a11y-demo/
+a11y-tutorial/
 ├─ app/
 │  ├─ globals.css              tokens + typography-* + base layer
 │  ├─ layout.tsx               html lang="zh-Hant"、skip link、SiteNav、Footer

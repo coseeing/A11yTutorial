@@ -7,7 +7,7 @@ import { WcagList } from "@/components/demo/WcagList"
 import { DialogDemo } from "./DialogDemo"
 
 export const metadata: Metadata = {
-  title: "Dialog — A11y 元件 Demo",
+  title: "Dialog — A11y Tutorial",
   description: "以原生 <dialog> 實作的強制回應對話框，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 

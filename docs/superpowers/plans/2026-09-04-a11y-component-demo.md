@@ -1,4 +1,4 @@
-# A11y 元件 Demo 站 Implementation Plan
+# A11y Tutorial Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -12,7 +12,7 @@
 
 ## Global Constraints
 
-- 專案根目錄：`/Users/vic/Documents/project/a11y-demo`（已 `git init`，已有 `.gitignore` 與 spec commit）。
+- 專案根目錄：`/Users/vic/Documents/project/a11y-tutorial`（已 `git init`，已有 `.gitignore` 與 spec commit）。
 - 相依版本下限：`next@^16.2.6`、`react@^19.2.0`、`react-dom@^19.2.0`、`tailwindcss@^4.1.0`、`@tailwindcss/postcss@^4.1.0`、`typescript@^5.8.0`。
 - **不得安裝** `@ory/*` 任何套件，**不得安裝** Storybook 任何套件。
 - 介面文案一律繁體中文；`role`、`aria-*`、WCAG 條款編號等技術名詞保留英文原文。
@@ -70,11 +70,11 @@
 
 - [ ] **Step 1: 建立 package.json**
 
-`/Users/vic/Documents/project/a11y-demo/package.json`：
+`/Users/vic/Documents/project/a11y-tutorial/package.json`：
 
 ```json
 {
-  "name": "a11y-demo",
+  "name": "a11y-tutorial",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -109,8 +109,8 @@
 `tsconfig.json` — 直接複製 `SSO/center/tsconfig.json`：
 
 ```bash
-cp /Users/vic/Documents/project/SSO/center/tsconfig.json /Users/vic/Documents/project/a11y-demo/tsconfig.json
-cp /Users/vic/Documents/project/SSO/center/postcss.config.mjs /Users/vic/Documents/project/a11y-demo/postcss.config.mjs
+cp /Users/vic/Documents/project/SSO/center/tsconfig.json /Users/vic/Documents/project/a11y-tutorial/tsconfig.json
+cp /Users/vic/Documents/project/SSO/center/postcss.config.mjs /Users/vic/Documents/project/a11y-tutorial/postcss.config.mjs
 ```
 
 `next.config.mjs`（不要 `basePath`，本站掛在網域根層）：
@@ -154,7 +154,7 @@ export function appPath(path: string) {
 複製整份 globals.css 後刪掉 SSO 專屬的部分：
 
 ```bash
-cp /Users/vic/Documents/project/SSO/center/app/globals.css /Users/vic/Documents/project/a11y-demo/app/globals.css
+cp /Users/vic/Documents/project/SSO/center/app/globals.css /Users/vic/Documents/project/a11y-tutorial/app/globals.css
 ```
 
 接著編輯 `app/globals.css`：
@@ -194,7 +194,7 @@ import type { Metadata } from "next"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "A11y 元件 Demo",
+  title: "A11y Tutorial",
   description: "無障礙元件展示站：可操作範例、accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
@@ -217,7 +217,7 @@ export default function RootLayout({
 
 ```tsx
 export default function HomePage() {
-  return <h1 className="typography-headline1 text-teal-PRIMARY">A11y 元件 Demo</h1>
+  return <h1 className="typography-headline1 text-teal-PRIMARY">A11y Tutorial</h1>
 }
 ```
 
@@ -225,7 +225,7 @@ export default function HomePage() {
 
 Run:
 ```bash
-cd /Users/vic/Documents/project/a11y-demo && npm install && npm run typecheck && npm run build
+cd /Users/vic/Documents/project/a11y-tutorial && npm install && npm run typecheck && npm run build
 ```
 Expected: `npm install` 完成、`typecheck` 無輸出錯誤、`next build` 成功並列出 `/` 這條路由。
 
@@ -234,7 +234,7 @@ Expected: `npm install` 完成、`typecheck` 無輸出錯誤、`next build` 成�
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: 專案骨架與 design tokens 移植
@@ -260,7 +260,7 @@ EOF
 
 Run:
 ```bash
-cd /Users/vic/Documents/project/a11y-demo && npm install -D vitest@^3.2.0 @vitejs/plugin-react@^5.0.0 jsdom@^26.0.0 @testing-library/react@^16.3.0 @testing-library/dom@^10.4.0 @testing-library/jest-dom@^6.6.0 @testing-library/user-event@^14.6.0
+cd /Users/vic/Documents/project/a11y-tutorial && npm install -D vitest@^3.2.0 @vitejs/plugin-react@^5.0.0 jsdom@^26.0.0 @testing-library/react@^16.3.0 @testing-library/dom@^10.4.0 @testing-library/jest-dom@^6.6.0 @testing-library/user-event@^14.6.0
 ```
 
 - [ ] **Step 2: 建立 vitest 設定**
@@ -316,7 +316,7 @@ describe("cn", () => {
 
 - [ ] **Step 4: 執行測試**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm test`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm test`
 Expected: PASS，2 個測試通過。（`cn` 在 Task 1 已實作，這步驟只驗證測試環境本身接通。）
 
 - [ ] **Step 5: 確認 tsconfig 認得 vitest globals**
@@ -327,13 +327,13 @@ Expected: PASS，2 個測試通過。（`cn` 在 Task 1 已實作，這步驟只
     "types": ["vitest/globals"],
 ```
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm run typecheck`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm run typecheck`
 Expected: 無錯誤。
 
 - [ ] **Step 6: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 test: 建立 Vitest + Testing Library 測試環境
@@ -445,7 +445,7 @@ describe("implicitRole", () => {
 
 - [ ] **Step 2: 執行測試確認失敗**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run lib/a11y/implicit-roles.test.ts`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run lib/a11y/implicit-roles.test.ts`
 Expected: FAIL — `Failed to resolve import "./implicit-roles"`
 
 - [ ] **Step 3: 實作**
@@ -585,13 +585,13 @@ export function implicitRole(el: Element): string {
 
 - [ ] **Step 4: 執行測試確認通過**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run lib/a11y/implicit-roles.test.ts && npm run typecheck`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run lib/a11y/implicit-roles.test.ts && npm run typecheck`
 Expected: PASS，所有測試通過，typecheck 無誤。
 
 - [ ] **Step 5: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: implicit ARIA role 推導
@@ -743,7 +743,7 @@ describe("computeA11yNode", () => {
 
 - [ ] **Step 2: 執行測試確認失敗**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run lib/a11y/compute-node.test.ts`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run lib/a11y/compute-node.test.ts`
 Expected: FAIL — `Failed to resolve import "./compute-node"`
 
 - [ ] **Step 3: 實作**
@@ -866,13 +866,13 @@ export function computeA11yNode(el: Element | null | undefined): A11yNode | null
 
 - [ ] **Step 4: 執行測試確認通過**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run && npm run typecheck`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run && npm run typecheck`
 Expected: PASS，全部測試通過，typecheck 無誤。
 
 - [ ] **Step 5: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: 從 DOM 元素計算 accessibility node
@@ -906,7 +906,7 @@ EOF
 - [ ] **Step 1: 複製元件與品牌資產**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 cp -R /Users/vic/Documents/project/SSO/center/components ./components
 mkdir -p public
 cp -R /Users/vic/Documents/project/SSO/center/public/brand ./public/brand
@@ -915,7 +915,7 @@ cp -R /Users/vic/Documents/project/SSO/center/public/brand ./public/brand
 - [ ] **Step 2: 移除依賴 @ory/* 與 SSO 業務邏輯的元件**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo/components
+cd /Users/vic/Documents/project/a11y-tutorial/components
 rm -rf AuthPage FlowForm Form EmailVerification SettingsTabs CoseeingIdentityCard Nav
 rm -f SiteNav/LogoutButton.tsx
 find . -name "*.stories.tsx" -delete
@@ -946,7 +946,7 @@ export function SiteNav({ className }: { className?: string }) {
       <div className="flex w-full items-center justify-between gap-24">
         <a
           href={appPath("/")}
-          aria-label="A11y 元件 Demo 首頁"
+          aria-label="A11y Tutorial 首頁"
           className="flex shrink-0 items-center gap-16 rounded-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY"
         >
           <img
@@ -960,7 +960,7 @@ export function SiteNav({ className }: { className?: string }) {
             className="hidden h-[3.13rem] w-[23.15rem] tablet:block"
           />
           <span className="typography-strong2 hidden text-bg-light-off-white tablet:inline">
-            A11y 元件 Demo
+            A11y Tutorial
           </span>
         </a>
       </div>
@@ -973,19 +973,19 @@ export function SiteNav({ className }: { className?: string }) {
 
 Run:
 ```bash
-cd /Users/vic/Documents/project/a11y-demo && grep -rn "@ory" components/ lib/ app/ || echo "沒有殘留"
+cd /Users/vic/Documents/project/a11y-tutorial && grep -rn "@ory" components/ lib/ app/ || echo "沒有殘留"
 ```
 Expected: 印出「沒有殘留」。若仍有命中，刪除或改寫該檔案後重跑。
 
 - [ ] **Step 5: 型別檢查**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm run typecheck`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm run typecheck`
 Expected: 無錯誤。若有元件 import 到已刪除的模組，刪掉該元件（它屬於 SSO 專屬範圍）後重跑。
 
 - [ ] **Step 6: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: 自 SSO center 移植 design system 元件
@@ -1042,7 +1042,7 @@ export function DemoFooter({ className }: { className?: string }) {
       <div className="px-20 py-40 tablet:px-40 tablet:py-32 desktop:px-80 desktop:py-60">
         <div className="flex flex-col gap-32 tablet:flex-row tablet:justify-between">
           <div className="max-w-[48rem]">
-            <p className="typography-strong1 m-0 mb-8 text-teal-PRIMARY">A11y 元件 Demo</p>
+            <p className="typography-strong1 m-0 mb-8 text-teal-PRIMARY">A11y Tutorial</p>
             <p className="typography-body2 m-0 text-teal-700">
               展示 design system 元件的無障礙實作：可操作範例、即時的 accessibility
               tree、鍵盤操作、ARIA 屬性與對應的 WCAG 條款。
@@ -1082,7 +1082,7 @@ import { SiteNav } from "@/components/SiteNav/SiteNav"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "A11y 元件 Demo",
+  title: "A11y Tutorial",
   description: "無障礙元件展示站：可操作範例、accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
@@ -1113,13 +1113,13 @@ export default function RootLayout({
 
 - [ ] **Step 3: 驗證**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm run typecheck && npm run build`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm run typecheck && npm run build`
 Expected: 皆成功。
 
 - [ ] **Step 4: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: 站台外框與 skip link
@@ -1194,7 +1194,7 @@ describe("components registry", () => {
 
 - [ ] **Step 2: 執行測試確認失敗**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run lib/components-registry.test.ts`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run lib/components-registry.test.ts`
 Expected: FAIL — `Failed to resolve import "./components-registry"`
 
 - [ ] **Step 3: 實作 registry**
@@ -1244,7 +1244,7 @@ export function findComponent(slug: string): ComponentEntry | undefined {
 
 - [ ] **Step 4: 執行測試確認通過**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run lib/components-registry.test.ts`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run lib/components-registry.test.ts`
 Expected: PASS。
 
 - [ ] **Step 5: 實作首頁**
@@ -1261,7 +1261,7 @@ export default function HomePage() {
   return (
     <>
       <PageHeader
-        title="A11y 元件 Demo"
+        title="A11y Tutorial"
         description="每個元件都附上可操作的範例、即時的 accessibility tree、鍵盤操作、ARIA 屬性與 WCAG 對應。"
       />
       <Container as="section" className="py-48 desktop:py-60">
@@ -1292,13 +1292,13 @@ export default function HomePage() {
 
 - [ ] **Step 6: 驗證**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm test && npm run typecheck && npm run build`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm test && npm run typecheck && npm run build`
 Expected: 皆通過。
 
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: 元件 registry 與首頁清單
@@ -1395,7 +1395,7 @@ describe("A11yTree", () => {
 
 - [ ] **Step 2: 執行測試確認失敗**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run components/demo/A11yTree.test.tsx`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run components/demo/A11yTree.test.tsx`
 Expected: FAIL — `Failed to resolve import "./A11yTree"`
 
 - [ ] **Step 3: 實作**
@@ -1568,7 +1568,7 @@ function sameNode(a: A11yNode | null, b: A11yNode | null): boolean {
 
 - [ ] **Step 4: 執行測試確認通過**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run components/demo/A11yTree.test.tsx && npm run typecheck`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run components/demo/A11yTree.test.tsx && npm run typecheck`
 Expected: PASS，4 個測試通過。
 
 若 `requestAnimationFrame` 在 jsdom 下造成測試 flaky，改用 `await screen.findBy…`（測試已如此撰寫）即可，不要改動實作。
@@ -1576,7 +1576,7 @@ Expected: PASS，4 個測試通過。
 - [ ] **Step 5: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: A11yTree 即時 accessibility tree 面板
@@ -1668,7 +1668,7 @@ describe("DemoPage", () => {
 
 - [ ] **Step 2: 執行測試確認失敗**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run components/demo/DemoPage.test.tsx`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run components/demo/DemoPage.test.tsx`
 Expected: FAIL — `Failed to resolve import "./DemoPage"`
 
 - [ ] **Step 3: 實作區塊元件**
@@ -2015,13 +2015,13 @@ export default function ComponentLayout({
 
 - [ ] **Step 6: 執行測試確認通過**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run components/demo/DemoPage.test.tsx && npm run typecheck`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run components/demo/DemoPage.test.tsx && npm run typecheck`
 Expected: PASS，4 個測試通過。
 
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: demo 頁版型與區塊元件
@@ -2112,7 +2112,7 @@ describe("DialogDemo", () => {
 
 - [ ] **Step 2: 執行測試確認失敗**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run "app/(component)/dialog/DialogDemo.test.tsx"`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run "app/(component)/dialog/DialogDemo.test.tsx"`
 Expected: FAIL — `Failed to resolve import "./DialogDemo"`
 
 - [ ] **Step 3: 實作互動區**
@@ -2175,7 +2175,7 @@ export function DialogDemo() {
 
 - [ ] **Step 4: 執行測試確認通過**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npx vitest run "app/(component)/dialog/DialogDemo.test.tsx"`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npx vitest run "app/(component)/dialog/DialogDemo.test.tsx"`
 Expected: PASS，4 個測試通過。
 
 若第 4 個測試中 `a11y-tree-role` 沒出現，檢查 `Dialog` 的 `showModal()` 是否有加上 `open` 屬性 — jsdom 替身用的是 `this.open = true`，會反映到屬性上。
@@ -2195,7 +2195,7 @@ import { WcagList } from "@/components/demo/WcagList"
 import { DialogDemo } from "./DialogDemo"
 
 export const metadata: Metadata = {
-  title: "Dialog — A11y 元件 Demo",
+  title: "Dialog — A11y Tutorial",
   description: "以原生 <dialog> 實作的強制回應對話框，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
@@ -2374,13 +2374,13 @@ export default function DialogPage() {
 
 - [ ] **Step 6: 全部驗證**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm test && npm run typecheck && npm run build`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm test && npm run typecheck && npm run build`
 Expected: 全部通過，build 輸出的路由清單包含 `/` 與 `/dialog`。
 
 - [ ] **Step 7: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 feat: Dialog 元件頁
@@ -2403,7 +2403,7 @@ EOF
 
 - [ ] **Step 1: 啟動開發伺服器**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm run dev`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm run dev`
 Expected: 伺服器在 `http://localhost:3000` 啟動。
 
 - [ ] **Step 2: 手動驗證清單**
@@ -2427,7 +2427,7 @@ Expected: 伺服器在 `http://localhost:3000` 啟動。
 `README.md`：
 
 ```markdown
-# A11y 元件 Demo
+# A11y Tutorial
 
 無障礙元件展示站。每個元件有獨立頁面，包含可操作範例、即時的 accessibility
 tree（Role / Name / Status）、鍵盤操作、ARIA 屬性、螢幕閱讀器預期行為與對應的
@@ -2472,13 +2472,13 @@ npm run build      # 正式建置
 
 - [ ] **Step 4: 最終驗證**
 
-Run: `cd /Users/vic/Documents/project/a11y-demo && npm test && npm run typecheck && npm run build`
+Run: `cd /Users/vic/Documents/project/a11y-tutorial && npm test && npm run typecheck && npm run build`
 Expected: 全部通過。
 
 - [ ] **Step 5: Commit**
 
 ```bash
-cd /Users/vic/Documents/project/a11y-demo
+cd /Users/vic/Documents/project/a11y-tutorial
 git add -A
 git commit -m "$(cat <<'EOF'
 docs: README 與專案使用說明

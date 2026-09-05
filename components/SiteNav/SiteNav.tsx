@@ -18,7 +18,7 @@ export function SiteNav({ className }: { className?: string }) {
       <div className="flex w-full items-center justify-between gap-24">
         <a
           href={appPath("/")}
-          aria-label="A11y 元件 Demo 首頁"
+          aria-label="A11y Tutorial 首頁"
           className="flex shrink-0 items-center gap-16 rounded-8 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY"
         >
           <img
@@ -32,7 +32,7 @@ export function SiteNav({ className }: { className?: string }) {
             className="hidden h-[3.13rem] w-[23.15rem] tablet:block"
           />
           <span className="typography-strong2 hidden text-bg-light-off-white tablet:inline">
-            A11y 元件 Demo
+            A11y Tutorial
           </span>
         </a>
       </div>

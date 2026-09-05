@@ -7,7 +7,7 @@ export default function HomePage() {
   return (
     <>
       <PageHeader
-        title="A11y 元件 Demo"
+        title="A11y Tutorial"
         description="每個元件都附上可操作的範例、即時的 accessibility tree、鍵盤操作、ARIA 屬性與 WCAG 對應。"
       />
       <Container as="section" className="py-48 desktop:py-60">

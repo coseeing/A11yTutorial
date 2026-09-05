@@ -28,7 +28,7 @@ export function DemoFooter({ className }: { className?: string }) {
       <div className="px-20 py-40 tablet:px-40 tablet:py-32 desktop:px-80 desktop:py-60">
         <div className="flex flex-col gap-32 tablet:flex-row tablet:justify-between">
           <div className="max-w-[48rem]">
-            <p className="typography-strong1 m-0 mb-8 text-teal-PRIMARY">A11y 元件 Demo</p>
+            <p className="typography-strong1 m-0 mb-8 text-teal-PRIMARY">A11y Tutorial</p>
             <p className="typography-body2 m-0 text-teal-700">
               展示 design system 元件的無障礙實作：可操作範例、即時的 accessibility
               tree、鍵盤操作、ARIA 屬性與對應的 WCAG 條款。
