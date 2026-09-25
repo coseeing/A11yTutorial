@@ -96,7 +96,14 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "checkbox",
     name: "Checkbox",
     summary: "可獨立勾選的選項，支援勾選、未勾選與不確定三種狀態。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-CHK-002", // checkbox 角色語意 — ARIA 屬性表、Accessibility Tree
+      "APG-CHK-003", // 無障礙名稱來自 label — ARIA 屬性表、Demo 點標籤可切換
+      "APG-CHK-004", // 勾選與部分勾選狀態 — ARIA 屬性表 mixed、Demo 全選
+      "APG-CHK-006", // 群組具有無障礙名稱 — ARIA 屬性表 fieldset/legend、Accessibility Tree
+      "APG-CHK-007", // 群組或控制項的補充說明 — ARIA 屬性表 aria-describedby
+    ],
   },
   {
     slug: "combobox",
@@ -170,7 +177,14 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "switch",
     name: "Switch",
     summary: "立即生效的開關，狀態是開或關，而非待送出的勾選。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-SWT-004", // switch 角色 — ARIA 屬性表、Accessibility Tree
+      "APG-SWT-005", // 無障礙名稱 — ARIA 屬性表、Accessibility Tree
+      "APG-SWT-006", // 開啟與關閉狀態 — ARIA 屬性表 checked、Accessibility Tree
+      "APG-SWT-007", // 群組具有無障礙名稱 — ARIA 屬性表 fieldset/legend、Accessibility Tree
+      "APG-SWT-008", // 補充說明 — ARIA 屬性表 aria-describedby、Demo
+    ],
   },
   {
     slug: "table",
