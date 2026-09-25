@@ -39,7 +39,6 @@ export default function ButtonPage() {
   return (
     <DemoPage
       title="Button"
-      description="觸發動作的控制項。它看起來最簡單，卻是最常出錯的一個 —— 名稱從哪來、停用要怎麼停、狀態要不要進無障礙樹，每一項都有標準答案。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <ButtonDemo /> },
         {

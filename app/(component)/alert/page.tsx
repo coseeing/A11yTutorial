@@ -33,7 +33,6 @@ export default function AlertPage() {
   return (
     <DemoPage
       title="Alert"
-      description="需要使用者立刻知道的訊息。難點不在樣式，在於「什麼時候會被唸出來」—— role=alert 播報的是內容的變化，不是它的存在。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <AlertDemo /> },
         {

@@ -6,7 +6,6 @@ import { appPath } from "@/lib/app-path"
 // page title, and an optional description.
 type PageHeaderProps = {
   title: string
-  description?: string
   className?: string
 }
 
@@ -19,7 +18,7 @@ const WAVES = [
   { left: "173.9rem", top: "37.4rem" },
 ]
 
-export function PageHeader({ title, description, className }: PageHeaderProps) {
+export function PageHeader({ title, className }: PageHeaderProps) {
   return (
     <header
       className={cn(
@@ -38,11 +37,8 @@ export function PageHeader({ title, description, className }: PageHeaderProps) {
           />
         ))}
       </div>
-      <div className="relative flex max-w-[72rem] flex-col gap-8">
+      <div className="relative flex max-w-[72rem] flex-col">
         <h1 className="typography-headline1 m-0 text-bg-light-off-white">{title}</h1>
-        {description ? (
-          <p className="typography-strong1 m-0 text-bg-light-off-white">{description}</p>
-        ) : null}
       </div>
     </header>
   )

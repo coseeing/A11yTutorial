@@ -47,7 +47,6 @@ export default function DialogPage() {
   return (
     <DemoPage
       title="Dialog"
-      description="以原生 <dialog> 實作的強制回應對話框。焦點鎖定、Esc 關閉與背景 inert 由瀏覽器提供，不需要自行實作 focus trap。"
       sections={[
         {
           id: "demo",

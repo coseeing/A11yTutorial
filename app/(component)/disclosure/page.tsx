@@ -26,7 +26,6 @@ export default function DisclosurePage() {
   return (
     <DemoPage
       title="Disclosure"
-      description="一顆按鈕控制一段內容的顯示與隱藏。它是 Accordion 的最小形式 —— 沒有群組、沒有互斥、不要求 heading，整個 pattern 只落在按鈕的兩個屬性上。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <DisclosureDemo /> },
         {

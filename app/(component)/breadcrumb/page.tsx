@@ -33,7 +33,6 @@ export default function BreadcrumbPage() {
   return (
     <DemoPage
       title="Breadcrumb"
-      description="標示目前頁面在網站層級中的位置，並提供回上層的路徑。三條規則撐起整個 pattern：外層是導覽地標、地標要有名稱、目前頁面若是連結要標示出來。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <BreadcrumbDemo /> },
         {

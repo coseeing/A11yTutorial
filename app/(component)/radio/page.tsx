@@ -34,7 +34,6 @@ export default function RadioPage() {
   return (
     <DemoPage
       title="Radio Group"
-      description="一組互斥選項。整組只佔一個 Tab 停留點，內部改用方向鍵移動 —— 用原生 input[type=radio] 綁同一個 name，這套行為全部由瀏覽器提供。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <RadioDemo /> },
         {

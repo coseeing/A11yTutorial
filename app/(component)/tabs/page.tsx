@@ -33,7 +33,6 @@ export default function TabsPage() {
   return (
     <DemoPage
       title="Tabs"
-      description="一組分頁標籤切換對應的面板。整組只佔一個 Tab 停留點，內部用方向鍵移動 —— 與 Radio Group 同一套 roving tabindex 模式，差別在這裡沒有原生元素可用，得自己寫。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <TabsDemo /> },
         {

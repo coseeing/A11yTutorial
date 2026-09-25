@@ -39,7 +39,6 @@ export default function CheckboxPage() {
   return (
     <DemoPage
       title="Checkbox"
-      description="可獨立勾選的選項。它比看起來複雜的地方在第三態：控制整組子項目的「全選」在有勾有沒勾時，既不是勾選也不是未勾選。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <CheckboxDemo /> },
         {

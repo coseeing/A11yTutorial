@@ -29,7 +29,6 @@ export default function SwitchPage() {
   return (
     <DemoPage
       title="Switch"
-      description="立即生效的開關。它與 Checkbox 的分界在於「何時生效」—— 開關改的是當下的狀態，核取方塊是待送出的選擇。"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <SwitchDemo /> },
         {

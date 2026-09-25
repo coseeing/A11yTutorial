@@ -33,7 +33,6 @@ export default function AccordionPage() {
   return (
     <DemoPage
       title="Accordion"
-      description="一組可展開收合的標題與面板。結構是 heading 包住 button，狀態全部落在 button 的 ARIA 屬性上 —— 不是原生的 <details>/<summary>。"
       sections={[
         {
           id: "demo",

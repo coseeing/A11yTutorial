@@ -16,16 +16,14 @@ export type DemoSectionSpec = {
 // 一個不存在的區塊、或新增區塊忘了更新目錄的情況。
 export function DemoPage({
   title,
-  description,
   sections,
 }: {
   title: string
-  description: string
   sections: DemoSectionSpec[]
 }) {
   return (
     <>
-      <PageHeader title={title} description={description} />
+      <PageHeader title={title} />
       <Container className="py-48 desktop:py-60">
         <div className="flex gap-48">
           <div className="flex min-w-0 flex-1 flex-col gap-48">
