@@ -81,8 +81,11 @@ export function A11yTreeView({
       {hint ? <p className="typography-body2 mt-4 text-teal-300">{hint}</p> : null}
 
       {/*
-        data-stale 不是給讀者看的，是給測試用的：舊值在畫面上不另外標示，
-        但那個狀態仍需要能被驗證。
+        舊值在畫面上與即時值完全一樣 —— 沒有提示文字，也不調淡。每一頁的面板長得
+        一致，截圖才不會有一頁莫名偏淡。「這是保留下來的值」由觀察對象的說明文字
+        交代（見 latch 的用法）。
+
+        data-stale 不是給讀者看的，是給測試用的：那個狀態仍需要能被驗證。
       */}
       <div
         data-testid="a11y-tree-values"
@@ -101,8 +104,6 @@ export function A11yTreeView({
                   className={cn(
                     "typography-strong2 flex h-40 w-[10rem] shrink-0 items-center justify-center rounded-8",
                     row.chip,
-                    // 舊值整組調淡，一眼看得出它不是此刻的狀態。
-                    stale && "opacity-60",
                   )}
                 >
                   {row.label}
@@ -112,7 +113,6 @@ export function A11yTreeView({
                   className={cn(
                     "typography-body2 m-0 flex min-h-40 flex-1 items-center overflow-x-auto rounded-8 border-2 bg-neutral-white px-16 py-8 font-mono text-teal-700",
                     row.frame,
-                    stale && "opacity-60",
                   )}
                 >
                   {formatValue(row.key, node)}

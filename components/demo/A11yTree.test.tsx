@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event"
 import { useState } from "react"
 import { describe, expect, it } from "vitest"
 import { A11yTree } from "./A11yTree"
+import { A11yTreeView } from "./A11yTreeView"
 
 function Harness() {
   const [expanded, setExpanded] = useState(false)
@@ -144,5 +145,23 @@ describe("A11yTree", () => {
     render(<A11yTree selector="#從未存在" latch />)
     expect(await screen.findByTestId("a11y-tree-empty")).toBeInTheDocument()
     expect(screen.getByTestId("a11y-tree-values")).not.toHaveAttribute("data-stale")
+  })
+
+  // 保留下來的舊值在畫面上必須與即時值長得一模一樣。
+  //
+  // 曾經有過「舊值調淡 opacity-60」的處理，結果 Dialog 是唯一用 latch 的頁面，
+  // 它的面板就比其他九頁都淡一階，看起來像壞掉。差異只有肉眼看得出來，所以在
+  // 這裡比對兩種狀態渲染出的 class。
+  it("舊值與即時值的樣式完全相同", () => {
+    const node = { role: "dialog", name: "刪除這筆紀錄？", description: "", status: ["open"] }
+
+    const live = render(<A11yTreeView node={node} />)
+    const liveClasses = [...live.container.querySelectorAll("dt, dd")].map((el) => el.className)
+    live.unmount()
+
+    const stale = render(<A11yTreeView node={node} stale />)
+    const staleClasses = [...stale.container.querySelectorAll("dt, dd")].map((el) => el.className)
+
+    expect(staleClasses).toEqual(liveClasses)
   })
 })
