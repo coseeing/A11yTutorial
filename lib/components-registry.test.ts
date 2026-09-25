@@ -25,6 +25,12 @@ describe("components registry", () => {
     expect(findComponent("不存在的元件")).toBeUndefined()
   })
 
+  it("涵蓋全部 20 個 APG 元件", () => {
+    // 數量釘死是有意的：知識難度 2 的規則散落在全部 20 個元件上，少一個就代表
+    // 有幾條必做的規則沒有落腳處。要改這個數字，得先確認範圍真的變了。
+    expect(COMPONENTS).toHaveLength(20)
+  })
+
   it("dialog 已完成", () => {
     expect(findComponent("dialog")?.status).toBe("done")
   })
