@@ -14,6 +14,22 @@ npm run typecheck  # 型別檢查
 npm run build      # 正式建置
 ```
 
+## 疑難排解
+
+**某個路由在 dev server 上 404，但 `npm run build` 列得出來、測試也都過** ——
+dev server 的路由狀態壞掉了，重啟即可：
+
+```bash
+pkill -f "next dev" && npm run dev
+```
+
+最容易觸發的情境是**在 dev server 執行中切換 git 分支**。`git checkout` 會把目標
+分支沒有的檔案刪掉，`git merge` 再建回來；Turbopack 的路由表跟不上這串刪除重建，
+該路由就會停在未註冊狀態。`touch` 檔案救不回來，因為壞掉的是 server 內部狀態而
+不是檔案監看。切分支前先停掉 dev server，或切完重啟。
+
+同理，不要在 dev server 執行中跑 `npm run build` —— 兩者共用 `.next` 目錄。
+
 ## 設計系統
 
 視覺與元件庫移植自 `SSO/center`，tokens 定義在 `app/globals.css` 的 `@theme`
