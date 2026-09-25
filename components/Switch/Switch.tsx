@@ -61,7 +61,10 @@ export function Switch({
       <span
         aria-hidden="true"
         className={cn(
-          "relative inline-flex h-24 w-44 shrink-0 items-center rounded-[6rem] transition-colors",
+          // 寬度寫成 arbitrary value 而非 w-44：這個專案的 spacing token 只定義到
+          // 特定幾個數字，44 不在其中，Tailwind 會退回預設的 0.25rem 刻度而算出
+          // 110px —— 軌道會變成兩倍半寬，滑塊看起來永遠停在左邊。
+          "relative inline-flex h-24 w-[4.4rem] shrink-0 items-center rounded-[6rem] transition-colors",
           "peer-focus-visible:ring-2 peer-focus-visible:ring-orange-PRIMARY peer-focus-visible:ring-offset-2",
           checked ? "bg-teal-PRIMARY" : "bg-neutral-medium-gray",
         )}
