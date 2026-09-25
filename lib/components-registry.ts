@@ -49,7 +49,11 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "alert",
     name: "Alert",
     summary: "不移動焦點、由輔助科技即時播報的狀態訊息。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-ALERT-001", // 容器具有 alert 角色 — ARIA 屬性表、Accessibility Tree
+      "APG-ALERT-002", // 動態出現時螢幕閱讀器需能報讀 — ARIA 屬性表「（時機）」列
+    ],
   },
   {
     slug: "alertdialog",
@@ -61,7 +65,12 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "breadcrumb",
     name: "Breadcrumb",
     summary: "標示目前頁面在網站層級中的位置，並提供回上層的路徑。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-BRD-001", // 須位於導覽地標內 — ARIA 屬性表、WCAG 1.3.1
+      "APG-BRD-002", // 導覽地標須具備無障礙名稱 — ARIA 屬性表、WCAG 2.4.6
+      "APG-BRD-003", // 目前頁面須設定 aria-current=page — ARIA 屬性表、Accessibility Tree
+    ],
   },
   {
     slug: "button",
@@ -107,7 +116,11 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "disclosure",
     name: "Disclosure",
     summary: "單一按鈕控制一段內容的顯示與隱藏，狀態以 aria-expanded 表達。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-DISC-002", // 控制元件須具備 button 角色語意 — ARIA 屬性表
+      "APG-DISC-003", // aria-expanded 反映內容顯示狀態 — ARIA 屬性表、Accessibility Tree
+    ],
   },
   {
     slug: "feed",
