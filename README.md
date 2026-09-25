@@ -24,11 +24,28 @@ npm run build      # 正式建置
 - focus 一律是 `focus-visible:ring-2 focus-visible:ring-orange-PRIMARY`
 - `Card` 表面不加陰影
 
+## APG 規則資料
+
+`lib/apg-rules.ts` 由 `data/apg-pattern-rules.csv` 自動產生（`npm run generate:apg-rules`），
+收錄 289 條 W3C ARIA APG pattern 規則，涵蓋 20 個元件。
+
+決定交付範圍的是「知識難度」欄：**值為 2 的 119 條規則必須實作到 demo 上**。
+每個元件至少有一條，所以 20 個元件都要做。
+
+`mustDemo(slug)` 回傳某元件全部的難度 2 規則。已完成的元件必須在
+`components-registry.ts` 的 `coveredRules` 逐條列出，測試會比對兩者是否一致 ——
+規則表新增一條難度 2 的規則，對應元件的測試就會紅燈。
+
+那份 CSV 是人工維護的試算表匯出，有兩處陷阱，產生腳本都已處理並有測試釘住：
+`APG-TIP-009` 整列欄位左移一格；`知識難度(修)` 為數字時優先於 `知識難度`。
+
 ## 新增一個元件頁
 
-1. 在 `lib/components-registry.ts` 加一筆 `ComponentEntry`
-2. 建立 `app/(component)/<slug>/page.tsx`，用 `DemoPage` 並傳入六個區塊
+1. 先看 `mustDemo("<slug>")` 列出該元件必須涵蓋的難度 2 規則
+2. 建立 `app/(component)/<slug>/page.tsx`，用 `DemoPage` 並傳入五個區塊
 3. 互動範例與 `A11yTree` 放在同目錄的 client 元件（參考 `dialog/DialogDemo.tsx`）
+4. 把 registry 那筆的 `status` 改成 `"done"`，並在 `coveredRules` 逐條列出規則編號
+   與它寫在頁面哪一處
 
 `DemoPage` 的 `sections` 同時驅動內容與右側目錄，不需要另外維護目錄。
 

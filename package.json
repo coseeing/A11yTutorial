@@ -8,7 +8,8 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "generate:apg-rules": "node scripts/generate-apg-rules.mjs"
   },
   "dependencies": {
     "dom-accessibility-api": "^0.7.0",

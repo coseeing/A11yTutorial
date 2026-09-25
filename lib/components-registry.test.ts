@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest"
+import { mustDemo } from "./apg-rules"
 import { COMPONENTS, findComponent } from "./components-registry"
 
 describe("components registry", () => {
@@ -33,5 +34,18 @@ describe("components registry", () => {
 
   it("dialog 已完成", () => {
     expect(findComponent("dialog")?.status).toBe("done")
+  })
+
+  it("已完成的元件必須涵蓋它全部的難度 2 規則", () => {
+    for (const c of COMPONENTS.filter((c) => c.status === "done")) {
+      const required = mustDemo(c.slug).map((r) => r.id)
+      expect(c.coveredRules ?? [], c.slug).toEqual(required)
+    }
+  })
+
+  it("規劃中的元件不宣告覆蓋率", () => {
+    for (const c of COMPONENTS.filter((c) => c.status === "planned")) {
+      expect(c.coveredRules, c.slug).toBeUndefined()
+    }
   })
 })

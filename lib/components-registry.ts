@@ -19,6 +19,14 @@ export type ComponentEntry = {
   /** 一句話說明它解決什麼問題 */
   summary: string
   status: ComponentStatus
+  /**
+   * 這一頁已經涵蓋的 APG 規則編號。status 為 "done" 時，必須列滿該元件全部的
+   * 難度 2 規則 —— 由 components-registry.test.ts 逐條比對 lib/apg-rules.ts。
+   *
+   * 這是一份宣告：測試保證「你列的等於該列的」，但「列出來的那條真的寫在頁面上」
+   * 仍需要人確認。少了它，漏規則不會有任何東西發出聲音。
+   */
+  coveredRules?: string[]
 }
 
 export const COMPONENTS: ComponentEntry[] = [
@@ -27,6 +35,15 @@ export const COMPONENTS: ComponentEntry[] = [
     name: "Accordion",
     summary: "一組可展開收合的標題與面板，可限制同時只開啟一個。",
     status: "done",
+    coveredRules: [
+      "APG-ACC-003", // 標題列具有 button 角色語意 — ARIA 屬性表
+      "APG-ACC-004", // heading 內只能包含標題按鈕 — WCAG 1.3.1
+      "APG-ACC-005", // 標題層級須符合頁面資訊架構 — WCAG 1.3.1、headingLevel prop
+      "APG-ACC-006", // aria-expanded 反映展開狀態 — ARIA 屬性表、Accessibility Tree
+      "APG-ACC-008", // 不可收合時標 aria-disabled — ARIA 屬性表
+      "APG-ACC-009", // region 以標題按鈕為無障礙名稱 — ARIA 屬性表
+      "APG-ACC-010", // 避免產生過多 region 地標 — ARIA 屬性表、程式碼註解
+    ],
   },
   {
     slug: "alert",
@@ -75,6 +92,16 @@ export const COMPONENTS: ComponentEntry[] = [
     name: "Dialog",
     summary: "以原生 <dialog> 實作的強制回應對話框，焦點鎖定與 ESC 關閉由平台提供。",
     status: "done",
+    coveredRules: [
+      "APG-DLG-008", // 對話框容器具有 dialog 角色 — ARIA 屬性表
+      "APG-DLG-009", // 操作對話框所需的元素須位於 role=dialog 之內 — ARIA 屬性表
+      "APG-DLG-010", // aria-modal=true — ARIA 屬性表
+      "APG-DLG-011", // 開啟時阻止操作背景內容 — 鍵盤操作表、WCAG 2.1.2
+      "APG-DLG-012", // 開啟時在視覺上遮蔽背景內容 — ARIA 屬性表
+      "APG-DLG-013", // 須具有無障礙名稱 — ARIA 屬性表、Accessibility Tree
+      "APG-DLG-014", // 僅在說明簡短時才使用 aria-describedby — ARIA 屬性表
+      "APG-DLG-015", // 舊式 aria-hidden 的正確用法 — ARIA 屬性表
+    ],
   },
   {
     slug: "disclosure",

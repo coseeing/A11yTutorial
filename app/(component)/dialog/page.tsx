@@ -93,7 +93,7 @@ export default function DialogPage() {
                   attr: "aria-describedby",
                   value: "說明元素的 id",
                   purpose:
-                    "讓說明文字跟著名稱一起播報；少了它，那句警告只有往下瀏覽才讀得到。",
+                    "讓說明文字跟著名稱一起播報；少了它，那句警告只有往下瀏覽才讀得到。只適用於簡短說明 —— 若內容是需要逐項導覽的清單、表格或多段文字，不能用它一次關聯。",
                 },
                 {
                   attr: "aria-label",
@@ -104,6 +104,24 @@ export default function DialogPage() {
                   attr: "aria-hidden",
                   value: "true",
                   purpose: "頂部橘色裝飾條與關閉鈕圖示都是純視覺，不應進入無障礙樹。",
+                },
+                {
+                  attr: "（結構）",
+                  value: "元素位置",
+                  purpose:
+                    "操作對話框所需的所有元素都必須是 role=dialog 的子階層。放在對話框外的按鈕，輔助科技使用者到不了。",
+                },
+                {
+                  attr: "（結構）",
+                  value: "背景遮蔽",
+                  purpose:
+                    "開啟時背景內容必須在視覺上被遮蔽或淡化，並且無法操作。這裡由 ::backdrop 的半透明深綠與模糊達成，不可操作則由 showModal() 保證。",
+                },
+                {
+                  attr: "（舊式）",
+                  value: "aria-hidden=true",
+                  purpose:
+                    "在不支援 <dialog> 的環境改用舊式做法時，要在每個背景層元素上各自設定 aria-hidden=true，而且對話框本身絕不能落在任何 aria-hidden=true 元素的子階層裡 —— 否則整個對話框從無障礙樹上消失。",
                 },
               ]}
             />
