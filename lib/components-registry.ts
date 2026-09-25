@@ -26,7 +26,7 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "accordion",
     name: "Accordion",
     summary: "一組可展開收合的標題與面板，可限制同時只開啟一個。",
-    status: "planned",
+    status: "done",
   },
   {
     slug: "alert",

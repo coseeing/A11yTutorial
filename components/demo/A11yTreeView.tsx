@@ -92,11 +92,7 @@ export function A11yTreeView({
       >
         {node ? (
           <dl className="m-0 grid gap-16">
-            {/*
-              Description 只在真的有描述時出現。多數元件沒有 aria-describedby，
-              硬留一列空白只會讓人以為那是漏填的欄位。
-            */}
-            {ROWS.filter((row) => row.key !== "description" || node.description).map((row) => (
+            {ROWS.map((row) => (
               <div
                 key={row.key}
                 className="flex flex-col gap-8 tablet:flex-row tablet:items-center"
@@ -138,6 +134,8 @@ function formatValue(key: Row["key"], node: A11yNode): string {
   if (key === "role") return node.role
   // 空字串在等寬字裡看起來像壞掉，所以明講「（無）」。
   if (key === "name") return node.name || "（無 accessible name）"
-  if (key === "description") return node.description
+  // 四列一律顯示。沒有值時明講「（無）」而不是把整列藏起來 —— 讀者要看見的正是
+  // 「這個元件有名稱但沒有描述」這件事，消失的列說不出這句話。
+  if (key === "description") return node.description || "（無 accessible description）"
   return node.status.length > 0 ? node.status.join(", ") : "（無狀態）"
 }
