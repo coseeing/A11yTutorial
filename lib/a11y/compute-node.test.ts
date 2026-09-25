@@ -92,6 +92,16 @@ describe("computeA11yNode", () => {
       .toContain("mixed")
   })
 
+  it("aria-pressed 三態都輸出", () => {
+    const pressed = (v: string) =>
+      computeA11yNode(mount(`<button aria-pressed="${v}">靜音</button>`))!.status
+    expect(pressed("true")).toContain("pressed")
+    expect(pressed("false")).toContain("unpressed")
+    expect(pressed("mixed")).toContain("mixed")
+    // 不是 toggle 的按鈕不該有這些
+    expect(computeA11yNode(mount("<button>送出</button>"))!.status).toEqual([])
+  })
+
   it("原生 disabled 與 aria-disabled 都算 disabled，且不重複", () => {
     const node = computeA11yNode(mount('<button disabled aria-disabled="true">送出</button>'))
     expect(node!.status.filter((s) => s === "disabled")).toHaveLength(1)

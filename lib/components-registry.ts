@@ -76,7 +76,15 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "button",
     name: "Button",
     summary: "可作為 <button> 或連結呈現的動作元件，含載入中與停用狀態。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-BTN-001", // Enter / 空白鍵啟動 — 鍵盤操作表
+      "APG-BTN-002", // 角色語意與實際功能一致 — ARIA 屬性表 role 列
+      "APG-BTN-003", // 須具有無障礙名稱 — ARIA 屬性表 aria-label、Accessibility Tree
+      "APG-BTN-005", // 補充說明以 aria-describedby 關聯 — ARIA 屬性表、Accessibility Tree
+      "APG-BTN-006", // 停用狀態 — ARIA 屬性表 aria-disabled、Demo 的兩種做法對照
+      "APG-BTN-007", // Toggle 的 aria-pressed 且名稱不變 — ARIA 屬性表、Demo
+    ],
   },
   {
     slug: "carousel",

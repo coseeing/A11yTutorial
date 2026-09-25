@@ -31,6 +31,7 @@ const STATUS_ORDER = [
   "mixed",
   "selected",
   "pressed",
+  "unpressed",
   "disabled",
   "readonly",
   "required",
@@ -76,8 +77,12 @@ function collectStatus(el: Element): string[] {
 
   if (attr("aria-selected") === "true") found.add("selected")
 
+  // 三態都要輸出。只在 true 時出現會讓「這是一顆 toggle、目前沒按下」與
+  // 「這根本不是 toggle」在面板上長得一模一樣。
   const pressed = attr("aria-pressed")
-  if (pressed === "true" || pressed === "mixed") found.add("pressed")
+  if (pressed === "true") found.add("pressed")
+  if (pressed === "false") found.add("unpressed")
+  if (pressed === "mixed") found.add("mixed")
 
   if (el.hasAttribute("disabled") || attr("aria-disabled") === "true") found.add("disabled")
   if (el.hasAttribute("readonly") || attr("aria-readonly") === "true") found.add("readonly")

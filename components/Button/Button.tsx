@@ -43,6 +43,15 @@ type ButtonProps<V extends ButtonVariant = "primary"> = {
   variant?: V
   theme?: ButtonTheme<V>
   disabled?: boolean
+  /**
+   * 以 aria-disabled 取代原生 disabled。按鈕仍留在 Tab 順序中、仍可聚焦，
+   * 但不會觸發動作。
+   *
+   * 原生 disabled 會把按鈕從 Tab 順序中整個拿掉 —— 鍵盤與螢幕閱讀器使用者
+   * 不但不能按，連「這裡有一顆按鈕、目前不能用」都不會知道。停用的原因若在
+   * 畫面別處說明（例如「請先勾選同意條款」），就該讓使用者找得到這顆按鈕。
+   */
+  keepFocusable?: boolean
   /** Shows a spinner and disables the button while an async action runs. */
   isLoading?: boolean
   /**
@@ -52,6 +61,22 @@ type ButtonProps<V extends ButtonVariant = "primary"> = {
    */
   name?: string
   value?: string
+  /**
+   * 按鈕的無障礙名稱。只有圖示、沒有文字內容時必須提供。
+   */
+  "aria-label"?: string
+  /**
+   * 指向補充說明元素的 id。名稱說「這是什麼」，說明補充「按下去會怎樣」。
+   */
+  "aria-describedby"?: string
+  /**
+   * Toggle 按鈕的開關狀態，給了就會輸出 aria-pressed。
+   *
+   * 名稱不得隨狀態改變 —— 一顆標籤會在「播放」與「暫停」之間切換的按鈕，
+   * 狀態已經寫在名稱裡，再加 aria-pressed 會變成兩套互相打架的說法。那種
+   * 情況不要用這個 prop。
+   */
+  pressed?: boolean
   /** Widened to HTMLElement because this fires on the <a> branch too. */
   onClick?: React.MouseEventHandler<HTMLElement>
   children: React.ReactNode
@@ -65,9 +90,13 @@ export function Button<V extends ButtonVariant = "primary">({
   variant = "primary" as V,
   theme = "light" as ButtonTheme<V>,
   disabled = false,
+  keepFocusable = false,
   isLoading = false,
   name,
   value,
+  "aria-label": ariaLabel,
+  "aria-describedby": ariaDescribedby,
+  pressed,
   onClick,
   children,
 }: ButtonProps<V>) {
@@ -75,6 +104,9 @@ export function Button<V extends ButtonVariant = "primary">({
   const themeClass = styles[theme] as string
   const classes = cn(baseStyles, styles.base, themeClass, className)
   const isInert = disabled || isLoading
+  // keepFocusable 時不輸出原生 disabled，改由 aria-disabled 表達，並自行擋掉
+  // 點擊 —— aria-disabled 只是說給輔助科技聽，瀏覽器仍會照常派送事件。
+  const isNativelyDisabled = isInert && !keepFocusable
 
   // Render as a link unless inert — a disabled <a> can't be inert, so fall
   // back to a real disabled <button>.
@@ -83,7 +115,14 @@ export function Button<V extends ButtonVariant = "primary">({
       // onClick reaches the anchor as well: callers pass a handler alongside
       // href (EventCard's onCtaClick, the logout confirm) and it was being
       // dropped here, so those clicks silently did nothing.
-      <Link id={id} href={href} className={classes} onClick={onClick}>
+      <Link
+        id={id}
+        href={href}
+        className={classes}
+        aria-label={ariaLabel}
+        aria-describedby={ariaDescribedby}
+        onClick={onClick}
+      >
         {children}
       </Link>
     )
@@ -95,10 +134,13 @@ export function Button<V extends ButtonVariant = "primary">({
       {...(name ? { name } : {})}
       {...(value ? { value } : {})}
       className={classes}
-      disabled={isInert}
+      disabled={isNativelyDisabled}
       aria-disabled={isInert || undefined}
       aria-busy={isLoading || undefined}
-      onClick={onClick}
+      aria-label={ariaLabel}
+      aria-describedby={ariaDescribedby}
+      aria-pressed={pressed}
+      onClick={isInert ? undefined : onClick}
       type={type}
     >
       {isLoading ? (
