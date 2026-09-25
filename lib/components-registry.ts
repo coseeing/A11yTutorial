@@ -171,7 +171,15 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "radio",
     name: "Radio Group",
     summary: "一組互斥選項，整組只佔一個 Tab 停留點，以方向鍵在其中移動。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-RAD-008", // 選項須位於 role=radiogroup 內 — ARIA 屬性表、Accessibility Tree
+      "APG-RAD-009", // 每個選項具 radio 角色 — ARIA 屬性表、Accessibility Tree
+      "APG-RAD-010", // 選取狀態 — ARIA 屬性表、Accessibility Tree
+      "APG-RAD-011", // 每個選項具無障礙名稱 — ARIA 屬性表、Accessibility Tree
+      "APG-RAD-012", // 群組具無障礙名稱 — ARIA 屬性表 aria-labelledby
+      "APG-RAD-013", // 群組或選項的補充說明 — ARIA 屬性表、Demo 兩種層級
+    ],
   },
   {
     slug: "switch",
@@ -196,7 +204,15 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "tabs",
     name: "Tabs",
     summary: "一組分頁標籤切換對應的面板，以方向鍵在標籤之間移動。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-TAB-001", // tablist 容器 — ARIA 屬性表
+      "APG-TAB-002", // tablist 無障礙名稱 — ARIA 屬性表 aria-labelledby、Demo 可見標題
+      "APG-TAB-003", // tab 角色且位於 tablist 內 — ARIA 屬性表、Accessibility Tree
+      "APG-TAB-004", // tabpanel 角色 — ARIA 屬性表、Accessibility Tree
+      "APG-TAB-006", // aria-selected 狀態 — ARIA 屬性表、Accessibility Tree
+      "APG-TAB-008", // tabpanel 由對應 tab 命名 — ARIA 屬性表、Accessibility Tree
+    ],
   },
   {
     slug: "tooltip",
