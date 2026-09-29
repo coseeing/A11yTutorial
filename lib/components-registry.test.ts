@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest"
 import { mustDemo } from "./apg-rules"
-import { COMPONENTS, findComponent } from "./components-registry"
+import { existsSync } from "node:fs"
+import { COMPONENTS, findComponent, publishedComponents } from "./components-registry"
 
 describe("components registry", () => {
   it("slug 不重複", () => {
@@ -46,6 +47,27 @@ describe("components registry", () => {
   it("規劃中的元件不宣告覆蓋率", () => {
     for (const c of COMPONENTS.filter((c) => c.status === "planned")) {
       expect(c.coveredRules, c.slug).toBeUndefined()
+    }
+  })
+
+  it("publishedComponents 只回傳已完成的", () => {
+    const published = publishedComponents()
+    expect(published.length).toBeGreaterThan(0)
+    expect(published.every((c) => c.status === "done")).toBe(true)
+    expect(published.length).toBeLessThan(COMPONENTS.length)
+  })
+
+  // 首頁只列出 publishedComponents，所以每一張卡片都必須點得進去。
+  // 標成 done 卻沒有建頁面，使用者看到的就是 404。
+  it("每個已完成的元件都有對應的頁面檔案", () => {
+    for (const c of publishedComponents()) {
+      expect(existsSync(`app/(component)/${c.slug}/page.tsx`), c.slug).toBe(true)
+    }
+  })
+
+  it("尚未完成的元件沒有頁面檔案 —— 有的話就該標成 done", () => {
+    for (const c of COMPONENTS.filter((c) => c.status === "planned")) {
+      expect(existsSync(`app/(component)/${c.slug}/page.tsx`), c.slug).toBe(false)
     }
   })
 })

@@ -222,9 +222,14 @@ export const COMPONENTS: ComponentEntry[] = [
   },
 ]
 
-export const STATUS_LABEL: Record<ComponentStatus, string> = {
-  done: "已完成",
-  planned: "規劃中",
+/**
+ * 對外顯示的元件 —— 只有已完成的。
+ *
+ * 尚未動工的仍留在 COMPONENTS 裡，那是這個站的交付範圍紀錄；但首頁不列它們，
+ * 因為那些路由還不存在，點進去是 404。
+ */
+export function publishedComponents(): ComponentEntry[] {
+  return COMPONENTS.filter((c) => c.status === "done")
 }
 
 export function findComponent(slug: string): ComponentEntry | undefined {
