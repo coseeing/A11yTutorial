@@ -6,6 +6,11 @@ import { Switch } from "@/components/Switch/Switch"
 import { A11yTree } from "@/components/demo/A11yTree"
 import { DemoStage } from "@/components/demo/DemoStage"
 
+// 中文散文一律寫成字串常數再以 {} 插入，不要直接當 JSX 子節點跨行書寫 ——
+// JSX 會把跨行的文字用一個空格接起來，中文句子中間就會多出空格。
+const HINT =
+  "用 Tab 移到開關，按空白鍵切換。注意標籤在切換前後完全不變 —— 標籤說的是「這個設定是什麼」，不是「下一次按下去會怎樣」。"
+
 export function SwitchDemo() {
   const [dark, setDark] = useState(false)
   const [sync, setSync] = useState(true)
@@ -35,10 +40,7 @@ export function SwitchDemo() {
         </ControlGroup>
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        用 Tab 移到開關，按空白鍵切換。注意標籤在切換前後完全不變 —— 標籤說的是「這個設定是
-        什麼」，不是「下一次按下去會怎樣」。
-      </p>
+      <p className="typography-body2 m-0 text-teal-300">{HINT}</p>
 
       <A11yTree
         selector="#switch-demo-dark input"

@@ -8,6 +8,11 @@ import { DemoStage } from "@/components/demo/DemoStage"
 
 const CHANNELS = ["電子郵件", "簡訊", "站內通知"] as const
 
+// 中文散文一律寫成字串常數再以 {} 插入，不要直接當 JSX 子節點跨行書寫 ——
+// JSX 會把跨行的文字用一個空格接起來，中文句子中間就會多出空格。
+const HINT =
+  "勾掉其中一項，「全部選取」會進入部分勾選 —— 那是第三態，在無障礙樹上是 mixed，既不是勾選也不是未勾選。"
+
 export function CheckboxDemo() {
   const [selected, setSelected] = useState<string[]>(["電子郵件"])
   const baseId = useId()
@@ -60,10 +65,7 @@ export function CheckboxDemo() {
         </div>
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        勾掉其中一項，「全部選取」會進入部分勾選 —— 那是第三態，在無障礙樹上是 mixed，
-        既不是勾選也不是未勾選。
-      </p>
+      <p className="typography-body2 m-0 text-teal-300">{HINT}</p>
 
       <A11yTree
         selector="#checkbox-demo-all input"

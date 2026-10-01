@@ -7,6 +7,11 @@ import { Toast, ToastRegion } from "@/components/Toast/Toast"
 import { A11yTree } from "@/components/demo/A11yTree"
 import { DemoStage } from "@/components/demo/DemoStage"
 
+// 中文散文一律寫成字串常數再以 {} 插入，不要直接當 JSX 子節點跨行書寫 ——
+// JSX 會把跨行的文字用一個空格接起來，中文句子中間就會多出空格。
+const HINT =
+  "按下「儲存」之後注意兩件事：焦點仍留在按鈕上，Toast 不會把你拉過去；以及關掉自動消失之後，訊息會一直留著等你讀完。訊息用「主詞 + 動作結果」的結構，一行說完。"
+
 export function ToastDemo() {
   const [message, setMessage] = useState<string | null>(null)
   const [autoDismiss, setAutoDismiss] = useState(true)
@@ -48,10 +53,7 @@ export function ToastDemo() {
         </ToastRegion>
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        按下「儲存」之後注意兩件事：焦點仍留在按鈕上，Toast 不會把你拉過去；以及關掉
-        自動消失之後，訊息會一直留著等你讀完。訊息用「主詞 + 動作結果」的結構，一行說完。
-      </p>
+      <p className="typography-body2 m-0 text-teal-300">{HINT}</p>
 
       <A11yTree
         selector="#toast-demo [role='status']"
