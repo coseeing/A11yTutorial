@@ -17,10 +17,9 @@ export default function HomePage() {
             <li key={component.slug}>
               <a
                 href={`/${component.slug}`}
-                className="flex h-full flex-col gap-12 rounded-24 border border-bg-warm-gray bg-neutral-white p-24 no-underline transition-colors hover:bg-bg-light-off-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY"
+                className="flex h-full items-center rounded-24 border border-bg-warm-gray bg-neutral-white p-24 no-underline transition-colors hover:bg-bg-light-off-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY"
               >
                 <h3 className="typography-headline4 m-0 text-teal-700">{component.name}</h3>
-                <p className="typography-body2 m-0 text-teal-300">{component.summary}</p>
               </a>
             </li>
           ))}
