@@ -119,7 +119,7 @@ export function Button<V extends ButtonVariant = "primary">({
   if (href && !isInert) {
     return (
       // onClick reaches the anchor as well: callers pass a handler alongside
-      // href (EventCard's onCtaClick, the logout confirm) and it was being
+      // href (a card's onCtaClick, the logout confirm) and it was being
       // dropped here, so those clicks silently did nothing.
       <Link
         id={id}

@@ -1,6 +1,6 @@
 import { cn } from "@/lib/cn"
 
-// Tag — orange pill from Figma "Coseeing" → 列表頁 ProjectCard. Fully rounded,
+// Tag — orange pill from Figma "Coseeing" → 列表頁. Fully rounded,
 // orange fill, dark label; grows px-8 → px-12 at the desktop breakpoint.
 type TagProps = {
   className?: string

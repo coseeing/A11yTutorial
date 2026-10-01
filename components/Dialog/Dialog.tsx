@@ -6,7 +6,7 @@ import { PlusIcon } from "../Icons/Icons"
 
 // Dialog — design-system extension (not in Figma), styled in the brand
 // language: the auth-panel signature (white rounded-24 panel, orange top
-// accent, deep teal shadow) over the MemberCard-style teal backdrop blur.
+// accent, deep teal shadow) over a teal backdrop blur.
 // Built on the native <dialog> element, so focus trapping, ESC-to-close, and
 // inert background come from the platform; backdrop click also closes.
 

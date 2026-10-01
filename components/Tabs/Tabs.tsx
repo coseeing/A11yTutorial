@@ -5,7 +5,7 @@ import { cn } from "@/lib/cn"
 
 // Tabs — design-system extension (not in Figma). Underline style in the brand
 // language (orange active indicator on a warm-gray baseline), distinct from
-// the pill-style FilterPills. Full APG tabs semantics: roving tabindex,
+// a pill-style tab list. Full APG tabs semantics: roving tabindex,
 // Left/Right/Home/End keyboard support, aria-controls/labelledby wiring.
 
 export type TabItem = { label: string; content: React.ReactNode }
