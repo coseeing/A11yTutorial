@@ -15,14 +15,20 @@ export type A11yNode = {
    * 沒有描述時為空字串。
    */
   description: string
-  /** 目前的狀態，例如 ["open", "modal"]。順序固定，見 STATUS_ORDER。 */
+  /**
+   * 目前的狀態，例如 ["modal"]。順序固定，見 STATUS_ORDER。
+   *
+   * 收錄的標準是「無障礙樹會曝露、且螢幕閱讀器會連同角色與名稱一起播報的
+   * 狀態」，不是 ARIA 規範的 state/property 分類。所以 modal、required、
+   * readonly 留著 —— ARIA 把它們歸為 property，但 Windows 的無障礙 API
+   * 是 STATE_SYSTEM_MODAL / REQUIRED / READONLY，NVDA 也確實會唸出「必填」。
+   */
   status: string[]
 }
 
 // 狀態的輸出順序固定成這一份清單的順序，而不是屬性在 DOM 上的書寫順序 —
 // 否則同一個元件在不同頁面會顯示出不同排列，讀者會以為那是有意義的差別。
 const STATUS_ORDER = [
-  "open",
   "modal",
   "expanded",
   "collapsed",
@@ -53,7 +59,9 @@ function collectStatus(el: Element): string[] {
   const found = new Set<string>()
   const attr = (name: string) => el.getAttribute(name)
 
-  if (el.hasAttribute("open")) found.add("open")
+  // 不收 HTML 的 open 屬性：沒有任何平台的無障礙 API 有「open」這個狀態。
+  // 對 <dialog> 它是多餘的（沒有 open 就不在無障礙樹裡，面板會顯示空狀態）；
+  // 對 <details> 它是掛錯元素（開合狀態在無障礙樹裡屬於 <summary> 的 expanded）。
   if (attr("aria-modal") === "true") found.add("modal")
   // 原生 showModal() 不會在 DOM 上留下 aria-modal — 那是無障礙樹層級的隱含值。
   // :modal 只匹配以 showModal() 開啟的 dialog，是唯一能從 DOM 分辨它與 show()

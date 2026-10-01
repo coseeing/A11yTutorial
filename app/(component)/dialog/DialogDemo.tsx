@@ -10,7 +10,7 @@ import { DemoStage } from "@/components/demo/DemoStage"
 //
 // 兩者放在同一個 client 元件裡，是因為 A11yTree 要觀察的目標只有在對話框開啟時
 // 才存在於 DOM；擺在一起，讀者按下按鈕的同時就能看到三列數值從「不在無障礙樹中」
-// 變成 dialog / 標題 / open, modal。
+// 變成 dialog / 標題 / modal。
 export function DialogDemo() {
   const [open, setOpen] = useState(false)
 

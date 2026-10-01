@@ -124,15 +124,25 @@ describe("computeA11yNode", () => {
     expect(node!.status).not.toContain("current=false")
   })
 
-  it("aria-modal 與 open 一起出現在 modal dialog 上", () => {
+  it("modal dialog 的狀態是 modal", () => {
     const node = computeA11yNode(mount('<dialog open aria-modal="true" aria-label="設定"></dialog>'))
-    expect(node!.status).toEqual(expect.arrayContaining(["open", "modal"]))
+    expect(node!.status).toEqual(["modal"])
   })
 
-  it(":modal 不被環境支援時不會炸掉，仍回報 open", () => {
+  // open 是 HTML 屬性，無障礙樹裡沒有對應的狀態 —— 沒有任何平台曝露它。
+  // 對 <dialog> 它也是多餘的：沒有 open 的 dialog 根本不在樹裡。
+  it("HTML 的 open 屬性不算狀態", () => {
+    const node = computeA11yNode(mount('<dialog open aria-label="設定"></dialog>'))
+    expect(node!.status).toEqual([])
+
+    const details = computeA11yNode(mount("<details open><summary>更多</summary>內容</details>"))
+    expect(details!.status).toEqual([])
+  })
+
+  it(":modal 不被環境支援時不會炸掉", () => {
     // jsdom 不認得 :modal pseudo-class，matches() 會丟 SyntaxError。
     const node = computeA11yNode(mount('<dialog open aria-label="設定"></dialog>'))
-    expect(node!.status).toContain("open")
+    expect(node).not.toBeNull()
     expect(node!.status).not.toContain("modal")
   })
 
