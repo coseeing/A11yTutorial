@@ -73,7 +73,15 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "alertdialog",
     name: "Alert Dialog",
     summary: "承載警告或錯誤、需要使用者立即回應的對話框。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-ALD-001", // alertdialog 角色 — ARIA 屬性表、Accessibility Tree
+      "APG-ALD-002", // aria-modal=true 須明寫 — ARIA 屬性表、Accessibility Tree
+      "APG-ALD-004", // 開啟時遮擋背景內容 — ARIA 屬性表 aria-modal、::backdrop
+      "APG-ALD-005", // 無障礙名稱來自可見標題 — ARIA 屬性表、Accessibility Tree
+      "APG-ALD-006", // 警示訊息成為補充說明 — ARIA 屬性表、Accessibility Tree
+      "APG-ALD-012", // 舊式 aria-hidden 的正確用法 — ARIA 屬性表「（舊式）」列
+    ],
   },
   {
     slug: "breadcrumb",
@@ -232,7 +240,10 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "tooltip",
     name: "Tooltip",
     summary: "附加在元素上的補充說明，透過 aria-describedby 與觸發元素關聯。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-TIP-009", // 觸發元素以 aria-describedby 參照提示 — ARIA 屬性表、Accessibility Tree
+    ],
   },
 ]
 

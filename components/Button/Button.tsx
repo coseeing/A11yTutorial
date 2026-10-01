@@ -77,6 +77,11 @@ type ButtonProps<V extends ButtonVariant = "primary"> = {
    * 情況不要用這個 prop。
    */
   pressed?: boolean
+  /**
+   * 指向底層的 <button>。用於需要程式化聚焦的場合 —— 例如 AlertDialog 開啟時
+   * 要把焦點放在影響最小的控制元件上。連結分支不接受它。
+   */
+  ref?: React.Ref<HTMLButtonElement>
   /** Widened to HTMLElement because this fires on the <a> branch too. */
   onClick?: React.MouseEventHandler<HTMLElement>
   children: React.ReactNode
@@ -97,6 +102,7 @@ export function Button<V extends ButtonVariant = "primary">({
   "aria-label": ariaLabel,
   "aria-describedby": ariaDescribedby,
   pressed,
+  ref,
   onClick,
   children,
 }: ButtonProps<V>) {
@@ -130,6 +136,7 @@ export function Button<V extends ButtonVariant = "primary">({
 
   return (
     <button
+      ref={ref}
       {...(id ? { id } : {})}
       {...(name ? { name } : {})}
       {...(value ? { value } : {})}
