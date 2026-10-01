@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -11,37 +10,6 @@ export const metadata: Metadata = {
   description: "以原生 <dialog> 實作的強制回應對話框，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
-const USAGE = `import { Dialog } from "@/components/Dialog/Dialog"
-import { Button } from "@/components/Button/Button"
-
-function DeleteConfirm() {
-  const [open, setOpen] = useState(false)
-
-  return (
-    <>
-      <Button variant="small" onClick={() => setOpen(true)}>
-        刪除
-      </Button>
-
-      <Dialog
-        open={open}
-        onClose={() => setOpen(false)}
-        title="刪除這筆紀錄？"
-        description="刪除後無法復原，確定要繼續嗎？"
-        actions={
-          <>
-            <Button variant="small" theme="greenStroke" onClick={() => setOpen(false)}>
-              取消
-            </Button>
-            <Button variant="small" theme="danger" onClick={handleDelete}>
-              刪除
-            </Button>
-          </>
-        }
-      />
-    </>
-  )
-}`
 
 export default function DialogPage() {
   return (
@@ -177,11 +145,6 @@ export default function DialogPage() {
               ]}
             />
           ),
-        },
-        {
-          id: "code",
-          title: "程式碼",
-          content: <CodeBlock code={USAGE} label="Dialog 使用範例程式碼" />,
         },
       ]}
     />

@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -12,15 +11,6 @@ export const metadata: Metadata = {
     "一顆按鈕控制一段內容的顯示與隱藏，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
-const USAGE = `import { Disclosure } from "@/components/Disclosure/Disclosure"
-
-function ShippingFaq() {
-  return (
-    <Disclosure label="運費怎麼計算？">
-      單筆滿一千元免運，未滿則收取八十元。
-    </Disclosure>
-  )
-}`
 
 export default function DisclosurePage() {
   return (
@@ -107,7 +97,6 @@ export default function DisclosurePage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Disclosure 使用範例程式碼" /> },
       ]}
     />
   )

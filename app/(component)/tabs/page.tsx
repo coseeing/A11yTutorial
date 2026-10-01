@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -11,23 +10,6 @@ export const metadata: Metadata = {
   description: "一組分頁標籤切換對應的面板，含 accessibility tree 與 WCAG 對應。",
 }
 
-const USAGE = `import { Tabs } from "@/components/Tabs/Tabs"
-
-function AccountSettings() {
-  return (
-    <>
-      {/* 有可見標題就用 labelledBy 指向它，看到的和聽到的是同一份文字 */}
-      <h3 id="settings-heading">帳號設定</h3>
-      <Tabs
-        labelledBy="settings-heading"
-        items={[
-          { label: "總覽", content: "純文字面板 —— 會自動拿到 tabindex=0" },
-          { label: "紀錄", content: <a href="/log">面板內有連結，就不再多佔停留點</a> },
-        ]}
-      />
-    </>
-  )
-}`
 
 export default function TabsPage() {
   return (
@@ -162,7 +144,6 @@ export default function TabsPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Tabs 使用範例程式碼" /> },
       ]}
     />
   )

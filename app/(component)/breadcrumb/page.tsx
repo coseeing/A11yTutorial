@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -12,22 +11,6 @@ export const metadata: Metadata = {
     "標示目前頁面在網站層級中的位置，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
-const USAGE = `import { Breadcrumb } from "@/components/Breadcrumb/Breadcrumb"
-
-function PageTrail() {
-  return (
-    <Breadcrumb
-      // 地標名稱：頁面上通常不只一個 nav，沒有名稱就分不出誰是誰
-      label="麵包屑"
-      items={[
-        { label: "首頁", href: "/" },
-        { label: "元件", href: "/components" },
-        // 省略 href 代表這是目前頁面，不做成連結
-        { label: "Breadcrumb" },
-      ]}
-    />
-  )
-}`
 
 export default function BreadcrumbPage() {
   return (
@@ -123,7 +106,6 @@ export default function BreadcrumbPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Breadcrumb 使用範例程式碼" /> },
       ]}
     />
   )

@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -11,24 +10,6 @@ export const metadata: Metadata = {
   description: "一組互斥選項，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
-const USAGE = `import { RadioGroup } from "@/components/RadioGroup/RadioGroup"
-
-function Shipping() {
-  const [value, setValue] = useState<string | null>("standard")
-
-  return (
-    <RadioGroup
-      label="配送方式"
-      description="離島地區僅提供標準宅配。"
-      value={value}
-      onValueChange={setValue}
-      options={[
-        { value: "standard", label: "標準宅配" },
-        { value: "express", label: "隔日到貨", description: "加收 120 元。" },
-      ]}
-    />
-  )
-}`
 
 export default function RadioPage() {
   return (
@@ -148,7 +129,6 @@ export default function RadioPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Radio Group 使用範例程式碼" /> },
       ]}
     />
   )

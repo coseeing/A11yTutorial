@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -12,22 +11,6 @@ export const metadata: Metadata = {
     "依 ARIA APG Accordion Pattern 實作的展開收合元件，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
-const USAGE = `import { Accordion } from "@/components/Accordion/Accordion"
-
-function Faq() {
-  return (
-    <Accordion
-      // 標題層級要接進頁面的標題大綱，不是樣式選擇
-      headingLevel={3}
-      // 面板超過約六個時關掉，避免地標清單被灌爆
-      useRegion
-      items={[
-        { question: "什麼是無障礙設計？", answer: "讓產品在不同能力…" },
-        { question: "為什麼要包在 heading 裡？", answer: "螢幕閱讀器使用者…" },
-      ]}
-    />
-  )
-}`
 
 export default function AccordionPage() {
   return (
@@ -151,11 +134,6 @@ export default function AccordionPage() {
               ]}
             />
           ),
-        },
-        {
-          id: "code",
-          title: "程式碼",
-          content: <CodeBlock code={USAGE} label="Accordion 使用範例程式碼" />,
         },
       ]}
     />

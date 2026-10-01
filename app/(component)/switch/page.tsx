@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -11,19 +10,6 @@ export const metadata: Metadata = {
   description: "立即生效的開關，含 accessibility tree、鍵盤操作與 WCAG 對應。",
 }
 
-const USAGE = `import { Switch } from "@/components/Switch/Switch"
-import { ControlGroup } from "@/components/ControlGroup/ControlGroup"
-
-function Appearance() {
-  const [dark, setDark] = useState(false)
-
-  return (
-    // fieldset + legend：群組的名稱可見，也同時是它的無障礙名稱
-    <ControlGroup label="外觀設定" description="這些設定會立即生效。">
-      <Switch label="深色模式" checked={dark} onCheckedChange={setDark} />
-    </ControlGroup>
-  )
-}`
 
 export default function SwitchPage() {
   return (
@@ -126,7 +112,6 @@ export default function SwitchPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Switch 使用範例程式碼" /> },
       ]}
     />
   )

@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -12,112 +11,6 @@ export const metadata: Metadata = {
     "不中斷目前操作的輕量通知，含 accessibility tree、常見硬傷與 WCAG 對應。",
 }
 
-const USAGE = `import { Toast, ToastRegion } from "@/components/Toast/Toast"
-
-function SaveProfile() {
-  const [message, setMessage] = useState<string | null>(null)
-  const dismiss = useCallback(() => setMessage(null), [])
-
-  return (
-    <>
-      <Button onClick={() => setMessage("個人資料已更新")}>儲存</Button>
-
-      {/*
-        容器一律渲染，即使沒有訊息 —— live region 要先存在，
-        之後塞進去的文字才算是「變化」而被播報。
-        位置放中央下方，不要貼右上或右下角。
-      */}
-      <ToastRegion>
-        {message ? (
-          <Toast
-            message={message}
-            // null 代表不自動消失。自動消失是時間限制，要能關掉（SC 2.2.1）
-            duration={5000}
-            onDismiss={dismiss}
-          />
-        ) : null}
-      </ToastRegion>
-    </>
-  )
-}`
-
-// 中文散文一律寫成字串常數再以 {} 插入，不要直接當 JSX 子節點跨行書寫 ——
-// JSX 會把跨行的文字用一個空格接起來，中文句子中間就會多出一個空格。
-
-const WHEN_TO_USE_INTRO =
-  "Toast 是低干擾、溫和型的通知：純資訊告知、不需要使用者立刻採取行動、用來交代操作結果或狀態更新。常見於「已加入購物車」「已從收藏中移除」「已將檔案移至垃圾桶」這類成功提示。"
-
-const BOUNDARIES = [
-  {
-    name: "Toast",
-    role: "role=status",
-    text: "不打斷。等使用者當下的播報結束才開口，焦點留在原處。",
-  },
-  {
-    name: "Alert",
-    role: "role=alert",
-    text: "插話。立刻打斷當下的播報，但仍不搶焦點。留給真的需要馬上知道的事。",
-  },
-  {
-    name: "Dialog",
-    role: "role=dialog",
-    text: "強制回應。把焦點拉過去、鎖在裡面，不處理就走不了。",
-  },
-]
-
-const WHEN_TO_USE_COST =
-  "選錯的代價是真實的：以「登入」為例，若登入成功後網頁刷新、原本的按鈕消失、焦點被重置，而回饋只有一個三秒就消失的 Toast —— 螢幕閱讀器使用者很可能完全不知道自己到底登入成功了沒有。那種情境需要的是會中斷流程的回饋，不是 Toast。"
-
-const PITFALLS = [
-  {
-    title: "自動消失太快",
-    text: "一般 Toast 三到五秒就消失。對閱讀速度較慢、用螢幕放大鏡逐區掃視、或正在聽其他內容的人來說往往不夠。若 Toast 裡還有動作按鈕，更來不及按。自動消失是一種時間限制，要能關掉、調整或延長。",
-  },
-  {
-    title: "邊角盲區",
-    text: "低視能或使用螢幕放大鏡的人，視野受限在畫面中央。躲在右上角或右下角的 Toast 他們根本看不到 —— 不是沒注意到，是不在視野裡。",
-  },
-  {
-    title: "額外動作按鈕",
-    text: "Toast 出現時焦點仍在原處，使用者要走很多步才到得了裡面的「復原」按鈕；按完之後更難回到原本的位置。需要動作的訊息，本來就不該用 Toast 說。真的要放，至少不要讓它自動消失。",
-  },
-]
-
-const PANEL = "rounded-24 border border-bg-warm-gray bg-neutral-white p-24 tablet:p-32"
-
-function WhenToUse() {
-  return (
-    <div className={`typography-body1 flex flex-col gap-16 text-teal-700 ${PANEL}`}>
-      <p className="m-0">{WHEN_TO_USE_INTRO}</p>
-      <p className="m-0">它與另外兩個元件的分界很清楚：</p>
-      <ul className="m-0 flex list-none flex-col gap-12 p-0">
-        {BOUNDARIES.map((b) => (
-          <li
-            key={b.name}
-            className="rounded-16 border border-bg-warm-gray bg-bg-light-off-white px-20 py-16"
-          >
-            <strong>{b.name}</strong>
-            <span className="font-mono text-teal-300">（{b.role}）</span> —— {b.text}
-          </li>
-        ))}
-      </ul>
-      <p className="m-0">{WHEN_TO_USE_COST}</p>
-    </div>
-  )
-}
-
-function Pitfalls() {
-  return (
-    <div className={`typography-body1 flex flex-col gap-16 text-teal-700 ${PANEL}`}>
-      {PITFALLS.map((item) => (
-        <div key={item.title}>
-          <h3 className="typography-strong1 m-0 mb-8 text-teal-700">{item.title}</h3>
-          <p className="m-0">{item.text}</p>
-        </div>
-      ))}
-    </div>
-  )
-}
 
 export default function ToastPage() {
   return (
@@ -125,8 +18,6 @@ export default function ToastPage() {
       title="Toast"
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <ToastDemo /> },
-        { id: "position", title: "它該用在什麼時候", content: <WhenToUse /> },
-        { id: "pitfalls", title: "三個常見硬傷", content: <Pitfalls /> },
         {
           id: "keyboard",
           title: "鍵盤操作",
@@ -180,7 +71,13 @@ export default function ToastPage() {
                   attr: "（對照）",
                   value: "role=alert",
                   purpose:
-                    "需要立刻知道的事用 alert（隱含 assertive），它會插話。Toast 的定位是不插話，所以用 status。",
+                    "需要立刻知道的事用 alert（隱含 assertive），它會插話但仍不搶焦點；非處理不可的事用 role=dialog，它把焦點拉過去鎖住。Toast 的定位是三者中最輕的一層：不插話、不搶焦點。",
+                },
+                {
+                  attr: "（位置）",
+                  value: "避開邊角",
+                  purpose:
+                    "低視能或使用螢幕放大鏡的人視野受限在畫面中央，躲在右上角或右下角的通知他們根本看不到 —— 不是沒注意到，是不在視野裡。",
                 },
                 {
                   attr: "aria-hidden",
@@ -236,7 +133,6 @@ export default function ToastPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Toast 使用範例程式碼" /> },
       ]}
     />
   )

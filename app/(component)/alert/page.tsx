@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -12,22 +11,6 @@ export const metadata: Metadata = {
     "不移動焦點、由輔助科技即時播報的狀態訊息，含 accessibility tree 與 WCAG 對應。",
 }
 
-const USAGE = `import { Alert } from "@/components/Alert/Alert"
-
-function SaveForm() {
-  const [error, setError] = useState<string | null>(null)
-
-  return (
-    <form onSubmit={...}>
-      {/*
-        容器一律渲染，即使沒有訊息 —— live region 要先存在，
-        之後塞進去的文字才算是「變化」而被播報。
-      */}
-      <Alert message={error} />
-      <Button type="submit">儲存</Button>
-    </form>
-  )
-}`
 
 export default function AlertPage() {
   return (
@@ -127,7 +110,6 @@ export default function AlertPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Alert 使用範例程式碼" /> },
       ]}
     />
   )

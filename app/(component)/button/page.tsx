@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -12,28 +11,6 @@ export const metadata: Metadata = {
     "觸發動作的控制項，含名稱來源、toggle 狀態、停用做法與 WCAG 對應。",
 }
 
-const USAGE = `import { Button } from "@/components/Button/Button"
-
-// 只有圖示 —— 名稱要另外給，否則螢幕閱讀器唸不出這顆按鈕是什麼
-<Button aria-label="關閉">
-  <PlusIcon className="rotate-45" />
-</Button>
-
-// Toggle —— 名稱固定是「靜音」，狀態由 aria-pressed 表達
-<Button pressed={muted} onClick={() => setMuted(v => !v)}>
-  靜音
-</Button>
-
-// 停用，但保留在 Tab 順序中，並說明為什麼不能用
-<>
-  <Button disabled keepFocusable aria-describedby="why">
-    送出
-  </Button>
-  <p id="why">請先勾選同意條款才能送出。</p>
-</>
-
-// 導向其他頁面 —— 那是連結，不是按鈕
-<Button href="/next">前往下一頁</Button>`
 
 export default function ButtonPage() {
   return (
@@ -159,7 +136,6 @@ export default function ButtonPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Button 使用範例程式碼" /> },
       ]}
     />
   )

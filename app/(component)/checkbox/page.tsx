@@ -1,6 +1,5 @@
 import type { Metadata } from "next"
 import { AriaTable } from "@/components/demo/AriaTable"
-import { CodeBlock } from "@/components/demo/CodeBlock"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
 import { WcagList } from "@/components/demo/WcagList"
@@ -11,29 +10,6 @@ export const metadata: Metadata = {
   description: "可獨立勾選的選項，含三態、群組與 WCAG 對應。",
 }
 
-const USAGE = `import { Checkbox } from "@/components/Checkbox/Checkbox"
-import { ControlGroup } from "@/components/ControlGroup/ControlGroup"
-
-function Channels() {
-  const [selected, setSelected] = useState(["電子郵件"])
-  const all = selected.length === CHANNELS.length
-  const some = selected.length > 0 && !all
-
-  return (
-    <ControlGroup label="通知方式" description="至少選擇一種。">
-      {/* 部分勾選是第三態，只存在於 DOM property，要另外補 aria-checked="mixed" */}
-      <Checkbox
-        label="全部選取"
-        checked={all}
-        indeterminate={some}
-        onChange={(e) => setSelected(e.target.checked ? [...CHANNELS] : [])}
-      />
-      {CHANNELS.map((c) => (
-        <Checkbox key={c} label={c} checked={selected.includes(c)} onChange={...} />
-      ))}
-    </ControlGroup>
-  )
-}`
 
 export default function CheckboxPage() {
   return (
@@ -142,7 +118,6 @@ export default function CheckboxPage() {
             />
           ),
         },
-        { id: "code", title: "程式碼", content: <CodeBlock code={USAGE} label="Checkbox 使用範例程式碼" /> },
       ]}
     />
   )
