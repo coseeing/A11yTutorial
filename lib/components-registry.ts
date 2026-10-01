@@ -206,14 +206,7 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "switch",
     name: "Switch",
     summary: "立即生效的開關，狀態是開或關，而非待送出的勾選。",
-    status: "done",
-    coveredRules: [
-      "APG-SWT-004", // switch 角色 — ARIA 屬性表、Accessibility Tree
-      "APG-SWT-005", // 無障礙名稱 — ARIA 屬性表、Accessibility Tree
-      "APG-SWT-006", // 開啟與關閉狀態 — ARIA 屬性表 checked、Accessibility Tree
-      "APG-SWT-007", // 群組具有無障礙名稱 — ARIA 屬性表 fieldset/legend、Accessibility Tree
-      "APG-SWT-008", // 補充說明 — ARIA 屬性表 aria-describedby、Demo
-    ],
+    status: "planned",
   },
   {
     slug: "table",
