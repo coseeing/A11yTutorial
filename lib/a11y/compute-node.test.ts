@@ -124,26 +124,17 @@ describe("computeA11yNode", () => {
     expect(node!.status).not.toContain("current=false")
   })
 
-  it("modal dialog 的狀態是 modal", () => {
-    const node = computeA11yNode(mount('<dialog open aria-modal="true" aria-label="設定"></dialog>'))
-    expect(node!.status).toEqual(["modal"])
-  })
-
-  // open 是 HTML 屬性，無障礙樹裡沒有對應的狀態 —— 沒有任何平台曝露它。
-  // 對 <dialog> 它也是多餘的：沒有 open 的 dialog 根本不在樹裡。
-  it("HTML 的 open 屬性不算狀態", () => {
-    const node = computeA11yNode(mount('<dialog open aria-label="設定"></dialog>'))
-    expect(node!.status).toEqual([])
+  // open 與 modal 都不收：螢幕閱讀器開關對話框時兩個都不會唸出來。
+  // open 是 HTML 屬性，無障礙樹裡沒有對應狀態；modal 是輔助科技用來決定
+  // 要不要限制瀏覽範圍的內部旗標，不是播報內容。
+  it("open 與 modal 都不算狀態", () => {
+    const modal = computeA11yNode(
+      mount('<dialog open aria-modal="true" aria-label="設定"></dialog>'),
+    )
+    expect(modal!.status).toEqual([])
 
     const details = computeA11yNode(mount("<details open><summary>更多</summary>內容</details>"))
     expect(details!.status).toEqual([])
-  })
-
-  it(":modal 不被環境支援時不會炸掉", () => {
-    // jsdom 不認得 :modal pseudo-class，matches() 會丟 SyntaxError。
-    const node = computeA11yNode(mount('<dialog open aria-label="設定"></dialog>'))
-    expect(node).not.toBeNull()
-    expect(node!.status).not.toContain("modal")
   })
 
   it("沒有任何狀態時 status 是空陣列", () => {

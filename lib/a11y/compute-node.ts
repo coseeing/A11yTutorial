@@ -16,12 +16,19 @@ export type A11yNode = {
    */
   description: string
   /**
-   * 目前的狀態，例如 ["modal"]。順序固定，見 STATUS_ORDER。
+   * 目前的狀態，例如 ["expanded"]。順序固定，見 STATUS_ORDER。
    *
-   * 收錄的標準是「無障礙樹會曝露、且螢幕閱讀器會連同角色與名稱一起播報的
-   * 狀態」，不是 ARIA 規範的 state/property 分類。所以 modal、required、
-   * readonly 留著 —— ARIA 把它們歸為 property，但 Windows 的無障礙 API
-   * 是 STATE_SYSTEM_MODAL / REQUIRED / READONLY，NVDA 也確實會唸出「必填」。
+   * 收錄的判準是「螢幕閱讀器會不會連同角色與名稱一起把它唸出來」，不是 ARIA
+   * 規範的 state / property 分類。所以 required 與 readonly 留著 —— ARIA 把
+   * 它們歸為 property，但 NVDA 確實會唸「必填」「唯讀」。
+   *
+   * 反過來，這兩個被排除：
+   *   open   —— HTML 屬性，無障礙樹裡根本沒有這個狀態。對 <dialog> 也多餘：
+   *             沒有 open 就不在樹裡，面板會顯示空狀態。
+   *   modal  —— 開關對話框時沒有任何螢幕閱讀器會唸出「modal」。它是輔助科技
+   *             用來決定要不要限制瀏覽範圍的內部旗標，不是播報內容。
+   *
+   * modal 的意義改在各元件頁的 ARIA 屬性表裡說明。
    */
   status: string[]
 }
@@ -29,7 +36,6 @@ export type A11yNode = {
 // 狀態的輸出順序固定成這一份清單的順序，而不是屬性在 DOM 上的書寫順序 —
 // 否則同一個元件在不同頁面會顯示出不同排列，讀者會以為那是有意義的差別。
 const STATUS_ORDER = [
-  "modal",
   "expanded",
   "collapsed",
   "checked",
@@ -58,15 +64,6 @@ function resolveRole(el: Element): string {
 function collectStatus(el: Element): string[] {
   const found = new Set<string>()
   const attr = (name: string) => el.getAttribute(name)
-
-  // 不收 HTML 的 open 屬性：沒有任何平台的無障礙 API 有「open」這個狀態。
-  // 對 <dialog> 它是多餘的（沒有 open 就不在無障礙樹裡，面板會顯示空狀態）；
-  // 對 <details> 它是掛錯元素（開合狀態在無障礙樹裡屬於 <summary> 的 expanded）。
-  if (attr("aria-modal") === "true") found.add("modal")
-  // 原生 showModal() 不會在 DOM 上留下 aria-modal — 那是無障礙樹層級的隱含值。
-  // :modal 只匹配以 showModal() 開啟的 dialog，是唯一能從 DOM 分辨它與 show()
-  // 的方式；少了這一行，modal dialog 會被誤報成非 modal。
-  if (isModalDialog(el)) found.add("modal")
 
   const expanded = attr("aria-expanded")
   if (expanded === "true") found.add("expanded")
@@ -110,30 +107,6 @@ function collectStatus(el: Element): string[] {
   }
 
   return ordered
-}
-
-// :modal 的支援度只探測一次。每次呼叫都 try/catch 的話，在不支援的環境（jsdom）
-// 裡每個元素都要付一次丟出並攔截 SyntaxError 的代價，測試會慢上一個量級。
-let modalSelectorSupported: boolean | null = null
-
-function supportsModalSelector(el: Element): boolean {
-  if (modalSelectorSupported === null) {
-    try {
-      el.matches(":modal")
-      modalSelectorSupported = true
-    } catch {
-      modalSelectorSupported = false
-    }
-  }
-  return modalSelectorSupported
-}
-
-function isModalDialog(el: Element): boolean {
-  // 先用 tagName 擋掉絕大多數元素：只有 <dialog> 可能是 modal，而 matches()
-  // 每次都要重新編譯選擇器，對每個元素都跑一次相當昂貴。
-  if (el.tagName.toLowerCase() !== "dialog") return false
-  if (!supportsModalSelector(el)) return false
-  return el.matches(":modal")
 }
 
 function isInAccessibilityTree(el: Element): boolean {
