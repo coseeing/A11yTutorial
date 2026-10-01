@@ -1,6 +1,7 @@
 "use client"
 
 import { Breadcrumb } from "@/components/Breadcrumb/Breadcrumb"
+import { appPath } from "@/lib/app-path"
 import { A11yTree } from "@/components/demo/A11yTree"
 import { DemoStage } from "@/components/demo/DemoStage"
 
@@ -10,9 +11,9 @@ export function BreadcrumbDemo() {
       <DemoStage id="breadcrumb-demo" className="flex-col items-stretch">
         <Breadcrumb
           items={[
-            { label: "首頁", href: "/" },
-            { label: "元件", href: "/" },
-            { label: "Breadcrumb", href: "/breadcrumb" },
+            { label: "首頁", href: appPath("/") },
+            { label: "元件", href: appPath("/") },
+            { label: "Breadcrumb", href: appPath("/breadcrumb") },
           ]}
         />
       </DemoStage>

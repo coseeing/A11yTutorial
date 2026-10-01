@@ -1,5 +1,6 @@
 import { Container } from "@/components/Container/Container"
 import { PageHeader } from "@/components/PageHeader/PageHeader"
+import { appPath } from "@/lib/app-path"
 import { publishedComponents } from "@/lib/components-registry"
 
 export default function HomePage() {
@@ -16,7 +17,7 @@ export default function HomePage() {
           {components.map((component) => (
             <li key={component.slug}>
               <a
-                href={`/${component.slug}`}
+                href={appPath(`/${component.slug}`)}
                 className="flex h-full items-center rounded-24 border border-bg-warm-gray bg-neutral-white p-24 no-underline transition-colors hover:bg-bg-light-off-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY"
               >
                 <h3 className="typography-headline4 m-0 text-teal-700">{component.name}</h3>

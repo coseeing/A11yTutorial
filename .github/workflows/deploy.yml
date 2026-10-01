@@ -1,0 +1,60 @@
+# 把靜態匯出的網站部署到 GitHub Pages。
+#
+# 前置設定（只需做一次）：
+#   Repository → Settings → Pages → Build and deployment → Source 選「GitHub Actions」
+# 沒有設定之前，下面的 deploy 步驟會失敗，網站不會上線。
+
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # 允許從 Actions 頁面手動觸發，例如改完 Pages 設定之後重跑一次
+  workflow_dispatch:
+
+# 同時只跑一個部署；排隊中的舊 run 直接取消。
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      # 部署前先把關：型別、單元測試、以及那三道靜態掃描
+      # （spacing 刻度、中文換行、registry 與頁面檔案是否同步）。
+      - run: npm run typecheck
+      - run: npm test
+
+      - name: Build static export
+        # 專案頁掛在 /<repo> 底下，basePath 必須對上，否則所有連結與資源都會 404。
+        run: NEXT_PUBLIC_BASE_PATH="/${GITHUB_REPOSITORY#*/}" npm run build
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

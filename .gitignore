@@ -9,3 +9,6 @@ CLAUDE.md
 
 # Next.js 自動產生，內容隨 dev/build 來回變動
 next-env.d.ts
+
+# Next 靜態匯出的產物
+/out
