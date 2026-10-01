@@ -102,7 +102,10 @@ export function A11yTreeView({
               >
                 <dt
                   className={cn(
-                    "typography-strong2 flex h-40 w-[10rem] shrink-0 items-center justify-center rounded-8",
+                    // 寬度由最長的標籤「Description」決定：它在 desktop 字級下文字寬約 9.5rem，
+                    // 10rem 的方塊左右只剩 0.24rem，貼著邊。13rem 讓它左右各有約 1.6rem。
+                    // 四個標籤同寬，右側的值欄才會對齊。
+                    "typography-strong2 flex h-40 w-[13rem] shrink-0 items-center justify-center rounded-8",
                     row.chip,
                   )}
                 >
