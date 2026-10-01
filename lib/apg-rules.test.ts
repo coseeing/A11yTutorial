@@ -28,9 +28,17 @@ describe("APG 規則資料", () => {
     }
   })
 
-  it("每個元件都至少有一條難度 2 的規則 —— 這是 20 個元件都要做的理由", () => {
-    for (const c of COMPONENTS) {
+  it("每個 APG 元件都至少有一條難度 2 的規則 —— 這是 20 個元件都要做的理由", () => {
+    const apgComponents = COMPONENTS.filter((c) => (c.source ?? "apg") === "apg")
+    expect(apgComponents).toHaveLength(20)
+    for (const c of apgComponents) {
       expect(mustDemo(c.slug).length, c.slug).toBeGreaterThan(0)
+    }
+  })
+
+  it("非 APG 元件不在規則表中 —— 它們的依據是 WCAG 與實務慣例", () => {
+    for (const c of COMPONENTS.filter((c) => c.source === "practice")) {
+      expect(rulesFor(c.slug), c.slug).toHaveLength(0)
     }
   })
 

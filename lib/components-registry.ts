@@ -11,6 +11,18 @@
 
 export type ComponentStatus = "done" | "planned"
 
+/**
+ * 這個元件的規則來源。
+ *
+ * "apg" —— 在 W3C ARIA APG 的 pattern 表中，交付範圍由 lib/apg-rules.ts 的
+ * 難度 2 規則決定，必須在 coveredRules 逐條列出。
+ *
+ * "practice" —— APG 沒有這個 pattern。Toast 就是這一類：它是介面慣例而非
+ * ARIA pattern，依據是 WCAG 成功準則（4.1.3、2.2.1）與 live region 的既有
+ * 實務。沒有規則編號可列，所以不受 coveredRules 約束。
+ */
+export type ComponentSource = "apg" | "practice"
+
 export type ComponentEntry = {
   /** 路由片段，同時是網址：/<slug> */
   slug: string
@@ -19,6 +31,8 @@ export type ComponentEntry = {
   /** 一句話說明它解決什麼問題 */
   summary: string
   status: ComponentStatus
+  /** 省略視為 "apg"。 */
+  source?: ComponentSource
   /**
    * 這一頁已經涵蓋的 APG 規則編號。status 為 "done" 時，必須列滿該元件全部的
    * 難度 2 規則 —— 由 components-registry.test.ts 逐條比對 lib/apg-rules.ts。
@@ -180,6 +194,13 @@ export const COMPONENTS: ComponentEntry[] = [
       "APG-RAD-012", // 群組具無障礙名稱 — ARIA 屬性表 aria-labelledby
       "APG-RAD-013", // 群組或選項的補充說明 — ARIA 屬性表、Demo 兩種層級
     ],
+  },
+  {
+    slug: "toast",
+    name: "Toast",
+    summary: "不中斷操作的輕量通知，告知操作結果或狀態更新。",
+    status: "done",
+    source: "practice",
   },
   {
     slug: "switch",

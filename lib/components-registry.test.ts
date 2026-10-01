@@ -30,17 +30,24 @@ describe("components registry", () => {
   it("涵蓋全部 20 個 APG 元件", () => {
     // 數量釘死是有意的：知識難度 2 的規則散落在全部 20 個元件上，少一個就代表
     // 有幾條必做的規則沒有落腳處。要改這個數字，得先確認範圍真的變了。
-    expect(COMPONENTS).toHaveLength(20)
+    expect(COMPONENTS.filter((c) => (c.source ?? "apg") === "apg")).toHaveLength(20)
   })
 
   it("dialog 已完成", () => {
     expect(findComponent("dialog")?.status).toBe("done")
   })
 
-  it("已完成的元件必須涵蓋它全部的難度 2 規則", () => {
-    for (const c of COMPONENTS.filter((c) => c.status === "done")) {
+  it("已完成的 APG 元件必須涵蓋它全部的難度 2 規則", () => {
+    const done = COMPONENTS.filter((c) => c.status === "done" && (c.source ?? "apg") === "apg")
+    for (const c of done) {
       const required = mustDemo(c.slug).map((r) => r.id)
       expect(c.coveredRules ?? [], c.slug).toEqual(required)
+    }
+  })
+
+  it("非 APG 元件不宣告覆蓋率 —— 沒有規則編號可列", () => {
+    for (const c of COMPONENTS.filter((c) => c.source === "practice")) {
+      expect(c.coveredRules, c.slug).toBeUndefined()
     }
   })
 
