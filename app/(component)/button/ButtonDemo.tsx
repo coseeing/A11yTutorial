@@ -68,19 +68,13 @@ export function ButtonDemo() {
         </div>
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        用 Tab 走過這一排：原生 disabled 的那顆會被整個跳過，aria-disabled 的那顆仍會被聚焦 ——
-        差別在於鍵盤使用者知不知道它存在、以及為什麼不能用。
-      </p>
 
       <A11yTree
         selector="#button-demo-toggle"
-        hint="觀察對象：Toggle 按鈕。按下去看 Status，名稱不會跟著變。"
       />
 
       <A11yTree
         selector="#button-demo-soft-disabled"
-        hint="觀察對象：以 aria-disabled 停用的按鈕。它同時帶著補充說明。"
       />
     </div>
   )

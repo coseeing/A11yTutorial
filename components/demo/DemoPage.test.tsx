@@ -24,7 +24,7 @@ describe("DemoPage", () => {
 
   it("目錄列出每個區塊並連到對應的 id", () => {
     render(<DemoPage title="Dialog" sections={SECTIONS} />)
-    const toc = screen.getByRole("navigation", { name: "本頁目錄" })
+    const toc = screen.getByRole("navigation", { name: "目錄" })
     expect(within(toc).getByRole("link", { name: "Demo" })).toHaveAttribute("href", "#demo")
     expect(within(toc).getByRole("link", { name: "鍵盤操作" })).toHaveAttribute(
       "href",

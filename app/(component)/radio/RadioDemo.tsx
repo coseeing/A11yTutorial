@@ -24,19 +24,13 @@ export function RadioDemo() {
         />
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        用 Tab 移進來，焦點會落在已選取的那一項；接著改用方向鍵在選項之間移動 ——
-        移動的同時就完成選取。再按一次 Tab 會整組離開，不會逐一走過每個選項。
-      </p>
 
       <A11yTree
         selector="#radio-demo fieldset"
-        hint="觀察對象：外層的單選群組。"
       />
 
       <A11yTree
         selector="#radio-demo input:checked"
-        hint="觀察對象：目前被選取的那一個選項。用方向鍵換一項，這裡會跟著換。"
       />
     </div>
   )

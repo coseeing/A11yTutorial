@@ -34,13 +34,9 @@ export function AccordionDemo() {
         <Accordion items={ITEMS} className="w-full" />
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        用 Tab 移到標題按鈕，按 Enter 或空白鍵展開收合，下方的數值會跟著改變。
-      </p>
 
       <A11yTree
         selector="#accordion-demo h3 button"
-        hint="觀察對象：第一個標題按鈕（什麼是無障礙設計？）。"
       />
     </div>
   )

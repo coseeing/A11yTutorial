@@ -13,14 +13,9 @@ export function DisclosureDemo() {
         </Disclosure>
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        用 Tab 移到按鈕，按 Enter 或空白鍵切換，下方的 Status 會在 collapsed 與 expanded
-        之間改變。
-      </p>
 
       <A11yTree
         selector="#disclosure-demo button"
-        hint="觀察對象：Disclosure 的控制按鈕。"
       />
     </div>
   )

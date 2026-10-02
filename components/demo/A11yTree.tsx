@@ -17,13 +17,11 @@ type A11yTreeProps = {
    * 的元件；長駐頁面的元件不要開。
    */
   latch?: boolean
-  /** 面板標題下方的補充說明。 */
-  hint?: string
   className?: string
 }
 
-export function A11yTree({ selector, latch = false, hint, className }: A11yTreeProps) {
+export function A11yTree({ selector, latch = false, className }: A11yTreeProps) {
   const { node, stale } = useA11yNode(selector, { latch })
 
-  return <A11yTreeView node={node} stale={stale} hint={hint} className={className} />
+  return <A11yTreeView node={node} stale={stale} className={className} />
 }

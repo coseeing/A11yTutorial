@@ -43,19 +43,13 @@ export function TabsDemo() {
         />
       </DemoStage>
 
-      <p className="typography-body2 m-0 text-teal-300">
-        用 Tab 移到分頁列，焦點落在作用中的那一個；左右方向鍵切換並立即顯示對應面板，Home
-        與 End 跳到兩端。上下鍵刻意不攔截，捲動頁面的能力要留給瀏覽器。
-      </p>
 
       <A11yTree
         selector="#tabs-demo [role='tab'][aria-selected='true']"
-        hint="觀察對象：目前作用中的分頁。切換分頁，這裡會跟著換。"
       />
 
       <A11yTree
         selector="#tabs-demo [role='tabpanel']:not([hidden])"
-        hint="觀察對象：目前顯示中的面板。它的名稱來自對應的分頁。"
       />
     </div>
   )

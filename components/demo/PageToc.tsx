@@ -11,11 +11,11 @@ export function PageToc({
 }) {
   return (
     <nav
-      aria-label="本頁目錄"
+      aria-label="目錄"
       className={cn("hidden w-[20rem] shrink-0 desktop:block", className)}
     >
       <div className="sticky top-32">
-        <p className="typography-strong2 m-0 mb-12 text-teal-300">本頁目錄</p>
+        <p className="typography-strong2 m-0 mb-12 text-teal-300">目錄</p>
         <ul className="m-0 flex list-none flex-col gap-8 p-0">
           {sections.map((section) => (
             <li key={section.id}>
