@@ -4,7 +4,7 @@ import { useA11yNode } from "@/lib/a11y/use-a11y-node"
 import { A11yTreeView } from "./A11yTreeView"
 
 // A11yTree — 這個站的核心面板：把一個 DOM 元素在無障礙樹中的樣貌攤開成
-// Role / Name / Status 三列，並隨互動即時更新，讓「螢幕閱讀器會怎麼描述這個
+// Role / Status / Name / Description 四列，並隨互動即時更新，讓「螢幕閱讀器會怎麼描述這個
 // 東西」變成看得見的東西。
 //
 // 這裡只做組合：觀察在 useA11yNode，呈現在 A11yTreeView。

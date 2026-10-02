@@ -2,7 +2,7 @@ import { useId } from "react"
 import { cn } from "@/lib/cn"
 import type { A11yNode } from "@/lib/a11y/compute-node"
 
-// A11yTreeView — Role / Name / Status 三列的呈現，不負責觀察。
+// A11yTreeView — Role / Status / Name / Description 四列的呈現，不負責觀察。
 //
 // 拆成純呈現之後，值可以來自即時觀察（useA11yNode）、保留下來的舊值，或是手寫
 // 的宣告值（用於尚未實作的元件頁、或與實際值並排對照）。面板長什麼樣子只有這裡

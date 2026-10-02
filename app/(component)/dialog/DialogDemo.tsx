@@ -9,8 +9,13 @@ import { DemoStage } from "@/components/demo/DemoStage"
 // DialogDemo — Dialog 的互動範例與其 Accessibility Tree。
 //
 // 兩者放在同一個 client 元件裡，是因為 A11yTree 要觀察的目標只有在對話框開啟時
-// 才存在於 DOM；擺在一起，讀者按下按鈕的同時就能看到三列數值從「不在無障礙樹中」
+// 才存在於 DOM；擺在一起，讀者按下按鈕的同時就能看到面板從「不在無障礙樹中」
 // 變成 dialog 與標題。
+// 中文散文一律寫成字串常數再以 {} 插入，不要直接當 JSX 子節點跨行書寫 ——
+// JSX 會把跨行的文字用一個空格接起來，中文句子中間就會多出空格。
+const HINT =
+  "按下按鈕的瞬間，面板會從「元素目前不在無障礙樹中」變成四列數值 —— 關閉的 <dialog> 還在 DOM 裡，但輔助科技看不到它。開啟後也試試 Tab 與 Shift + Tab：焦點只會在對話框內循環，不會跑到背景；按 Esc 關閉後，數值會保留下來供你對照。"
+
 export function DialogDemo() {
   const [open, setOpen] = useState(false)
 
@@ -20,9 +25,7 @@ export function DialogDemo() {
         <Button variant="small" theme="light" onClick={() => setOpen(true)}>
           開啟對話框
         </Button>
-        <p className="typography-body2 m-0 text-teal-300">
-          開啟後試試 Tab、Shift + Tab 與 Esc，下方的三列數值會跟著改變。關閉後數值會保留下來。
-        </p>
+        <p className="typography-body2 m-0 text-teal-300">{HINT}</p>
       </DemoStage>
 
       {/*
