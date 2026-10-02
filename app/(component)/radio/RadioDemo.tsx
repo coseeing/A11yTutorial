@@ -27,10 +27,12 @@ export function RadioDemo() {
 
       <A11yTree
         selector="#radio-demo fieldset"
+        hint="觀察對象：外層的單選群組。"
       />
 
       <A11yTree
         selector="#radio-demo input:checked"
+        hint="觀察對象：目前被選取的那一個選項。"
       />
     </div>
   )

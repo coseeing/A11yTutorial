@@ -16,6 +16,7 @@ export function DisclosureDemo() {
 
       <A11yTree
         selector="#disclosure-demo button"
+        hint="觀察對象：Disclosure 的控制按鈕。"
       />
     </div>
   )

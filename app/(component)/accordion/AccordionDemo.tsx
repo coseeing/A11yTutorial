@@ -37,6 +37,7 @@ export function AccordionDemo() {
 
       <A11yTree
         selector="#accordion-demo h3 button"
+        hint="觀察對象：第一個標題按鈕。"
       />
     </div>
   )

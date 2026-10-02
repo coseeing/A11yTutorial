@@ -14,6 +14,8 @@ type A11yTreeViewProps = {
   title?: string
   /** node 是保留下來的舊值，目標當下已不在無障礙樹中。 */
   stale?: boolean
+  /** 指認這個面板在觀察哪個元素。同一頁有多個面板時尤其必要。 */
+  hint?: React.ReactNode
   className?: string
 }
 
@@ -59,6 +61,7 @@ export function A11yTreeView({
   node,
   title = "Accessibility Tree",
   stale = false,
+  hint,
   className,
 }: A11yTreeViewProps) {
   const headingId = useId()
@@ -75,6 +78,7 @@ export function A11yTreeView({
       <p id={headingId} className="typography-strong1 m-0 text-teal-700">
         {title}
       </p>
+      {hint ? <p className="typography-body2 mt-4 text-teal-300">{hint}</p> : null}
 
       {/*
         舊值在畫面上與即時值完全一樣 —— 沒有提示文字，也不調淡。每一頁的面板長得

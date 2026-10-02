@@ -22,6 +22,7 @@ export function AlertDialogDemo() {
       <A11yTree
         latch
         selector="[role='alertdialog'][open]"
+        hint="觀察對象：開啟中的警示對話框。"
       />
 
       <AlertDialog

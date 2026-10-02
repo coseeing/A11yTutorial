@@ -21,6 +21,7 @@ export function TooltipDemo() {
       <A11yTree
         latch
         selector="#tooltip-demo button"
+        hint="觀察對象：觸發按鈕。"
       />
     </div>
   )

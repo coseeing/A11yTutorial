@@ -21,10 +21,12 @@ export function BreadcrumbDemo() {
 
       <A11yTree
         selector="#breadcrumb-demo [aria-current]"
+        hint="觀察對象：代表目前頁面的那個連結。"
       />
 
       <A11yTree
         selector="#breadcrumb-demo nav"
+        hint="觀察對象：外層的導覽地標。"
       />
     </div>
   )

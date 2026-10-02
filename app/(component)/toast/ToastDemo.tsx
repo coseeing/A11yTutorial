@@ -52,6 +52,7 @@ export function ToastDemo() {
 
       <A11yTree
         selector="#toast-demo [role='status']"
+        hint="觀察對象：live region 容器。"
       />
     </div>
   )

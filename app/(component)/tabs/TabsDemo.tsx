@@ -46,10 +46,12 @@ export function TabsDemo() {
 
       <A11yTree
         selector="#tabs-demo [role='tab'][aria-selected='true']"
+        hint="觀察對象：目前作用中的分頁。"
       />
 
       <A11yTree
         selector="#tabs-demo [role='tabpanel']:not([hidden])"
+        hint="觀察對象：目前顯示中的面板。"
       />
     </div>
   )

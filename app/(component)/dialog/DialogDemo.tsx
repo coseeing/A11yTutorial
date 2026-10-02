@@ -31,6 +31,7 @@ export function DialogDemo() {
       <A11yTree
         latch
         selector="dialog[open]"
+        hint="觀察對象：開啟中的對話框。"
       />
 
       <Dialog

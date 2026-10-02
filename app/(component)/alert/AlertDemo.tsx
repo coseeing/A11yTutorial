@@ -30,6 +30,7 @@ export function AlertDemo() {
 
       <A11yTree
         selector="#alert-demo [role='alert']"
+        hint="觀察對象：live region 容器。"
       />
     </div>
   )

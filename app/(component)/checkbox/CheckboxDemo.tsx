@@ -64,10 +64,12 @@ export function CheckboxDemo() {
 
       <A11yTree
         selector="#checkbox-demo-all input"
+        hint="觀察對象：「全部選取」這個三態核取方塊。"
       />
 
       <A11yTree
         selector="#checkbox-demo fieldset"
+        hint="觀察對象：外層的核取方塊群組。"
       />
     </div>
   )
