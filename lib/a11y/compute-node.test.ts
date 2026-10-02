@@ -76,52 +76,66 @@ describe("computeA11yNode", () => {
     expect(node!.name).toBe("")
   })
 
-  it("aria-expanded 轉成 expanded / collapsed", () => {
+  it("aria-expanded 原樣輸出屬性與值", () => {
     expect(computeA11yNode(mount('<button aria-expanded="true">更多</button>'))!.status)
-      .toContain("expanded")
+      .toEqual(["aria-expanded=true"])
     expect(computeA11yNode(mount('<button aria-expanded="false">更多</button>'))!.status)
-      .toContain("collapsed")
+      .toEqual(["aria-expanded=false"])
   })
 
   it("aria-checked 三態", () => {
-    expect(computeA11yNode(mount('<div role="checkbox" aria-checked="true"></div>'))!.status)
-      .toContain("checked")
-    expect(computeA11yNode(mount('<div role="checkbox" aria-checked="false"></div>'))!.status)
-      .toContain("unchecked")
-    expect(computeA11yNode(mount('<div role="checkbox" aria-checked="mixed"></div>'))!.status)
-      .toContain("mixed")
+    const checked = (v: string) =>
+      computeA11yNode(mount(`<div role="checkbox" aria-checked="${v}"></div>`))!.status
+    expect(checked("true")).toEqual(["aria-checked=true"])
+    expect(checked("false")).toEqual(["aria-checked=false"])
+    expect(checked("mixed")).toEqual(["aria-checked=mixed"])
   })
 
   it("aria-pressed 三態都輸出", () => {
     const pressed = (v: string) =>
       computeA11yNode(mount(`<button aria-pressed="${v}">靜音</button>`))!.status
-    expect(pressed("true")).toContain("pressed")
-    expect(pressed("false")).toContain("unpressed")
-    expect(pressed("mixed")).toContain("mixed")
+    expect(pressed("true")).toEqual(["aria-pressed=true"])
+    expect(pressed("false")).toEqual(["aria-pressed=false"])
+    expect(pressed("mixed")).toEqual(["aria-pressed=mixed"])
     // 不是 toggle 的按鈕不該有這些
     expect(computeA11yNode(mount("<button>送出</button>"))!.status).toEqual([])
   })
 
-  it("原生 disabled 與 aria-disabled 都算 disabled，且不重複", () => {
-    const node = computeA11yNode(mount('<button disabled aria-disabled="true">送出</button>'))
-    expect(node!.status.filter((s) => s === "disabled")).toHaveLength(1)
+  // 同一個狀態只輸出一次，而且顯示實際存在的那個屬性。
+  it("停用狀態以實際存在的屬性呈現，不重複輸出", () => {
+    expect(computeA11yNode(mount("<button disabled>送出</button>"))!.status)
+      .toEqual(["disabled=true"])
+    expect(computeA11yNode(mount('<button aria-disabled="true">送出</button>'))!.status)
+      .toEqual(["aria-disabled=true"])
+    // 兩個都在時以 ARIA 為準，只輸出一項
+    expect(computeA11yNode(mount('<button disabled aria-disabled="true">送出</button>'))!.status)
+      .toEqual(["aria-disabled=true"])
   })
 
-  it("原生 checkbox 的 checked 狀態", () => {
+  // 原生 checkbox 沒有 aria-checked —— 勾選狀態在 property 上，瀏覽器直接把它
+  // 映射進無障礙樹。寫一個 DOM 上不存在的 aria-checked 會誤導讀者。
+  it("原生 checkbox 顯示 checked 而不是 aria-checked", () => {
     const input = mount('<input type="checkbox" aria-label="同意">') as HTMLInputElement
-    expect(computeA11yNode(input)!.status).toContain("unchecked")
+    expect(computeA11yNode(input)!.status).toEqual(["checked=false"])
     input.checked = true
-    expect(computeA11yNode(input)!.status).toContain("checked")
+    expect(computeA11yNode(input)!.status).toEqual(["checked=true"])
+    input.indeterminate = true
+    expect(computeA11yNode(input)!.status).toEqual(["indeterminate=true"])
+  })
+
+  it("原生 checkbox 若明寫 aria-checked，以它為準", () => {
+    const input = mount('<input type="checkbox" aria-checked="mixed" aria-label="全選">')
+    expect(computeA11yNode(input)!.status).toEqual(["aria-checked=mixed"])
   })
 
   it("aria-current 帶出其值", () => {
     const node = computeA11yNode(mount('<a href="/x" aria-current="page">目前</a>'))
-    expect(node!.status).toContain("current=page")
+    expect(node!.status).toEqual(["aria-current=page"])
   })
 
   it("aria-current=false 不算狀態", () => {
     const node = computeA11yNode(mount('<a href="/x" aria-current="false">其他</a>'))
-    expect(node!.status).not.toContain("current=false")
+    expect(node!.status).toEqual([])
   })
 
   // open 與 modal 都不收：螢幕閱讀器開關對話框時兩個都不會唸出來。
@@ -144,6 +158,7 @@ describe("computeA11yNode", () => {
   it("狀態順序穩定，不隨屬性書寫順序改變", () => {
     const a = computeA11yNode(mount('<button aria-disabled="true" aria-expanded="true">A</button>'))
     const b = computeA11yNode(mount('<button aria-expanded="true" aria-disabled="true">B</button>'))
-    expect(a!.status).toEqual(b!.status)
+    expect(a!.status).toEqual(["aria-expanded=true", "aria-disabled=true"])
+    expect(b!.status).toEqual(a!.status)
   })
 })

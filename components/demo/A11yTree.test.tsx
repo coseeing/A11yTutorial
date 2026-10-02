@@ -48,14 +48,16 @@ describe("A11yTree", () => {
     const user = userEvent.setup()
     render(<Harness />)
 
-    expect(await screen.findByTestId("a11y-tree-status")).toHaveTextContent("collapsed")
+    expect(await screen.findByTestId("a11y-tree-status")).toHaveTextContent(
+      "aria-expanded=false",
+    )
 
     await user.click(screen.getByRole("button", { name: "更多選項" }))
 
     // 用 waitFor 而非 findBy：目標元素一直都在，要等的是它的「內容」改變，
     // findBy 在元素已存在時會立刻回傳舊值。
     await waitFor(() => {
-      expect(screen.getByTestId("a11y-tree-status")).toHaveTextContent("expanded")
+      expect(screen.getByTestId("a11y-tree-status")).toHaveTextContent("aria-expanded=true")
     })
   })
 
@@ -153,7 +155,7 @@ describe("A11yTree", () => {
   // 它的面板就比其他九頁都淡一階，看起來像壞掉。差異只有肉眼看得出來，所以在
   // 這裡比對兩種狀態渲染出的 class。
   it("舊值與即時值的樣式完全相同", () => {
-    const node = { role: "dialog", name: "刪除這筆紀錄？", description: "", status: ["expanded"] }
+    const node = { role: "dialog", name: "刪除這筆紀錄？", description: "", status: ["aria-expanded=true"] }
 
     const live = render(<A11yTreeView node={node} />)
     const liveClasses = [...live.container.querySelectorAll("dt, dd")].map((el) => el.className)

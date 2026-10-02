@@ -16,7 +16,8 @@ export type A11yNode = {
    */
   description: string
   /**
-   * 目前的狀態，例如 ["expanded"]。順序固定，見 STATUS_ORDER。
+   * 目前的狀態，每一項是「屬性=值」，例如 ["aria-expanded=false"]。
+   * 順序固定，見 STATUS_ORDER。
    *
    * 收錄的判準是「螢幕閱讀器會不會連同角色與名稱一起把它唸出來」，不是 ARIA
    * 規範的 state / property 分類。所以 required 與 readonly 留著 —— ARIA 把
@@ -33,23 +34,79 @@ export type A11yNode = {
   status: string[]
 }
 
-// 狀態的輸出順序固定成這一份清單的順序，而不是屬性在 DOM 上的書寫順序 —
+// 狀態的輸出順序固定成這一份清單的順序，而不是屬性在 DOM 上的書寫順序 ——
 // 否則同一個元件在不同頁面會顯示出不同排列，讀者會以為那是有意義的差別。
 const STATUS_ORDER = [
   "expanded",
-  "collapsed",
   "checked",
-  "unchecked",
-  "mixed",
   "selected",
   "pressed",
-  "unpressed",
   "disabled",
   "readonly",
   "required",
   "invalid",
   "busy",
+  "current",
 ] as const
+
+type StatusKey = (typeof STATUS_ORDER)[number]
+
+/**
+ * 每個狀態輸出成「屬性=值」，例如 aria-expanded=false。
+ *
+ * 屬性名用的是「DOM 上真的找得到的那一個」。原生元素的勾選與停用狀態沒有對應的
+ * aria-* 屬性，瀏覽器直接把原生屬性映射進無障礙樹 —— 這種情況就寫 checked=true、
+ * disabled=true，而不是憑空寫一個 DOM 上不存在的 aria-checked。
+ *
+ * 值用的是真實值：true / false / mixed / page，不是 expanded、collapsed 這類
+ * 無障礙樹的狀態名。那些名字是螢幕閱讀器播報用的，不是屬性的值。
+ */
+function collectStatus(el: Element): string[] {
+  const found = new Map<StatusKey, string>()
+  const attr = (name: string) => el.getAttribute(name)
+
+  /** ARIA 屬性存在且值在允許範圍內時收錄。 */
+  const fromAria = (key: StatusKey, name: string, allowed: readonly string[]) => {
+    const value = attr(name)
+    if (value !== null && allowed.includes(value)) found.set(key, `${name}=${value}`)
+  }
+
+  fromAria("expanded", "aria-expanded", ["true", "false"])
+  fromAria("checked", "aria-checked", ["true", "false", "mixed"])
+  fromAria("selected", "aria-selected", ["true"])
+  fromAria("pressed", "aria-pressed", ["true", "false", "mixed"])
+
+  // 原生 checkbox / radio：勾選狀態在 property 上，而且沒有 aria-checked。
+  // 只在作者沒有明寫 aria-checked 時才用它，明寫的優先。
+  if (
+    el instanceof HTMLInputElement &&
+    (el.type === "checkbox" || el.type === "radio") &&
+    !found.has("checked")
+  ) {
+    found.set("checked", el.indeterminate ? "indeterminate=true" : `checked=${el.checked}`)
+  }
+
+  // 停用、唯讀、必填：原生屬性與 ARIA 屬性都算，以實際存在的那一個為準。
+  if (attr("aria-disabled") === "true") found.set("disabled", "aria-disabled=true")
+  else if (el.hasAttribute("disabled")) found.set("disabled", "disabled=true")
+
+  if (attr("aria-readonly") === "true") found.set("readonly", "aria-readonly=true")
+  else if (el.hasAttribute("readonly")) found.set("readonly", "readonly=true")
+
+  if (attr("aria-required") === "true") found.set("required", "aria-required=true")
+  else if (el.hasAttribute("required")) found.set("required", "required=true")
+
+  const invalid = attr("aria-invalid")
+  if (invalid && invalid !== "false") found.set("invalid", `aria-invalid=${invalid}`)
+
+  if (attr("aria-busy") === "true") found.set("busy", "aria-busy=true")
+
+  // aria-current 的值本身有意義（page / step / date…），原樣輸出。
+  const current = attr("aria-current")
+  if (current && current !== "false") found.set("current", `aria-current=${current}`)
+
+  return STATUS_ORDER.filter((key) => found.has(key)).map((key) => found.get(key)!)
+}
 
 function resolveRole(el: Element): string {
   const explicit = (el.getAttribute("role") ?? "").trim()
@@ -59,54 +116,6 @@ function resolveRole(el: Element): string {
     if (first) return first
   }
   return implicitRole(el)
-}
-
-function collectStatus(el: Element): string[] {
-  const found = new Set<string>()
-  const attr = (name: string) => el.getAttribute(name)
-
-  const expanded = attr("aria-expanded")
-  if (expanded === "true") found.add("expanded")
-  if (expanded === "false") found.add("collapsed")
-
-  const checked = attr("aria-checked")
-  if (checked === "true") found.add("checked")
-  if (checked === "false") found.add("unchecked")
-  if (checked === "mixed") found.add("mixed")
-
-  // 原生 checkbox / radio 的勾選狀態不在屬性上，要讀 property。
-  if (el instanceof HTMLInputElement && (el.type === "checkbox" || el.type === "radio")) {
-    if (el.indeterminate) found.add("mixed")
-    else found.add(el.checked ? "checked" : "unchecked")
-  }
-
-  if (attr("aria-selected") === "true") found.add("selected")
-
-  // 三態都要輸出。只在 true 時出現會讓「這是一顆 toggle、目前沒按下」與
-  // 「這根本不是 toggle」在面板上長得一模一樣。
-  const pressed = attr("aria-pressed")
-  if (pressed === "true") found.add("pressed")
-  if (pressed === "false") found.add("unpressed")
-  if (pressed === "mixed") found.add("mixed")
-
-  if (el.hasAttribute("disabled") || attr("aria-disabled") === "true") found.add("disabled")
-  if (el.hasAttribute("readonly") || attr("aria-readonly") === "true") found.add("readonly")
-  if (el.hasAttribute("required") || attr("aria-required") === "true") found.add("required")
-
-  const invalid = attr("aria-invalid")
-  if (invalid && invalid !== "false") found.add("invalid")
-
-  if (attr("aria-busy") === "true") found.add("busy")
-
-  const ordered = STATUS_ORDER.filter((s) => found.has(s)) as string[]
-
-  // aria-current 的值本身有意義（page / step / date…），所以帶值輸出，排在最後。
-  const current = attr("aria-current")
-  if (current && current !== "false") {
-    ordered.push(`current=${current === "true" ? "true" : current}`)
-  }
-
-  return ordered
 }
 
 function isInAccessibilityTree(el: Element): boolean {

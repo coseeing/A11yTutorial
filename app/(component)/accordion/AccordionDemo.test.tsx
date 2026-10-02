@@ -17,16 +17,16 @@ describe("AccordionDemo", () => {
     )
   })
 
-  it("展開後 Status 由 collapsed 變成 expanded", async () => {
+  it("展開後 Status 由 aria-expanded=false 變成 true", async () => {
     const user = userEvent.setup()
     render(<AccordionDemo />)
 
-    expect(await screen.findByTestId("a11y-tree-status")).toHaveTextContent("collapsed")
+    expect(await screen.findByTestId("a11y-tree-status")).toHaveTextContent("aria-expanded=false")
 
     await user.click(screen.getByRole("button", { name: "什麼是無障礙設計？" }))
 
     await waitFor(() => {
-      expect(screen.getByTestId("a11y-tree-status")).toHaveTextContent("expanded")
+      expect(screen.getByTestId("a11y-tree-status")).toHaveTextContent("aria-expanded=true")
     })
   })
 })
