@@ -44,6 +44,12 @@ export function TabsDemo() {
       </DemoStage>
 
 
+      {/* 三個面板對應 Tabs 的三個角色，由外而內：tablist → tab → tabpanel。 */}
+      <A11yTree
+        selector="#tabs-demo [role='tablist']"
+        hint="觀察對象：外層的分頁列。"
+      />
+
       <A11yTree
         selector="#tabs-demo [role='tab'][aria-selected='true']"
         hint="觀察對象：目前作用中的分頁。"
