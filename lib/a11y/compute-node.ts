@@ -7,6 +7,14 @@ import { implicitRole } from "./implicit-roles"
 export type A11yNode = {
   /** ARIA role，明寫的 role 屬性優先，否則由 tagName 推導。 */
   role: string
+  /**
+   * aria-roledescription 的值；沒有時為空字串。
+   *
+   * 這個屬性不改變角色，但螢幕閱讀器會唸它「取代」角色名 —— 標了
+   * aria-roledescription="carousel" 的 group，NVDA 唸出來是「carousel」而不是
+   * 「群組」。面板上兩個都顯示，讀者才看得出播報的字與底層角色是兩回事。
+   */
+  roleDescription: string
   /** Accessible name，依 accname 規範計算；沒有名稱時為空字串。 */
   name: string
   /**
@@ -137,6 +145,7 @@ export function computeA11yNode(el: Element | null | undefined): A11yNode | null
 
   return {
     role: resolveRole(el),
+    roleDescription: (el.getAttribute("aria-roledescription") ?? "").trim(),
     name: computeAccessibleName(el),
     description: computeAccessibleDescription(el),
     status: collectStatus(el),

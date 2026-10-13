@@ -112,7 +112,24 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "carousel",
     name: "Carousel",
     summary: "輪播一組幻燈片，自動輪播必須可暫停，切換需支援鍵盤。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-CAR-001", // 容器用 group 而非 region — ARIA 屬性表、Accessibility Tree
+      "APG-CAR-002", // aria-roledescription=carousel — ARIA 屬性表、Accessibility Tree 的 Role 列
+      "APG-CAR-003", // 容器具無障礙名稱且不含「輪播」 — ARIA 屬性表、Accessibility Tree
+      "APG-CAR-004", // 上下張控制為原生 button — ARIA 屬性表、鍵盤操作表
+      "APG-CAR-006", // 播放控制名稱隨動作改變且不用 aria-pressed — ARIA 屬性表
+      "APG-CAR-011", // 投影片為 group 加 aria-roledescription=slide — Accessibility Tree 第二個面板
+      "APG-CAR-012", // 投影片具辨識性名稱 — Accessibility Tree 第二個面板
+      "APG-CAR-013", // aria-live 隨播放狀態切換且 aria-atomic=false — ARIA 屬性表
+      "APG-CAR-014", // Tab 型投影片用 tabpanel 且不加角色描述 — 第二個 demo、Accessibility Tree
+      "APG-CAR-015", // 每個 tab 指出它顯示哪一張 — 第二個 demo、Accessibility Tree
+      "APG-CAR-016", // tablist 的 aria-label 說明用途 — ARIA 屬性表、第二個 demo
+      "APG-CAR-018", // 群組式選取器置於具名 group 內 — ARIA 屬性表
+      "APG-CAR-019", // 群組式選取控制為原生 button — ARIA 屬性表
+      "APG-CAR-020", // 選取按鈕名稱與對應投影片相符 — Accessibility Tree 第三個面板
+      "APG-CAR-021", // 目前那張的選取按鈕標 aria-disabled 且留在 Tab 順序 — Accessibility Tree 第三個面板
+    ],
   },
   {
     slug: "checkbox",
@@ -131,7 +148,20 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "combobox",
     name: "Combobox",
     summary: "文字輸入搭配彈出清單的複合控制項，焦點留在輸入框內。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-CBX-016", // Grid 型彈出內容的選取範圍 — ARIA 屬性表 aria-selected
+      "APG-CBX-021", // Tree 型彈出內容區分焦點與選取 — ARIA 屬性表 aria-selected
+      "APG-CBX-024", // 對話框型彈出內容符合 Modal Dialog Pattern — 第二個 demo、鍵盤操作表
+      "APG-CBX-025", // 確定與取消後焦點移回並正確處理值 — 第二個 demo、鍵盤操作表 Esc
+      "APG-CBX-026", // 輸入元件具 combobox 角色 — ARIA 屬性表、Accessibility Tree
+      "APG-CBX-030", // aria-haspopup 與彈出內容類型一致 — ARIA 屬性表、兩個 demo 對照
+      "APG-CBX-031", // aria-expanded 反映彈出狀態 — ARIA 屬性表、Accessibility Tree
+      "APG-CBX-034", // 名稱來自 label 且與目前值可區分 — ARIA 屬性表、Accessibility Tree
+      "APG-CBX-035", // aria-autocomplete 與實際行為一致 — ARIA 屬性表
+      "APG-CBX-036", // 自動選取的建議值在失焦時成為值 — 鍵盤操作表 Tab、Accessibility Tree 第三個面板
+      "APG-CBX-037", // 行內完成字串以反白與選取呈現 — ARIA 屬性表 aria-autocomplete=both
+    ],
   },
   {
     slug: "dialog",
@@ -163,31 +193,74 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "feed",
     name: "Feed",
     summary: "可無限捲動的文章串流，讓螢幕閱讀器能逐篇瀏覽而不迷失位置。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-FED-009", // feed 具無障礙名稱 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-FED-010", // 所有內容位於 role=article 內 — ARIA 屬性表、Accessibility Tree 第二個面板
+      "APG-FED-011", // 每篇文章具可區分的名稱 — ARIA 屬性表、Accessibility Tree 第二個面板
+      "APG-FED-012", // 文章以 aria-describedby 指向主要內容 — ARIA 屬性表、Accessibility Tree
+      "APG-FED-015", // aria-busy 反映動態更新 — Demo 的載入更多、Accessibility Tree 第一個面板
+    ],
   },
   {
     slug: "grid",
     name: "Grid",
     summary: "以方向鍵在儲存格之間移動的互動式表格，整體只佔一個 Tab 停留點。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-GRID-018", // 容器具 grid 角色 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-GRID-021", // grid 具無障礙名稱 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-GRID-022", // grid 具補充說明 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-GRID-024", // 選取狀態以 aria-selected 呈現 — Accessibility Tree 第三個面板
+      "APG-GRID-025", // 無編輯功能時不使用 aria-readonly — ARIA 屬性表
+    ],
   },
   {
     slug: "landmark-regions",
     name: "Landmark Regions",
     summary: "以地標角色劃分頁面區塊，讓使用者能直接跳到主要內容或導覽。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-LMK-006", // 名稱有意義且不重複角色名 — ARIA 屬性表、Accessibility Tree 各面板
+      "APG-LMK-007", // main 位於最高層級且數量適當 — ARIA 屬性表、Accessibility Tree 第三個面板
+      "APG-LMK-008", // 多個 main 須有可區分名稱 — ARIA 屬性表
+      "APG-LMK-009", // banner 位於最高層級且數量適當 — ARIA 屬性表、第一與第四個面板對照
+      "APG-LMK-010", // 多個 banner 須有可區分名稱 — ARIA 屬性表
+      "APG-LMK-011", // contentinfo 位於最高層級且數量適當 — ARIA 屬性表、第九個面板
+      "APG-LMK-012", // 多個 contentinfo 須有可區分名稱 — ARIA 屬性表
+      "APG-LMK-013", // complementary 用於相關的輔助內容 — ARIA 屬性表 <aside>
+      "APG-LMK-014", // form 地標具識別用途的名稱 — Demo 的訂閱表單、第六個面板
+      "APG-LMK-015", // form 地標用於整份表單而非欄位 — ARIA 屬性表、Demo 的訂閱表單
+      "APG-LMK-016", // 導覽地標標籤保持一致 — ARIA 屬性表 <nav>、第二個面板
+      "APG-LMK-017", // region 具無障礙名稱 — Demo 的具名與未具名 section 對照
+      "APG-LMK-018", // 搜尋功能使用搜尋地標 — Demo 的 <search>、第五個面板
+      "APG-LMK-019", // 頁面層級 header/footer 揭露地標 — 第一與第四個面板對照
+      "APG-LMK-020", // 用於 region 的 section 具名稱 — 第七與第八個面板對照
+    ],
   },
   {
     slug: "link",
     name: "Link",
     summary: "導向其他資源的連結，名稱本身就要說明目的地。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-LINK-001", // 具連結角色語意 — ARIA 屬性表、Accessibility Tree 三個面板對照
+      "APG-LINK-002", // Enter 啟動並跳至目標 — 鍵盤操作表
+    ],
   },
   {
     slug: "listbox",
     name: "Listbox",
     summary: "從清單中選取一個或多個選項，以方向鍵移動選取焦點。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-LBX-015", // 容器具 listbox 角色 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-LBX-016", // 選項具 option 角色並正確隸屬 — ARIA 屬性表、Accessibility Tree 第三個面板
+      "APG-LBX-017", // 每個群組至少一個選項 — ARIA 屬性表、Demo 的兩個群組
+      "APG-LBX-018", // 群組具無障礙名稱 — ARIA 屬性表、Accessibility Tree 第二個面板
+      "APG-LBX-019", // 獨立 listbox 具無障礙名稱 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-LBX-021", // 選取狀態一致使用 aria-selected — ARIA 屬性表、Accessibility Tree 第三個面板
+    ],
   },
   {
     slug: "radio",
@@ -214,13 +287,25 @@ export const COMPONENTS: ComponentEntry[] = [
     slug: "switch",
     name: "Switch",
     summary: "立即生效的開關，狀態是開或關，而非待送出的勾選。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-SWT-004", // 計算角色為 switch — ARIA 屬性表、Accessibility Tree 第二個面板
+      "APG-SWT-005", // 開關具無障礙名稱 — ARIA 屬性表、Accessibility Tree 第二個面板
+      "APG-SWT-006", // 正確呈現開啟與關閉狀態 — ARIA 屬性表、Accessibility Tree 的 Status 列
+      "APG-SWT-007", // 開關群組具無障礙名稱 — ARIA 屬性表 fieldset/legend、第一個面板
+      "APG-SWT-008", // 開關或群組具補充說明 — ARIA 屬性表、第一個面板的 Description 列
+    ],
   },
   {
     slug: "table",
     name: "Table",
     summary: "呈現表格資料的靜態表格，儲存格需與正確的標頭產生關聯。",
-    status: "planned",
+    status: "done",
+    coveredRules: [
+      "APG-TBL-003", // 容器具 table 角色 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-TBL-006", // 表格具無障礙名稱 — ARIA 屬性表、Accessibility Tree 第一個面板
+      "APG-TBL-007", // 表格具補充說明 — ARIA 屬性表、第一個面板的 Description 列
+    ],
   },
   {
     slug: "tabs",
@@ -250,8 +335,9 @@ export const COMPONENTS: ComponentEntry[] = [
 /**
  * 對外顯示的元件 —— 只有已完成的。
  *
- * 尚未動工的仍留在 COMPONENTS 裡，那是這個站的交付範圍紀錄；但首頁不列它們，
- * 因為那些路由還不存在，點進去是 404。
+ * 目前 21 筆全部完成，所以這個函式等於回傳整份清單。它仍然存在，是因為首頁不該
+ * 列出路由還不存在的元件 —— 點進去是 404 的入口比沒有入口更糟。日後新增元件時
+ * 先進 registry、頁面還沒建好的那段期間，這一層就是防線。
  */
 export function publishedComponents(): ComponentEntry[] {
   return COMPONENTS.filter((c) => c.status === "done")

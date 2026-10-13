@@ -4,8 +4,8 @@ import { appPath } from "@/lib/app-path"
 import { publishedComponents } from "@/lib/components-registry"
 
 export default function HomePage() {
-  // 只列出已完成的元件。尚未動工的仍留在 registry 裡作為範圍紀錄，但不對外顯示 ——
-  // 點進去是 404 的入口比沒有入口更糟。
+  // 只列出已完成的元件。21 個目前全部完成，但這一層保留著：新增元件時若先進了
+  // registry、頁面還沒建好，列出去就是一個 404 的入口。
   const components = publishedComponents()
 
   return (

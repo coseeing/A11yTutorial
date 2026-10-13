@@ -155,7 +155,13 @@ describe("A11yTree", () => {
   // 它的面板就比其他九頁都淡一階，看起來像壞掉。差異只有肉眼看得出來，所以在
   // 這裡比對兩種狀態渲染出的 class。
   it("舊值與即時值的樣式完全相同", () => {
-    const node = { role: "dialog", name: "刪除這筆紀錄？", description: "", status: ["aria-expanded=true"] }
+    const node = {
+      role: "dialog",
+      roleDescription: "",
+      name: "刪除這筆紀錄？",
+      description: "",
+      status: ["aria-expanded=true"],
+    }
 
     const live = render(<A11yTreeView node={node} />)
     const liveClasses = [...live.container.querySelectorAll("dt, dd")].map((el) => el.className)

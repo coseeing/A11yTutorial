@@ -19,14 +19,20 @@ export function BreadcrumbDemo() {
       </DemoStage>
 
 
-      <A11yTree
-        selector="#breadcrumb-demo [aria-current]"
-        hint="觀察對象：代表目前頁面的那個連結。"
-      />
-
+      {/* 三個面板由外而內：導覽地標 → 路徑清單 → 代表目前頁面的那一項。 */}
       <A11yTree
         selector="#breadcrumb-demo nav"
         hint="觀察對象：外層的導覽地標。"
+      />
+
+      <A11yTree
+        selector="#breadcrumb-demo ol"
+        hint="觀察對象：路徑本身的清單。"
+      />
+
+      <A11yTree
+        selector="#breadcrumb-demo [aria-current]"
+        hint="觀察對象：代表目前頁面的那個連結。"
       />
     </div>
   )

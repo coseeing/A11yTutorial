@@ -20,7 +20,16 @@ export default function RootLayout({
         >
           跳到主要內容
         </a>
-        <SiteNav />
+        {/*
+          SiteNav 包在 <header> 裡，整站才有 banner 地標。
+          <header> 必須直接位於 body 情境下 —— 包進 main、section、article 之後
+          它就只是個普通容器，不再是 banner。/landmark-regions 那一頁把這件事
+          攤在面板上：PageHeader 也是 <header>，但它在 main 裡面，算出來的角色
+          是 generic。
+        */}
+        <header>
+          <SiteNav />
+        </header>
         <main id="main" className="flex-1">
           {children}
         </main>

@@ -36,6 +36,20 @@ describe("computeA11yNode", () => {
     expect(node!.name).toBe("設定")
   })
 
+  // aria-roledescription 不改角色，只換掉螢幕閱讀器唸出來的那個字。
+  // 兩者分成不同欄位，頁面才能同時顯示「唸什麼」和「底層是什麼」。
+  it("aria-roledescription 與 role 分開記錄", () => {
+    const node = computeA11yNode(
+      mount('<div role="group" aria-roledescription="carousel" aria-label="秋季活動"></div>'),
+    )
+    expect(node!.role).toBe("group")
+    expect(node!.roleDescription).toBe("carousel")
+  })
+
+  it("沒有 aria-roledescription 時 roleDescription 為空字串", () => {
+    expect(computeA11yNode(mount("<button>送出</button>"))!.roleDescription).toBe("")
+  })
+
   it("明寫的 role 優先於 implicit role", () => {
     const node = computeA11yNode(mount('<div role="alert">錯誤</div>'))
     expect(node!.role).toBe("alert")

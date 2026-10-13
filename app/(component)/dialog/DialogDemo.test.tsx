@@ -2,21 +2,9 @@ import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { beforeAll, describe, expect, it } from "vitest"
 import { DialogDemo } from "./DialogDemo"
+import { stubNativeDialog } from "@/lib/test/dialog-stub"
 
-// jsdom 尚未實作 <dialog> 的 showModal / close，補上足以驗證開關狀態的替身。
-beforeAll(() => {
-  if (!HTMLDialogElement.prototype.showModal) {
-    HTMLDialogElement.prototype.showModal = function showModal(this: HTMLDialogElement) {
-      this.open = true
-    }
-  }
-  if (!HTMLDialogElement.prototype.close) {
-    HTMLDialogElement.prototype.close = function close(this: HTMLDialogElement) {
-      this.open = false
-      this.dispatchEvent(new Event("close"))
-    }
-  }
-})
+beforeAll(stubNativeDialog)
 
 describe("DialogDemo", () => {
   it("初始狀態下對話框未開啟", () => {

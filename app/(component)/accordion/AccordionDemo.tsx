@@ -6,8 +6,11 @@ import { DemoStage } from "@/components/demo/DemoStage"
 
 // AccordionDemo — Accordion 的互動範例與其 Accessibility Tree。
 //
-// 觀察對象固定在第一個標題按鈕：Accordion 的每個標題都是同構的，盯著其中一個
-// 就看得完整；三個一起觀察只會讓讀者不確定數字對應的是哪一個。
+// 觀察對象固定在第一組：Accordion 的每一題都是同構的，盯著其中一組就看得完整；
+// 三組一起觀察只會讓讀者不確定數字對應的是哪一題。
+//
+// 第一題預設展開，面板才會從第一眼就在無障礙樹裡 —— 收合中的面板帶著 hidden，
+// 整個不在樹上，面板那一列會是空狀態。按一下標題就能看到它消失與回來。
 
 const ITEMS = [
   {
@@ -31,13 +34,15 @@ export function AccordionDemo() {
   return (
     <div className="flex flex-col gap-24">
       <DemoStage id="accordion-demo" className="flex-col items-stretch">
-        <Accordion items={ITEMS} className="w-full" />
+        <Accordion items={ITEMS} defaultExpanded={[0]} className="w-full" />
       </DemoStage>
 
+      {/* 兩個面板對應 Accordion 的一組標題與它控制的內容：標題按鈕 → region。 */}
+      <A11yTree selector="#accordion-demo h3 button" hint="觀察對象：第一個標題按鈕。" />
 
       <A11yTree
-        selector="#accordion-demo h3 button"
-        hint="觀察對象：第一個標題按鈕。"
+        selector="#accordion-demo [role='region']:not([hidden])"
+        hint="觀察對象：展開中的面板。"
       />
     </div>
   )
