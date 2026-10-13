@@ -134,7 +134,12 @@ export function A11yTreeView({
 }
 
 function formatValue(key: Row["key"], node: A11yNode): string {
-  if (key === "role") return node.role
+  // 有 aria-roledescription 時，螢幕閱讀器唸的是它而不是角色名。兩個一起顯示，
+  // 讀者才看得出「播報出來的字」與「底層角色」是兩回事 —— 角色決定輔助科技怎麼
+  // 操作這個元素，角色描述只換掉唸法。
+  if (key === "role") {
+    return node.roleDescription ? `${node.roleDescription}（${node.role}）` : node.role
+  }
   // 空字串在等寬字裡看起來像壞掉，所以明講「（無）」。
   if (key === "name") return node.name || "（無 accessible name）"
   // 四列一律顯示。沒有值時明講「（無）」而不是把整列藏起來 —— 讀者要看見的正是

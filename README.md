@@ -69,7 +69,8 @@ pkill -f "next dev" && npm run dev
 
 面板拆成三層，各自只做一件事：
 
-- `lib/a11y/use-a11y-node.ts` — 觀察。持續算出目標元素的 `{ role, name, status }`
+- `lib/a11y/use-a11y-node.ts` — 觀察。持續算出目標元素的
+  `{ role, roleDescription, name, description, status }`
 - `components/demo/A11yTreeView.tsx` — 呈現。純函式，吃一個 `A11yNode | null`
 - `components/demo/A11yTree.tsx` — 組合上面兩者
 
@@ -78,11 +79,15 @@ pkill -f "next dev" && npm run dev
 
 值本身這樣算出來：
 
-- Role 由 `lib/a11y/implicit-roles.ts` 推導（明寫的 `role` 屬性優先）
+- Role 由 `lib/a11y/implicit-roles.ts` 推導（明寫的 `role` 屬性優先）。
+  有 `aria-roledescription` 時一併顯示成 `carousel（group）`：前者是螢幕閱讀器
+  唸出來的字，後者是決定輔助科技怎麼操作它的角色
 - Name 由 `dom-accessibility-api` 依 accname 規範計算
-- Description 同樣由 `dom-accessibility-api` 計算，通常來自 `aria-describedby`。
-  面板只在真的有描述時才顯示這一列
-- Status 收集 `aria-expanded`、`aria-checked` 等狀態屬性，順序固定
+- Description 同樣由 `dom-accessibility-api` 計算，通常來自 `aria-describedby`
+- Status 收集 `aria-expanded`、`aria-checked` 等會隨操作改變的屬性，
+  每一項寫成「屬性=值」，順序固定
+- 四列一律顯示。沒有值時明講「（無）」而不是把整列藏起來 —— 讀者要看見的
+  正是「這個元件有名稱但沒有描述」這件事，消失的列說不出這句話
 - 以 `MutationObserver` 加事件監聽重算，互動時即時更新
 
 用 selector 而非 ref，是因為目標元素可能在關閉時整個離開 DOM。

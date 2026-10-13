@@ -19,6 +19,25 @@ type CarouselControlsProps = {
   activeIndex?: number
   /** id of the carousel element these controls operate — wired to aria-controls. */
   controlsId?: string
+  /**
+   * 每顆圓點的無障礙名稱，依序對應各張投影片。省略時退回位置式的「第 N 張」。
+   *
+   * APG 要求選取按鈕的名稱與它所顯示的投影片相符；位置式名稱只在投影片本身
+   * 給不出獨特名稱時才夠用。
+   */
+  dotLabels?: string[]
+  /**
+   * 是否顯示圓點選取器。Tab 型輪播已有 tablist 當選取器，再放一排圓點等於同一
+   * 件事有兩個入口，使用者分不出差別。
+   */
+  showDots?: boolean
+  /**
+   * 目前顯示中那一張的圓點標上 aria-disabled 而非 aria-current。
+   *
+   * 群組式選取器用這一種：按下去不會有任何變化，所以 APG 要求標成 disabled，
+   * 但它仍須留在 Tab 順序裡 —— 使用者得走得過去才知道自己在第幾張。
+   */
+  markActiveDotDisabled?: boolean
   onPrev?: () => void
   onNext?: () => void
   onPlayToggle?: () => void
@@ -48,6 +67,9 @@ export function CarouselControls({
   count = 5,
   activeIndex = 0,
   controlsId,
+  dotLabels,
+  showDots = true,
+  markActiveDotDisabled = false,
   onPrev,
   onNext,
   onPlayToggle,
@@ -68,24 +90,36 @@ export function CarouselControls({
           <ArrowLeftIcon className="h-[1.7rem] w-[4.4rem]" />
         </button>
         {/* Plain buttons in a named group (not tabs — there are no tabpanels
-            here); the active dot is exposed via aria-current. */}
-        <div className="flex items-center gap-8" role="group" aria-label="選擇輪播頁">
-          {Array.from({ length: count }, (_, i) => (
-            <button
-              key={i}
-              type="button"
-              aria-label={`第 ${i + 1} 張`}
-              aria-current={i === activeIndex || undefined}
-              aria-controls={controlsId}
-              onClick={onDotSelect ? () => onDotSelect(i) : undefined}
-              className={cn(
-                controlBase,
-                "size-12 rounded-full",
-                i === activeIndex ? t.dotActive : t.dot,
-              )}
-            />
-          ))}
-        </div>
+            here). The group's name says what these controls do; the active dot
+            is exposed via aria-current, or via aria-disabled when the caller
+            asks for the APG grouped-selector treatment. */}
+        {showDots ? (
+          <div className="flex items-center gap-8" role="group" aria-label="選擇輪播頁">
+            {Array.from({ length: count }, (_, i) => {
+              const isActive = i === activeIndex
+              const isLocked = markActiveDotDisabled && isActive
+              return (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={dotLabels?.[i] ?? `第 ${i + 1} 張`}
+                  aria-current={!markActiveDotDisabled && isActive ? true : undefined}
+                  // aria-disabled 而非原生 disabled：原生的會把按鈕踢出 Tab 順序，
+                  // 而 APG 要求它留在順序裡 —— 使用者得走得過去才知道自己在第幾張。
+                  aria-disabled={isLocked ? true : undefined}
+                  aria-controls={controlsId}
+                  onClick={onDotSelect && !isLocked ? () => onDotSelect(i) : undefined}
+                  className={cn(
+                    controlBase,
+                    "size-12 rounded-full",
+                    isActive ? t.dotActive : t.dot,
+                    isLocked && "cursor-default",
+                  )}
+                />
+              )
+            })}
+          </div>
+        ) : null}
         <button
           type="button"
           aria-label="下一張"
@@ -103,7 +137,11 @@ export function CarouselControls({
         onClick={onPlayToggle}
         className={cn(controlBase, t.control)}
       >
-        {playing ? <StopIcon className="size-[4rem]" /> : <PlayIcon className="size-[4rem]" />}
+        {playing ? (
+          <StopIcon className="size-[4rem]" />
+        ) : (
+          <PlayIcon className="size-[4rem]" />
+        )}
       </button>
     </div>
   )

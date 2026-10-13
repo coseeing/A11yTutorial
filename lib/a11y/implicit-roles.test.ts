@@ -76,6 +76,43 @@ describe("implicitRole", () => {
     wrapper.remove()
   })
 
+  // /landmark-regions 那一頁把這兩個擺在一起對照：同樣是 <header>，
+  // 包在 main 裡面就不是 banner 了。
+  it("header 被 main 包住也是 generic", () => {
+    const wrapper = el("<main><header></header></main>")
+    document.body.append(wrapper)
+    expect(implicitRole(wrapper.querySelector("header")!)).toBe("generic")
+    wrapper.remove()
+  })
+
+  it("footer 在頁面層級是 contentinfo，被 article 包住則是 generic", () => {
+    const page = el("<footer></footer>")
+    document.body.append(page)
+    expect(implicitRole(page)).toBe("contentinfo")
+    page.remove()
+
+    const wrapper = el("<article><footer></footer></article>")
+    document.body.append(wrapper)
+    expect(implicitRole(wrapper.querySelector("footer")!)).toBe("generic")
+    wrapper.remove()
+  })
+
+  it("search 是搜尋地標", () => {
+    expect(implicitRole(el("<search></search>"))).toBe("search")
+  })
+
+  // form 與 section 只有具名時才是地標 —— 沒有名字的地標在地標清單裡
+  // 只會顯示角色名，使用者分不出是哪一個，所以規範乾脆不讓它成為地標。
+  it("form 與 section 只有具備無障礙名稱時才是地標", () => {
+    expect(implicitRole(el("<form></form>"))).toBe("generic")
+    expect(implicitRole(el('<form aria-label="訂閱更新通知"></form>'))).toBe("form")
+    expect(implicitRole(el('<form aria-labelledby="h"></form>'))).toBe("form")
+
+    expect(implicitRole(el("<section></section>"))).toBe("generic")
+    expect(implicitRole(el('<section aria-label="本週更新"></section>'))).toBe("region")
+    expect(implicitRole(el('<section aria-labelledby="h"></section>'))).toBe("region")
+  })
+
   it("未知元素回傳 generic", () => {
     expect(implicitRole(el("<span>文字</span>"))).toBe("generic")
     expect(implicitRole(el("<div></div>"))).toBe("generic")

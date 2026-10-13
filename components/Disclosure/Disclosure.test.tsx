@@ -58,4 +58,17 @@ describe("Disclosure", () => {
       "true",
     )
   })
+
+  // DisclosureDemo 的 A11yTree 用 `button + div` 抓內容區 —— 那個 selector
+  // 依賴內容是按鈕的下一個兄弟節點。中間多包一層，面板就會指到別的東西上，
+  // 而且不會有任何測試失敗。所以在這裡釘住這個結構。
+  it("內容區是控制按鈕的下一個兄弟節點", () => {
+    render(<Disclosure label="運費怎麼計算？" defaultOpen>內容</Disclosure>)
+    const button = screen.getByRole("button", { name: /運費怎麼計算？/ })
+    const panel = button.nextElementSibling
+
+    expect(panel?.tagName).toBe("DIV")
+    expect(panel).toHaveAttribute("id", button.getAttribute("aria-controls"))
+    expect(panel).toHaveTextContent("內容")
+  })
 })

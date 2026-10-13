@@ -5,7 +5,6 @@ import { Tooltip } from "@/components/Tooltip/Tooltip"
 import { A11yTree } from "@/components/demo/A11yTree"
 import { DemoStage } from "@/components/demo/DemoStage"
 
-
 export function TooltipDemo() {
   return (
     <div className="flex flex-col gap-24">
@@ -17,11 +16,13 @@ export function TooltipDemo() {
         </Tooltip>
       </DemoStage>
 
+      {/* 兩個面板對應 Tooltip 的兩個角色：被描述的觸發元素 → 提示本身。 */}
+      <A11yTree latch selector="#tooltip-demo button" hint="觀察對象：觸發按鈕。" />
 
       <A11yTree
         latch
-        selector="#tooltip-demo button"
-        hint="觀察對象：觸發按鈕。"
+        selector="#tooltip-demo [role='tooltip']"
+        hint="觀察對象：提示本身。"
       />
     </div>
   )

@@ -57,11 +57,13 @@ describe("components registry", () => {
     }
   })
 
-  it("publishedComponents 只回傳已完成的", () => {
+  // 曾經還有一條「已完成的必須少於全部」—— 那是在只做了一部分元件、首頁要藏掉
+  // 其餘的時期寫的。現在 21 個全部完成，那條斷言只會擋住正確的狀態，所以改成
+  // 直接比對篩選結果：publishedComponents 的職責是依 status 篩，不是保證有東西被藏。
+  it("publishedComponents 回傳的正好是 status 為 done 的那些", () => {
     const published = publishedComponents()
     expect(published.length).toBeGreaterThan(0)
-    expect(published.every((c) => c.status === "done")).toBe(true)
-    expect(published.length).toBeLessThan(COMPONENTS.length)
+    expect(published).toEqual(COMPONENTS.filter((c) => c.status === "done"))
   })
 
   // 首頁只列出 publishedComponents，所以每一張卡片都必須點得進去。
