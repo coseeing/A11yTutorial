@@ -2,6 +2,7 @@
 
 import { useId, useRef, useState } from "react"
 import { cn } from "@/lib/cn"
+import { scrollActiveOptionIntoView } from "@/lib/a11y/scroll-active-option"
 
 // Listbox — 依 W3C ARIA APG 的 Listbox Pattern 實作。
 //
@@ -56,12 +57,7 @@ export function Listbox({
   const moveTo = (index: number) => {
     setActive(index)
     onValueChange(flat[index].value)
-    // 容器可捲動時要自己把作用中的選項帶進可視範圍 —— 焦點沒有移動，
-    // 瀏覽器不會幫忙捲。
-    //
-    // 存在性檢查不是多餘的：jsdom 沒有實作 scrollIntoView，測試環境裡它是 undefined。
-    const option = listRef.current?.querySelector(`#${CSS.escape(optionId(index))}`)
-    option?.scrollIntoView?.({ block: "nearest" })
+    scrollActiveOptionIntoView(listRef.current, optionId(index))
   }
 
   const onKeyDown = (e: React.KeyboardEvent) => {
