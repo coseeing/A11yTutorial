@@ -1,4 +1,3 @@
-import { cn } from "@/lib/cn"
 import { type ApgRule, rulesFor } from "@/lib/apg-rules"
 
 // ApgRuleList — 某個元件在 APG 規則表裡的條目。
@@ -7,18 +6,13 @@ import { type ApgRule, rulesFor } from "@/lib/apg-rules"
 // 要記住的那幾條稀釋掉。難度 2 排在前面，因為那是必須實作到 demo 上的那些 ——
 // 讀者從這一區往上看，就能一條條對照前面的面板與屬性表。
 //
-// 排序本身不說話，所以難度標在每一條上。原本是兩個分組標題在說這件事，
-// 但那等於在每一頁重複同一句話；標籤放在卡片裡，資訊還在，話少了一句。
+// 難度與規則編號都不顯示在卡片上 —— 這一區是讀來理解規則在講什麼的，不是
+// 用來核對編號的。難度 2 仍排在前面，但那只影響順序，畫面上不再標出來。
+// 要查編號與涵蓋範圍，看 lib/components-registry.ts 的 coveredRules。
 //
 // 資料來自 lib/apg-rules.ts，那是由 data/apg-pattern-rules.csv 產生的，不手寫。
 
 const LISTED: ApgRule["difficulty"][] = [2, 1]
-
-const DIFFICULTY_STYLE: Record<number, string> = {
-  // 難度 2 用主色橘：整個站的「這件事要做」訊號都是這個顏色。
-  2: "bg-orange-PRIMARY text-neutral-black",
-  1: "bg-teal-100/40 text-teal-700",
-}
 
 export function ApgRuleList({ slug }: { slug: string }) {
   const all = rulesFor(slug)
@@ -51,17 +45,6 @@ function RuleCard({ rule }: { rule: ApgRule }) {
   return (
     <li className="rounded-16 border border-bg-warm-gray bg-neutral-white p-20 tablet:p-24">
       <div className="flex flex-wrap items-center gap-8">
-        <span
-          className={cn(
-            "typography-strong3 inline-flex items-center rounded-8 px-8 py-4",
-            DIFFICULTY_STYLE[rule.difficulty],
-          )}
-        >
-          難度 {rule.difficulty}
-        </span>
-        <code className="typography-strong3 rounded-8 bg-bg-light-off-white px-8 py-4 font-mono text-teal-PRIMARY">
-          {rule.id}
-        </code>
         <span className="typography-body3 text-teal-300">{rule.topic}</span>
         {/* 必做的不標，否則整頁都是同一個標籤；選做的才標出來。 */}
         {rule.required ? null : (
@@ -71,7 +54,7 @@ function RuleCard({ rule }: { rule: ApgRule }) {
         )}
       </div>
 
-      <p className="typography-strong2 m-0 mt-12 text-teal-700">{rule.name}</p>
+      <p className="typography-strong2 m-0 mt-8 text-teal-700">{rule.name}</p>
       <p className="typography-body2 m-0 mt-8 text-teal-700">{rule.expectation}</p>
     </li>
   )
