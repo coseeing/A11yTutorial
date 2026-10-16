@@ -1,4 +1,5 @@
 import type { Metadata } from "next"
+import { ApgRuleList } from "@/components/demo/ApgRuleList"
 import { AriaTable } from "@/components/demo/AriaTable"
 import { DemoPage } from "@/components/demo/DemoPage"
 import { KeyboardTable } from "@/components/demo/KeyboardTable"
@@ -142,6 +143,11 @@ export default function GridPage() {
               ]}
             />
           ),
+        },
+        {
+          id: "apg",
+          title: "APG 規則",
+          content: <ApgRuleList slug="grid" />,
         },
       ]}
     />
