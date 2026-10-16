@@ -83,8 +83,12 @@ export function Feed({
       ref={feedRef}
       role="feed"
       aria-labelledby={labelledBy}
-      // 布林值明寫 false 而不是省略：讀者要在面板上看見這個屬性從 false 變 true
-      // 再變回來，省略的話那一列會整個消失。
+      // 明寫 false 而不是省略，是為了讓檢查工具與讀原始碼的人看得到這個屬性存在。
+      //
+      // 但它不會出現在 Accessibility Tree 面板的 Status 列：那一列收的是「螢幕
+      // 閱讀器會連同角色與名稱一起唸出來的東西」，而 aria-busy=false 時什麼都
+      // 不唸（跟 aria-disabled=false 一樣）。所以面板上看到的是載入那一秒冒出
+      // aria-busy=true，然後回到「（無狀態）」。
       aria-busy={busy}
       onKeyDown={onKeyDown}
       className={cn("flex flex-col gap-16", className)}

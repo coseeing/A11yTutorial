@@ -68,7 +68,7 @@ export default function FeedPage() {
                   attr: "aria-busy",
                   value: "true / false",
                   purpose:
-                    "多步驟新增或移除文章的期間設為 true，完成後改回 false。輔助科技在這段期間先按住不報讀，避免使用者聽到半成品。整段包起來，不是每篇切換一次。",
+                    "多步驟新增或移除文章的期間設為 true，完成後改回 false。輔助科技在這段期間先按住不報讀，避免使用者聽到半成品。整段包起來，不是每篇切換一次。上方面板的 Status 列只在載入那一秒出現 aria-busy=true —— 值為 false 時螢幕閱讀器什麼都不唸，所以那一列會回到「（無狀態）」。",
                 },
                 {
                   attr: "role（文章）",
