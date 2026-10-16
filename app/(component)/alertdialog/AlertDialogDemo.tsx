@@ -22,6 +22,11 @@ export function AlertDialogDemo() {
       <A11yTree
         latch
         selector="[role='alertdialog'][open]"
+        fallback={{
+          role: "alertdialog",
+          name: "確定要刪除帳號嗎？",
+          description: "刪除後所有資料將立即永久移除，無法復原。",
+        }}
         hint="觀察對象：開啟中的警示對話框。"
       />
 

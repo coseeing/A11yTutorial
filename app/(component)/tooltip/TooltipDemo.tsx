@@ -22,6 +22,10 @@ export function TooltipDemo() {
       <A11yTree
         latch
         selector="#tooltip-demo [role='tooltip']"
+        fallback={{
+          role: "tooltip",
+          name: "至少 12 個字元，且不能與前三次使用過的密碼相同。",
+        }}
         hint="觀察對象：提示本身。"
       />
     </div>

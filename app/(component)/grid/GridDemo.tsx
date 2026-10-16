@@ -59,6 +59,11 @@ export function GridDemo() {
       {/* 可以選多列，但 selector 只會取到第一個 —— hint 要說清楚是哪一個。 */}
       <A11yTree
         selector="#grid-demo [role='row'][aria-selected='true']"
+        fallback={{
+          role: "row",
+          name: "無障礙檢測報告.pdf 設計組 10 月 9 日",
+          status: ["aria-selected=true"],
+        }}
         hint="觀察對象：第一個被選取的列。"
       />
     </div>
