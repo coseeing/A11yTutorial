@@ -25,27 +25,24 @@ describe("ApgRuleList", () => {
   })
 
   // 難度 2 是必須實作到 demo 上的那些，排在前面讀者才對得起前面的面板。
-  it("難度 2 的區塊排在難度 1 之前", () => {
+  it("難度 2 的規則排在難度 1 之前", () => {
     render(<ApgRuleList slug="accordion" />)
-    const headings = screen.getAllByRole("heading", { level: 3 })
-    expect(headings.map((h) => h.textContent)).toEqual([
-      expect.stringContaining("知識難度 2"),
-      expect.stringContaining("知識難度 1"),
-    ])
+    const order = screen
+      .getAllByRole("listitem")
+      .map((li) => within(li).getByText(/^難度 \d$/).textContent)
+
+    expect(new Set(order)).toEqual(new Set(["難度 2", "難度 1"]))
+    expect(order).toEqual([...order].sort().reverse())
   })
 
-  it("每個難度區塊標出自己的條數", () => {
+  // 分組標題拿掉之後，難度就只剩下每張卡片上的標籤在說 ——
+  // 少了它，讀者看不出哪幾條是必須實作到 demo 上的。
+  it("每一條都標出自己的難度", () => {
     render(<ApgRuleList slug="accordion" />)
-    const counts = {
-      2: rulesFor("accordion").filter((r) => r.difficulty === 2).length,
-      1: rulesFor("accordion").filter((r) => r.difficulty === 1).length,
+    for (const rule of rulesFor("accordion").filter((r) => r.difficulty !== 3)) {
+      const card = screen.getByText(rule.id).closest("li")!
+      expect(within(card).getByText(`難度 ${rule.difficulty}`), rule.id).toBeInTheDocument()
     }
-    expect(screen.getByRole("heading", { name: /知識難度 2/ })).toHaveTextContent(
-      `${counts[2]} 條`,
-    )
-    expect(screen.getByRole("heading", { name: /知識難度 1/ })).toHaveTextContent(
-      `${counts[1]} 條`,
-    )
   })
 
   it("每一條都附上規則名稱與預期行為", () => {

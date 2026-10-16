@@ -7,6 +7,9 @@ import { type ApgRule, rulesFor } from "@/lib/apg-rules"
 // 要記住的那幾條稀釋掉。難度 2 排在前面，因為那是必須實作到 demo 上的那些 ——
 // 讀者從這一區往上看，就能一條條對照前面的面板與屬性表。
 //
+// 排序本身不說話，所以難度標在每一條上。原本是兩個分組標題在說這件事，
+// 但那等於在每一頁重複同一句話；標籤放在卡片裡，資訊還在，話少了一句。
+//
 // 資料來自 lib/apg-rules.ts，那是由 data/apg-pattern-rules.csv 產生的，不手寫。
 
 const LISTED: ApgRule["difficulty"][] = [2, 1]
@@ -15,11 +18,6 @@ const DIFFICULTY_STYLE: Record<number, string> = {
   // 難度 2 用主色橘：整個站的「這件事要做」訊號都是這個顏色。
   2: "bg-orange-PRIMARY text-neutral-black",
   1: "bg-teal-100/40 text-teal-700",
-}
-
-const DIFFICULTY_NOTE: Record<number, string> = {
-  2: "必須實作到 demo 上",
-  1: "基礎行為，多數由原生元素提供",
 }
 
 export function ApgRuleList({ slug }: { slug: string }) {
@@ -31,46 +29,21 @@ export function ApgRuleList({ slug }: { slug: string }) {
     return (
       <p className="typography-body2 m-0 text-teal-300">
         APG 沒有這個 pattern，所以沒有對應的規則編號。這一頁的依據是 WCAG 成功準則與
-        live region 的既有實務，見下方的 WCAG 對應。
+        live region 的既有實務，見上方的 WCAG 對應。
       </p>
     )
   }
 
+  const rules = LISTED.flatMap((difficulty) =>
+    all.filter((rule) => rule.difficulty === difficulty),
+  )
+
   return (
-    <div className="flex flex-col gap-32">
-      {LISTED.map((difficulty) => {
-        const rules = all.filter((rule) => rule.difficulty === difficulty)
-        if (rules.length === 0) return null
-
-        return (
-          <section key={difficulty} aria-labelledby={`apg-difficulty-${difficulty}`}>
-            <h3
-              id={`apg-difficulty-${difficulty}`}
-              className="typography-strong1 m-0 mb-16 flex flex-wrap items-center gap-8 text-teal-700"
-            >
-              <span
-                className={cn(
-                  "typography-strong3 inline-flex items-center rounded-8 px-8 py-4",
-                  DIFFICULTY_STYLE[difficulty],
-                )}
-              >
-                知識難度 {difficulty}
-              </span>
-              <span>{rules.length} 條</span>
-              <span className="typography-body2 text-teal-300">
-                · {DIFFICULTY_NOTE[difficulty]}
-              </span>
-            </h3>
-
-            <ul className="m-0 flex list-none flex-col gap-16 p-0">
-              {rules.map((rule) => (
-                <RuleCard key={rule.id} rule={rule} />
-              ))}
-            </ul>
-          </section>
-        )
-      })}
-    </div>
+    <ul className="m-0 flex list-none flex-col gap-16 p-0">
+      {rules.map((rule) => (
+        <RuleCard key={rule.id} rule={rule} />
+      ))}
+    </ul>
   )
 }
 
@@ -78,11 +51,19 @@ function RuleCard({ rule }: { rule: ApgRule }) {
   return (
     <li className="rounded-16 border border-bg-warm-gray bg-neutral-white p-20 tablet:p-24">
       <div className="flex flex-wrap items-center gap-8">
+        <span
+          className={cn(
+            "typography-strong3 inline-flex items-center rounded-8 px-8 py-4",
+            DIFFICULTY_STYLE[rule.difficulty],
+          )}
+        >
+          難度 {rule.difficulty}
+        </span>
         <code className="typography-strong3 rounded-8 bg-bg-light-off-white px-8 py-4 font-mono text-teal-PRIMARY">
           {rule.id}
         </code>
         <span className="typography-body3 text-teal-300">{rule.topic}</span>
-        {/* 選做的規則標出來；必做的不標，否則整頁都是同一個標籤。 */}
+        {/* 必做的不標，否則整頁都是同一個標籤；選做的才標出來。 */}
         {rule.required ? null : (
           <span className="typography-body3 rounded-8 border border-bg-warm-gray px-8 py-4 text-teal-300">
             選做
