@@ -1,7 +1,8 @@
 "use client"
 
-import { useId, useRef, useState } from "react"
+import { useEffect, useId, useRef, useState } from "react"
 import { cn } from "@/lib/cn"
+import { scrollActiveOptionIntoView } from "@/lib/a11y/scroll-active-option"
 import { ChevronDownIcon } from "../Icons/Icons"
 
 // Combobox — 依 W3C ARIA APG 的 Combobox Pattern 實作（可編輯 + listbox 型彈出內容）。
@@ -35,6 +36,7 @@ export function Combobox({
 }: ComboboxProps) {
   const base = useId()
   const inputRef = useRef<HTMLInputElement>(null)
+  const listRef = useRef<HTMLUListElement>(null)
   const [query, setQuery] = useState(value)
   const [open, setOpen] = useState(false)
   // 彈出內容一出現，第一個建議值就是選取狀態 —— 這就是「自動選取」。
@@ -48,6 +50,18 @@ export function Combobox({
 
   const matches = options.filter((option) => option.includes(query.trim()))
   const activeOption = matches[active]
+
+  // 作用中的選項換人時把它捲進可視範圍。
+  //
+  // 寫成 effect 而不是在每個按鍵處理裡呼叫：active 會從好幾條路徑改變（打字重設
+  // 成 0、上下鍵移動、Alt + ↓ 展開），分散呼叫遲早會漏掉其中一條 —— 這個 bug
+  // 本來就是這樣來的，Listbox 當初處理了，Combobox 漏了。
+  useEffect(() => {
+    if (!open) return
+    scrollActiveOptionIntoView(listRef.current, optionId(active))
+    // query 也要是依賴：打字會換掉清單內容，active 停在 0 但那個 0 已經是
+    // 另一個選項了。
+  }, [open, active, query, optionId])
 
   const commit = (next: string) => {
     setQuery(next)
@@ -174,6 +188,7 @@ export function Combobox({
 
         {open ? (
           <ul
+            ref={listRef}
             id={listboxId}
             role="listbox"
             // 彈出清單自己也要有名稱：它不屬於 combobox 的名稱，螢幕閱讀器把它

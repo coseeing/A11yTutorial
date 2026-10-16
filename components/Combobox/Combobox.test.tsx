@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { useState } from "react"
-import { describe, expect, it, vi } from "vitest"
+import { beforeEach, describe, expect, it, vi } from "vitest"
 import { Combobox } from "./Combobox"
 
 const CITIES = ["臺北市", "新北市", "臺中市", "臺南市"]
@@ -168,5 +168,57 @@ describe("Combobox", () => {
       "tabindex",
       "-1",
     )
+  })
+
+  // 焦點永遠留在輸入框，所以瀏覽器不會替清單捲動 —— 方向鍵走到看不見的選項時，
+  // 得自己把它帶進可視範圍。jsdom 沒有實作 scrollIntoView，這裡攔下來看它
+  // 有沒有被呼叫、呼叫在哪個元素上。
+  describe("作用中的選項會被捲進可視範圍", () => {
+    const calls: Element[] = []
+
+    beforeEach(() => {
+      calls.length = 0
+      HTMLElement.prototype.scrollIntoView = vi.fn(function (this: HTMLElement) {
+        calls.push(this)
+      })
+    })
+
+    it("方向鍵移動時捲到新的作用中選項", async () => {
+      const user = userEvent.setup()
+      render(<Harness />)
+
+      await user.tab()
+      await user.keyboard("{ArrowDown}")
+      calls.length = 0
+
+      await user.keyboard("{ArrowDown}")
+
+      const active = screen.getByRole("option", { name: "新北市" })
+      expect(calls.at(-1)).toBe(active)
+      expect(active).toHaveAttribute("aria-selected", "true")
+    })
+
+    it("只捲剛好夠的距離，不把清單跳到正中間", async () => {
+      const user = userEvent.setup()
+      render(<Harness />)
+
+      await user.tab()
+      await user.keyboard("{ArrowDown}{ArrowDown}")
+
+      const scroll = HTMLElement.prototype.scrollIntoView as ReturnType<typeof vi.fn>
+      expect(scroll).toHaveBeenCalledWith({ block: "nearest" })
+    })
+
+    it("清單收起來時不捲", async () => {
+      const user = userEvent.setup()
+      render(<Harness />)
+
+      await user.tab()
+      await user.keyboard("{ArrowDown}{Escape}")
+      calls.length = 0
+
+      await user.keyboard("{Escape}")
+      expect(calls).toHaveLength(0)
+    })
   })
 })
