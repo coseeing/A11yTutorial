@@ -31,6 +31,11 @@ export function DialogDemo() {
       <A11yTree
         latch
         selector="dialog[open]"
+        fallback={{
+          role: "dialog",
+          name: "刪除這筆紀錄？",
+          description: "刪除後無法復原，確定要繼續嗎？",
+        }}
         hint="觀察對象：開啟中的對話框。"
       />
 

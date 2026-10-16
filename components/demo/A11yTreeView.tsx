@@ -14,6 +14,13 @@ type A11yTreeViewProps = {
   title?: string
   /** node 是保留下來的舊值，目標當下已不在無障礙樹中。 */
   stale?: boolean
+  /**
+   * node 是手寫的宣告值，目標還沒被觀察到過。
+   *
+   * 四列的樣式不變 —— 截圖要一致。差別只加在提示那一行，因為「這還不是實際量到的」
+   * 這件事得說出來，不能讓讀者以為對話框沒開也在無障礙樹裡。
+   */
+  pending?: boolean
   /** 指認這個面板在觀察哪個元素。同一頁有多個面板時尤其必要。 */
   hint?: React.ReactNode
   className?: string
@@ -61,6 +68,7 @@ export function A11yTreeView({
   node,
   title = "Accessibility Tree",
   stale = false,
+  pending = false,
   hint,
   className,
 }: A11yTreeViewProps) {
@@ -78,7 +86,14 @@ export function A11yTreeView({
       <p id={headingId} className="typography-strong1 m-0 text-teal-700">
         {title}
       </p>
-      {hint ? <p className="typography-body2 mt-4 text-teal-300">{hint}</p> : null}
+      {hint ? (
+        <p className="typography-body2 mt-4 text-teal-300">
+          {hint}
+          {pending ? (
+            <span data-testid="a11y-tree-pending"> 下列是操作之後會量到的值。</span>
+          ) : null}
+        </p>
+      ) : null}
 
       {/*
         舊值在畫面上與即時值完全一樣 —— 沒有提示文字，也不調淡。每一頁的面板長得
@@ -90,6 +105,7 @@ export function A11yTreeView({
       <div
         data-testid="a11y-tree-values"
         data-stale={stale ? "true" : undefined}
+        data-pending={pending ? "true" : undefined}
         aria-live="polite"
         className="mt-24"
       >

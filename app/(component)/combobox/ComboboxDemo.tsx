@@ -57,12 +57,14 @@ export function ComboboxDemo() {
         <A11yTree
           latch
           selector="#combobox-demo [role='listbox']"
+          fallback={{ role: "listbox", name: "縣市建議" }}
           hint="觀察對象：彈出的建議清單。"
         />
 
         <A11yTree
           latch
           selector="#combobox-demo [role='option'][aria-selected='true']"
+          fallback={{ role: "option", name: "臺北市", status: ["aria-selected=true"] }}
           hint="觀察對象：目前自動選取的建議值。"
         />
       </div>
@@ -88,6 +90,11 @@ export function ComboboxDemo() {
         <A11yTree
           latch
           selector="dialog[open]"
+          fallback={{
+            role: "dialog",
+            name: "選擇出發日期",
+            description: "選好之後按確定，按取消則保留原本的日期。",
+          }}
           hint="觀察對象：它開出來的對話框。"
         />
       </div>
