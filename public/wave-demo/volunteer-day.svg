@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="640" viewBox="0 0 800 640">
+  <rect width="800" height="640" rx="24" fill="#eee6d8"/>
+  <path d="M0 455Q175 345 355 450T800 420V640H0Z" fill="#1f4147"/>
+  <circle cx="658" cy="118" r="58" fill="#fea400"/>
+  <g fill="none" stroke="#1f4147" stroke-width="10" stroke-linecap="round">
+    <path d="M610 414V280M610 330Q530 325 533 260Q610 255 610 330ZM610 365Q690 360 687 295Q610 290 610 365Z"/>
+    <path d="M720 430V360M720 389Q680 387 681 351Q720 347 720 389Z"/>
+  </g>
+  <g font-family="Arial, Noto Sans TC, sans-serif" fill="#10242a">
+    <text x="48" y="80" font-size="23" letter-spacing="4">COMMUNITY VOLUNTEER DAY</text>
+    <text x="48" y="172" font-size="64" font-weight="700">一起，讓社區更好</text>
+    <text x="48" y="232" font-size="29">志工服務日</text>
+    <text x="48" y="325" font-size="44" font-weight="700">11 / 21</text>
+    <text x="48" y="374" font-size="28">09:00–12:00</text>
+  </g>
+  <g font-family="Arial, Noto Sans TC, sans-serif" fill="#ffffff" font-size="27">
+    <text x="48" y="516">社區服務中心集合</text>
+    <text x="48" y="565">報名截止：11 月 14 日</text>
+    <text x="48" y="608" font-size="21">環境整理・鄰里交流・一起參與</text>
+  </g>
+</svg>

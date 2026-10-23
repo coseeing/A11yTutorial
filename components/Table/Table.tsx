@@ -20,9 +20,11 @@ type TableProps = {
   columns: TableColumn[]
   rows: Record<string, React.ReactNode>[]
   className?: string
+  /** 僅供無障礙檢測練習刻意移除表頭語意；正常資料表保留預設 th。 */
+  headerCellAs?: "th" | "td"
 }
 
-export function Table({ columns, rows, className }: TableProps) {
+export function Table({ columns, rows, className, headerCellAs: HeaderCell = "th" }: TableProps) {
   return (
     <div
       className={cn(
@@ -34,14 +36,14 @@ export function Table({ columns, rows, className }: TableProps) {
         <thead>
           <tr className="border-b border-neutral-light-gray">
             {columns.map((col) => (
-              <th
+              <HeaderCell
                 key={col.key}
-                scope="col"
+                scope={HeaderCell === "th" ? "col" : undefined}
                 style={col.width ? { width: col.width } : undefined}
                 className="typography-strong1 pb-12 pr-40 text-left align-bottom text-teal-700 last:pr-0"
               >
                 {col.label}
-              </th>
+              </HeaderCell>
             ))}
           </tr>
         </thead>

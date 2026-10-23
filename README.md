@@ -110,3 +110,32 @@ Toast 這類會整個離開 DOM 的元件：開啟時遮罩壓暗面板反而讀
 - `components/demo/` — demo 站專用的展示元件
 - `lib/a11y/` — accessibility tree 的計算邏輯（純函式，有完整單元測試）
 - `docs/superpowers/` — 設計文件與實作計畫
+
+## WAVE 檢測練習
+
+首頁的「開始檢測練習」可開啟 `/test-demo/`。頁面以「志工服務日」活動介紹與報名為情境，使用既有的 Container、PageHeader、Card、Tag、Field、Input、Button、SearchIcon、Table 與 Link。所有資料與 SVG 海報都在本機，不依賴外部 API。搜尋、名額查詢與模擬報名可以操作，個人資料不會送出或儲存。
+
+學員頁不直接列出解答。下表供講師備課使用，分類與項目 ID 對照 [WAVE 官方文件](https://wave.webaim.org/api/docs?format=html)：
+
+| WAVE 官方分類 | 項目 ID | 頁面位置／程式條件 |
+| --- | --- | --- |
+| Errors | `alt_missing` | 活動海報 `#wave-poster`，普通 `<img>` 刻意沒有 `alt` |
+| Errors | `label_missing` | 報名欄位 `#wave-name`，可見「姓名」未與 Input 關聯，也沒有其他名稱 |
+| Errors | `button_empty` | 查詢名額 `#wave-availability`，只有 `aria-hidden` 的 SearchIcon，刻意沒有按鈕名稱 |
+| Contrast Errors | `contrast` | 行前通知 `#wave-note`，白底 `#ffffff` 搭配淺灰色 `#b0b0b0` 小字 |
+| Alerts | `heading_skipped` | 報名資格 `#wave-eligibility` 使用 h4，前一個標題為「參加資訊」h2 |
+| Alerts | `table_layout` | 當日流程 `#wave-schedule table`，共用 Table 明確指定 `headerCellAs="td"`，沒有 `<th>` |
+| Features | `alt_null` | 裝飾圖片 `#wave-decoration`，使用 `alt=""`，不以 `aria-hidden` 隱藏檢查對象 |
+| Structural Elements | `h1` | 共用 PageHeader 的「志工服務日」h1 |
+| ARIA | `aria_label` | 搜尋活動 `#wave-search-button`，使用 `aria-label="搜尋活動"` |
+
+共用 Table 的預設仍是 `<th scope="col">`，只有這個練習頁明確選用 `td`。不要把本頁刻意的缺陷複製到其他正式頁面。
+
+### 驗證方式
+
+1. 開啟 `/test-demo/`，等待圖片載入，使用 Chrome 的 WAVE 擴充套件掃描。
+2. 在 Details 中逐一確認上表的項目與位置，並在 Contrast 中確認行前通知。
+3. 檢查 Features、Structure 與 ARIA 的標示，不要把這些資訊一律當成錯誤。
+4. 搜尋或表單操作使內容改變後，重新執行掃描。
+
+九題代表九個目標範例，不代表 WAVE 結果只會有九個圖示。既有導覽、頁尾、其他表單標籤與標題也會產生正常的資訊標示。DOM 測試與建置驗證不等同實際執行 WAVE；授課前仍應使用預定的 Chrome／WAVE 版本逐項確認。
