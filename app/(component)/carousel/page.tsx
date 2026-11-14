@@ -16,6 +16,7 @@ export default function CarouselPage() {
   return (
     <DemoPage
       title="Carousel"
+      groupedDemo
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <CarouselDemo /> },
         {

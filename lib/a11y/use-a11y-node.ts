@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { computeA11yNode, type A11yNode } from "./compute-node"
+import { resolveObservation } from "./observation-target"
 
 export type UseA11yNodeOptions = {
   /**
@@ -43,7 +44,7 @@ export function useA11yNode(
     lastSeen.current = null
 
     const recompute = () => {
-      const next = computeA11yNode(document.querySelector(selector))
+      const next = computeA11yNode(resolveObservation(selector).target)
 
       let result: A11yObservation
       if (next) {
@@ -65,26 +66,37 @@ export function useA11yNode(
       frame = requestAnimationFrame(recompute)
     }
 
-    recompute()
-
-    // 觀察整個 body 而不是目標本身：目標可能還不存在，無從觀察起。
-    const observer = new MutationObserver(schedule)
-    observer.observe(document.body, {
-      attributes: true,
-      childList: true,
-      subtree: true,
-      characterData: true,
-    })
-
     // 原生 checkbox 的 checked 是 property 不是 attribute，MutationObserver
     // 看不到，所以另外聽這幾個事件。
     const events = ["input", "change", "click", "keyup", "focusin", "focusout"] as const
-    for (const type of events) document.addEventListener(type, schedule, true)
+    let roots: Document[] = []
+    const observer = new MutationObserver(() => { bindRoots(); schedule() })
+    const onLoad = () => { bindRoots(); schedule() }
+    const unbind = () => {
+      for (const root of roots) {
+        for (const type of events) root.removeEventListener(type, schedule, true)
+        root.removeEventListener("load", onLoad, true)
+      }
+    }
+    const bindRoots = () => {
+      const next = resolveObservation(selector).documents
+      if (next.length === roots.length && next.every((root, index) => root === roots[index])) return
+      unbind()
+      observer.disconnect()
+      roots = next
+      for (const root of roots) {
+        observer.observe(root.body ?? root.documentElement, { attributes: true, childList: true, subtree: true, characterData: true })
+        for (const type of events) root.addEventListener(type, schedule, true)
+        root.addEventListener("load", onLoad, true)
+      }
+    }
+    bindRoots()
+    recompute()
 
     return () => {
       cancelAnimationFrame(frame)
       observer.disconnect()
-      for (const type of events) document.removeEventListener(type, schedule, true)
+      unbind()
     }
   }, [selector, latch])
 

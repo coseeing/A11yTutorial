@@ -3,11 +3,9 @@
 import { Accordion } from "@/components/Accordion/Accordion"
 import { A11yTree } from "@/components/demo/A11yTree"
 import { DemoStage } from "@/components/demo/DemoStage"
+import { useState } from "react"
 
 // AccordionDemo — Accordion 的互動範例與其 Accessibility Tree。
-//
-// 觀察對象固定在第一組：Accordion 的每一題都是同構的，盯著其中一組就看得完整；
-// 三組一起觀察只會讓讀者不確定數字對應的是哪一題。
 //
 // 第一題預設展開，面板才會從第一眼就在無障礙樹裡 —— 收合中的面板帶著 hidden，
 // 整個不在樹上，面板那一列會是空狀態。按一下標題就能看到它消失與回來。
@@ -31,18 +29,26 @@ const ITEMS = [
 ]
 
 export function AccordionDemo() {
+  const [observed, setObserved] = useState<{ buttonId: string; panelId: string } | null>(null)
+  const observe = (event: React.SyntheticEvent<HTMLDivElement>) => {
+    const button = event.target instanceof Element ? event.target.closest<HTMLButtonElement>("h3 button") : null
+    const panelId = button?.getAttribute("aria-controls")
+    if (button && panelId) setObserved({ buttonId: button.id, panelId })
+  }
   return (
     <div className="flex flex-col gap-24">
       <DemoStage id="accordion-demo" className="flex-col items-stretch">
-        <Accordion items={ITEMS} defaultExpanded={[0]} className="w-full" />
+        <div className="w-full" onFocusCapture={observe} onClickCapture={observe}>
+          <Accordion items={ITEMS} defaultExpanded={[0]} className="w-full" />
+        </div>
       </DemoStage>
 
       {/* 兩個面板對應 Accordion 的一組標題與它控制的內容：標題按鈕 → region。 */}
-      <A11yTree selector="#accordion-demo h3 button" hint="觀察對象：第一個標題按鈕。" />
+      <A11yTree selector={observed ? `#accordion-demo [id="${observed.buttonId}"]` : "#accordion-demo h3 button"} hint="觀察對象：目前操作的標題按鈕。" />
 
       <A11yTree
-        selector="#accordion-demo [role='region']:not([hidden])"
-        hint="觀察對象：展開中的面板。"
+        selector={observed ? `#accordion-demo [id="${observed.panelId}"]` : "#accordion-demo [role='region']"}
+        hint="觀察對象：目前按鈕所控制的面板；收合時不在無障礙樹中。"
       />
     </div>
   )

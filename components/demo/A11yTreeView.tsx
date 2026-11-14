@@ -1,6 +1,7 @@
 import { useId } from "react"
 import { cn } from "@/lib/cn"
 import type { A11yNode } from "@/lib/a11y/compute-node"
+import { PairMarker, type PairInfo } from "./DemoWorkspace"
 
 // A11yTreeView — Role / Status / Name / Description 四列的呈現，不負責觀察。
 //
@@ -24,6 +25,8 @@ type A11yTreeViewProps = {
   /** 指認這個面板在觀察哪個元素。同一頁有多個面板時尤其必要。 */
   hint?: React.ReactNode
   className?: string
+  pair?: PairInfo
+  announceUpdates?: boolean
 }
 
 type Row = {
@@ -71,21 +74,32 @@ export function A11yTreeView({
   pending = false,
   hint,
   className,
+  pair,
+  announceUpdates = true,
 }: A11yTreeViewProps) {
   const headingId = useId()
 
   return (
     <div
       role="group"
+      id={pair?.cardId}
+      tabIndex={pair ? -1 : undefined}
       aria-labelledby={headingId}
+      data-pair-card={pair?.marker}
+      data-pair-line={pair?.line}
       className={cn(
-        "rounded-24 border border-bg-warm-gray bg-neutral-white p-24 tablet:p-32",
+        "scroll-mt-24 rounded-24 border border-bg-warm-gray bg-neutral-white p-24 tablet:p-32 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY",
+        pair && "border-2 border-teal-PRIMARY",
+        pair?.line === "dashed" && "border-dashed",
+        pair?.line === "dotted" && "border-dotted",
         className,
       )}
     >
-      <p id={headingId} className="typography-strong1 m-0 text-teal-700">
-        {title}
+      <p id={headingId} className="typography-strong1 m-0 flex items-center gap-12 text-teal-700">
+        {pair && <PairMarker pair={pair} />}
+        <span>{pair && <span className="sr-only">{`標記 ${pair.marker}，`}</span>}{title}</span>
       </p>
+      {pair && (pending || stale) && <p className="typography-body2 m-0 mt-8 text-teal-300">{stale ? "保留上次的觀察結果；元素已隱藏，Demo 中的標記暫時不顯示。" : "操作 Demo 後，此元素與配對標記才會出現。"}</p>}
       {hint ? (
         <p className="typography-body2 mt-4 text-teal-300">
           {hint}
@@ -106,7 +120,7 @@ export function A11yTreeView({
         data-testid="a11y-tree-values"
         data-stale={stale ? "true" : undefined}
         data-pending={pending ? "true" : undefined}
-        aria-live="polite"
+        aria-live={announceUpdates ? "polite" : "off"}
         className="mt-24"
       >
         {node ? (
@@ -145,6 +159,7 @@ export function A11yTreeView({
           </p>
         )}
       </div>
+      {pair && <a href={`#${pair.demoHeadingId ?? "interactive-demo-heading"}`} className="typography-body2 mt-16 inline-block rounded-8 text-teal-PRIMARY underline underline-offset-4 hover:bg-bg-light-beige focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY">返回互動 Demo</a>}
     </div>
   )
 }

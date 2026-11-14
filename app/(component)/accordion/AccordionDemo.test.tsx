@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react"
+import { act, render, screen, waitFor, within } from "@testing-library/react"
 import userEvent from "@testing-library/user-event"
 import { describe, expect, it } from "vitest"
 import { AccordionDemo } from "./AccordionDemo"
@@ -55,5 +55,36 @@ describe("AccordionDemo", () => {
     // 收合中的面板帶著 hidden，整個不在無障礙樹裡 —— 第二個面板顯示空狀態。
     const region = await panel(REGION_PANEL)
     expect(region.getByTestId("a11y-tree-empty")).toBeInTheDocument()
+  })
+
+  it("切換操作其他按鈕時，兩張卡追蹤同一組按鈕與面板，即使其他題仍展開", async () => {
+    const user = userEvent.setup()
+    render(<AccordionDemo />)
+    const question = "為什麼標題按鈕要包在 heading 裡？"
+    await user.click(screen.getByRole("button", { name: question }))
+    await waitFor(() => {
+      const cards = screen.getAllByTestId("a11y-tree-values")
+      expect(within(cards[0]).getByTestId("a11y-tree-name")).toHaveTextContent(question)
+      expect(within(cards[1]).getByTestId("a11y-tree-name")).toHaveTextContent(question)
+    })
+    expect(screen.getByRole("button", { name: "什麼是無障礙設計？" })).toHaveAttribute("aria-expanded", "true")
+    await user.click(screen.getByRole("button", { name: question }))
+    await waitFor(() => {
+      const cards = screen.getAllByTestId("a11y-tree-values")
+      expect(within(cards[0]).getByTestId("a11y-tree-status")).toHaveTextContent("aria-expanded=false")
+      expect(within(cards[1]).getByTestId("a11y-tree-empty")).toBeInTheDocument()
+    })
+  })
+
+  it("鍵盤移到另一題也會更新觀察，空白鍵展開正確面板", async () => {
+    const user = userEvent.setup()
+    render(<AccordionDemo />)
+    act(() => screen.getByRole("button", { name: "什麼是無障礙設計？" }).focus())
+    await user.tab()
+    const question = "為什麼標題按鈕要包在 heading 裡？"
+    expect(screen.getByRole("button", { name: question })).toHaveFocus()
+    await waitFor(() => expect(within(screen.getAllByTestId("a11y-tree-values")[0]).getByTestId("a11y-tree-name")).toHaveTextContent(question))
+    await user.keyboard(" ")
+    await waitFor(() => expect(within(screen.getAllByTestId("a11y-tree-values")[1]).getByTestId("a11y-tree-name")).toHaveTextContent(question))
   })
 })

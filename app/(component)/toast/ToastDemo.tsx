@@ -22,7 +22,8 @@ export function ToastDemo() {
         <div className="flex flex-wrap items-center gap-16">
           <Button
             variant="small"
-            theme="light"
+            theme="greenStroke"
+            className="cursor-pointer"
             onClick={() => setMessage("個人資料已更新")}
           >
             儲存

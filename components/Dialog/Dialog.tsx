@@ -46,11 +46,23 @@ export function Dialog({
   return (
     <dialog
       ref={ref}
+      aria-modal="true"
       aria-labelledby={titleId}
       // 說明文字若只是視覺上擺在標題下方，輔助科技在開啟時不會播報它 —— 使用者
       // 得自行往下瀏覽才讀得到那句警告。aria-describedby 讓它跟著名稱一起唸出。
       aria-describedby={description ? descriptionId : undefined}
       onClose={onClose}
+      onKeyDown={(event) => {
+        if (event.key !== "Tab") return
+        const controls = [...event.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')].filter((control) => control.tabIndex >= 0 && !control.closest("[hidden], [inert]"))
+        const first = controls[0]
+        const last = controls[controls.length - 1]
+        const active = event.currentTarget.ownerDocument.activeElement
+        if (first && last && ((!event.shiftKey && active === last) || (event.shiftKey && (active === first || active === event.currentTarget)))) {
+          event.preventDefault()
+          ;(event.shiftKey ? last : first).focus()
+        }
+      }}
       onClick={(e) => {
         // The inner panel covers the whole dialog box, so the dialog element
         // itself is only the click target when the backdrop is clicked.

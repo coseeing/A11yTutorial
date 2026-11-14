@@ -37,4 +37,10 @@ describe("DemoPage", () => {
     expect(screen.getByText("範例內容")).toBeInTheDocument()
     expect(screen.getByText("鍵盤內容")).toBeInTheDocument()
   })
+
+  it("左右欄的目錄及右欄保留 Accessibility Tree 名稱", () => {
+    render(<DemoPage title="Tabs" sections={[{ id: "demo", title: "Demo 與 Accessibility Tree", content: <p>觀察卡</p> }]} />)
+    expect(screen.getByRole("heading", { level: 2, name: "Accessibility Tree" })).toBeInTheDocument()
+    expect(within(screen.getByRole("navigation", { name: "目錄" })).getByRole("link", { name: "Accessibility Tree" })).toHaveAttribute("href", "#demo")
+  })
 })

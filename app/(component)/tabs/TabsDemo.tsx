@@ -12,6 +12,7 @@ export function TabsDemo() {
           帳號設定
         </h3>
         <Tabs
+          className="mt-16 [&_[role=tablist]]:mb-32 [&_[role=tablist]]:p-16 [&_[role=tabpanel]]:p-16"
           labelledBy="tabs-demo-heading"
           items={[
             {
@@ -44,20 +45,22 @@ export function TabsDemo() {
       </DemoStage>
 
 
-      {/* 三個面板對應 Tabs 的三個角色，由外而內：tablist → tab → tabpanel。 */}
+      {/* 保留 tab、tabpanel、tablist 三個觀察對象，A、B 延續分頁及面板的配對。 */}
       <A11yTree
-        selector="#tabs-demo [role='tablist']"
-        hint="觀察對象：外層的分頁列。"
-      />
-
-      <A11yTree
+        marker="A"
         selector="#tabs-demo [role='tab'][aria-selected='true']"
         hint="觀察對象：目前作用中的分頁。"
       />
 
       <A11yTree
+        marker="B"
         selector="#tabs-demo [role='tabpanel']:not([hidden])"
         hint="觀察對象：目前顯示中的面板。"
+      />
+      <A11yTree
+        marker="C"
+        selector="#tabs-demo [role='tablist']"
+        hint="觀察對象：外層的分頁列。"
       />
     </div>
   )

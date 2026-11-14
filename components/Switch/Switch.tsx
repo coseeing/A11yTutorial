@@ -37,7 +37,7 @@ export function Switch({
     <label
       htmlFor={id}
       className={cn(
-        "typography-body1 inline-flex cursor-pointer items-center gap-12 text-teal-700",
+        "typography-body1 relative inline-flex cursor-pointer items-center gap-12 text-teal-700",
         disabled && "cursor-not-allowed opacity-50",
         className,
       )}
@@ -50,8 +50,8 @@ export function Switch({
         disabled={disabled}
         aria-describedby={ariaDescribedby}
         onChange={(e) => onCheckedChange(e.target.checked)}
-        // appearance-none 拿掉原生外觀，改畫成下面那條軌道。
-        className="peer size-0 appearance-none"
+        // 保留與可見控制項相同的焦點範圍，避免零尺寸 input 在 sticky 內被捲至錯誤位置。
+        className="peer absolute inset-0 m-0 h-full w-full cursor-[inherit] opacity-0"
       />
       {/*
         這個 span 必須是 input 的「下一個兄弟節點」—— Tailwind 的 peer 變體產生的

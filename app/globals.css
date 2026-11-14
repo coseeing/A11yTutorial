@@ -101,6 +101,7 @@
 @layer base {
   html {
     font-size: 62.5%;
+    scroll-padding-top: var(--demo-page-scroll-padding, 0px);
   }
 
   * {

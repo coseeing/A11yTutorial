@@ -18,6 +18,16 @@ beforeAll(stubNativeDialog)
 
 const ROWS = ["role", "status", "name", "description"] as const
 
+async function embeddedDialog() {
+  const frame = screen.getByTitle("Dialog 局部示範視窗") as HTMLIFrameElement
+  await waitFor(() => expect(frame.contentDocument?.querySelector("button")).not.toBeNull())
+  const doc = frame.contentDocument!
+  const dialog = doc.querySelector<HTMLDialogElement>("dialog")!
+  dialog.showModal = function () { this.open = true }
+  dialog.close = function () { this.open = false }
+  return { user: userEvent.setup({ document: doc }), trigger: within(doc.body).getByRole("button", { name: "編輯個人資料" }) }
+}
+
 const panelAt = (index: number) => screen.getAllByTestId("a11y-tree-values")[index]
 
 const valuesOf = (box: HTMLElement) =>
@@ -48,10 +58,10 @@ async function expectFallbackMatchesReality(
 
 describe("fallback 宣告的值與實際量到的一致", () => {
   it("Dialog", async () => {
-    const user = userEvent.setup()
     render(<DialogDemo />)
+    const { user, trigger } = await embeddedDialog()
     await expectFallbackMatchesReality(0, async () => {
-      await user.click(screen.getAllByRole("button")[0])
+      await user.click(trigger)
     })
   })
 
@@ -90,20 +100,28 @@ describe("fallback 宣告的值與實際量到的一致", () => {
   })
 
   it("Combobox 對話框型開出來的對話框", async () => {
-    const user = userEvent.setup()
     render(<ComboboxDemo />)
+    const frame = screen.getByTitle("Combobox 日期對話框局部示範視窗") as HTMLIFrameElement
+    await waitFor(() => expect(frame.contentDocument?.querySelector("input")).not.toBeNull())
+    const doc = frame.contentDocument!
+    const dialog = doc.querySelector<HTMLDialogElement>("dialog")!
+    dialog.showModal = function () { this.open = true }
+    dialog.close = function () { this.open = false }
+    const user = userEvent.setup({ document: doc })
     await expectFallbackMatchesReality(4, async () => {
-      await user.click(screen.getByRole("combobox", { name: "出發日期" }))
+      await user.click(within(doc.body).getByRole("combobox", { name: "出發日期" }))
     })
   })
 
-  it("Grid 選取的列", async () => {
+  it("Grid 只有真正選取列後才顯示屬性", async () => {
     const user = userEvent.setup()
     render(<GridDemo />)
-    await expectFallbackMatchesReality(2, async () => {
-      await user.click(screen.getAllByRole("gridcell")[0])
-      await user.keyboard(" ")
-    })
+    expect(within(panelAt(2)).getByTestId("a11y-tree-empty")).toBeInTheDocument()
+    await user.click(screen.getAllByRole("gridcell")[0])
+    await user.keyboard(" ")
+    await waitFor(() => expect(within(panelAt(2)).getByTestId("a11y-tree-status")).toHaveTextContent("aria-selected=true"))
+    await user.keyboard(" ")
+    await waitFor(() => expect(within(panelAt(2)).getByTestId("a11y-tree-empty")).toBeInTheDocument())
   })
 })
 
@@ -111,12 +129,12 @@ describe("fallback 宣告的值與實際量到的一致", () => {
 // 使用者操作了也看不出變化。
 describe("fallback 只在還沒觀察到時頂著", () => {
   it("觀察到之後 data-pending 消失，提示那一行也不再說「操作之後」", async () => {
-    const user = userEvent.setup()
     render(<DialogDemo />)
+    const { user, trigger } = await embeddedDialog()
 
     expect(screen.getByTestId("a11y-tree-pending")).toBeInTheDocument()
 
-    await user.click(screen.getAllByRole("button")[0])
+    await user.click(trigger)
 
     await waitFor(() => {
       expect(screen.queryByTestId("a11y-tree-pending")).not.toBeInTheDocument()

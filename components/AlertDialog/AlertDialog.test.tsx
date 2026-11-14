@@ -30,6 +30,18 @@ function Harness({ onConfirm = () => {} }: { onConfirm?: () => void }) {
 }
 
 describe("AlertDialog", () => {
+  it("Tab 與 Shift+Tab 在首尾控制項之間循環", async () => {
+    const user = userEvent.setup()
+    render(<Harness />)
+    await user.click(screen.getByRole("button", { name: "刪除帳號" }))
+    const cancel = screen.getByRole("button", { name: "取消" })
+    const confirm = screen.getByRole("button", { name: "永久刪除" })
+    expect(cancel).toHaveFocus()
+    await user.tab({ shift: true })
+    expect(confirm).toHaveFocus()
+    await user.tab()
+    expect(cancel).toHaveFocus()
+  })
   // APG-ALD-001：容器須具有 alertdialog 角色
   it("角色是 alertdialog 而不是 dialog", async () => {
     const user = userEvent.setup()

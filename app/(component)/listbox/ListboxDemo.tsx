@@ -41,6 +41,7 @@ export function ListboxDemo() {
           value={value}
           onValueChange={setValue}
           labelledBy="listbox-demo-heading"
+          className="pr-40 [&_[role=group]]:ml-40 [&_[role=option]]:pr-16"
         />
       </DemoStage>
 
@@ -51,12 +52,14 @@ export function ListboxDemo() {
       />
 
       <A11yTree
-        selector="#listbox-demo [role='group']"
-        hint="觀察對象：第一個選項群組。"
+        selector="#listbox-demo [role='group']:has([role='option'][aria-selected='true'])"
+        markerPosition="outside-left"
+        hint="觀察對象：目前選取項目所屬的群組；選到超商取貨或門市自取時，B 會跟隨到店到店。"
       />
 
       <A11yTree
         selector="#listbox-demo [role='option'][aria-selected='true']"
+        markerPosition="rail-right"
         hint="觀察對象：目前選取的選項。"
       />
     </div>

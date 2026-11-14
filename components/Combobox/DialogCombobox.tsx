@@ -26,6 +26,8 @@ type DialogComboboxProps = {
   value: string
   onValueChange: (value: string) => void
   className?: string
+  afterActions?: React.ReactNode
+  dialogClassName?: string
 }
 
 export function DialogCombobox({
@@ -34,6 +36,8 @@ export function DialogCombobox({
   value,
   onValueChange,
   className,
+  afterActions,
+  dialogClassName,
 }: DialogComboboxProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const [open, setOpen] = useState(false)
@@ -88,6 +92,7 @@ export function DialogCombobox({
       />
 
       <Dialog
+        className={dialogClassName}
         open={open}
         onClose={close}
         title="選擇出發日期"
@@ -100,6 +105,7 @@ export function DialogCombobox({
             <Button variant="small" onClick={confirm}>
               確定
             </Button>
+            {afterActions}
           </>
         }
       >

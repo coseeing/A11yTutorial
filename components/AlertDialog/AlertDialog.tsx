@@ -29,6 +29,8 @@ type AlertDialogProps = {
   /** 取消動作的標籤。焦點會落在這一顆上。 */
   cancelLabel?: string
   className?: string
+  /** 教學嵌入情境的補充導覽；一般模態視窗不需提供。 */
+  afterActions?: React.ReactNode
 }
 
 export function AlertDialog({
@@ -40,6 +42,7 @@ export function AlertDialog({
   onConfirm,
   cancelLabel = "取消",
   className,
+  afterActions,
 }: AlertDialogProps) {
   const ref = useRef<HTMLDialogElement>(null)
   const cancelRef = useRef<HTMLButtonElement>(null)
@@ -70,6 +73,18 @@ export function AlertDialog({
       aria-labelledby={titleId}
       aria-describedby={messageId}
       onClose={onClose}
+      onKeyDown={(event) => {
+        if (event.key !== "Tab") return
+        const controls = [...event.currentTarget.querySelectorAll<HTMLElement>('button:not([disabled]), a[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])')].filter((control) => control.tabIndex >= 0 && !control.closest("[hidden], [inert]"))
+        const first = controls[0]
+        const last = controls[controls.length - 1]
+        const active = event.currentTarget.ownerDocument.activeElement
+        if (first && last && ((!event.shiftKey && active === last) || (event.shiftKey && active === first))) {
+          event.preventDefault()
+          const next = event.shiftKey ? last : first
+          next.focus()
+        }
+      }}
       className={cn(
         "m-auto w-[calc(100vw-4rem)] max-w-[44rem] rounded-24 border-0 bg-neutral-white p-0 shadow-[0_1.6rem_4rem_rgb(16_36_42_/_0.25)] backdrop:bg-teal-700/60 backdrop:backdrop-blur-[0.3rem]",
         className,
@@ -94,6 +109,7 @@ export function AlertDialog({
             {confirmLabel}
           </Button>
         </div>
+        {afterActions && <div className="mt-16">{afterActions}</div>}
       </div>
     </dialog>
   )
