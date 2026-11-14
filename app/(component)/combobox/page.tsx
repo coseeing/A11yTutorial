@@ -16,6 +16,7 @@ export default function ComboboxPage() {
   return (
     <DemoPage
       title="Combobox"
+      groupedDemo
       sections={[
         { id: "demo", title: "Demo 與 Accessibility Tree", content: <ComboboxDemo /> },
         {

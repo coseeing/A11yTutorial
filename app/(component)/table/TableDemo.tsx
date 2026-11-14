@@ -52,7 +52,7 @@ export function TableDemo() {
                   <th
                     key={label}
                     scope="col"
-                    className={`${CELL} typography-strong2 text-teal-700`}
+                    className={`${CELL} typography-strong2 bg-teal-PRIMARY text-neutral-white`}
                   >
                     {label}
                   </th>
@@ -67,7 +67,7 @@ export function TableDemo() {
                     那一格時，才會連著唸出「團隊、價格」。少了它，使用者只聽得到一串
                     數字，不知道是哪一列的。
                   */}
-                  <th scope="row" className={`${CELL} typography-strong2 text-teal-700`}>
+                  <th scope="row" className={`${CELL} typography-strong2 bg-bg-light-beige text-teal-700`}>
                     {row.plan}
                   </th>
                   <td className={`${CELL} text-teal-700`}>{row.price}</td>

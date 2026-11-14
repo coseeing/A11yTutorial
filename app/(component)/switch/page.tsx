@@ -77,7 +77,7 @@ export default function SwitchPage() {
                   attr: "aria-hidden",
                   value: "true",
                   purpose:
-                    "軌道與滑塊是純視覺，狀態已由 checked 表達。原生 input 本身以 appearance-none 隱藏外觀，但仍留在無障礙樹與 Tab 順序裡。",
+                    "軌道與滑塊是純視覺，狀態已由 checked 表達。原生 input 以透明方式隱藏外觀，保留與可見開關相同的操作及焦點範圍，仍留在無障礙樹與 Tab 順序裡。",
                 },
               ]}
             />

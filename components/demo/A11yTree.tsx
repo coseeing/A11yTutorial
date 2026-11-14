@@ -1,8 +1,10 @@
 "use client"
 
 import type { A11yNode } from "@/lib/a11y/compute-node"
+import { useMemo } from "react"
 import { useA11yNode } from "@/lib/a11y/use-a11y-node"
 import { A11yTreeView } from "./A11yTreeView"
+import { useDemoHost, useObservationPair } from "./DemoWorkspace"
 
 // A11yTree — 這個站的核心面板：把一個 DOM 元素在無障礙樹中的樣貌攤開成
 // Role / Status / Name / Description 四列，並隨互動即時更新，讓「螢幕閱讀器會怎麼描述這個
@@ -45,6 +47,12 @@ type A11yTreeProps = {
   /** 指認這個面板在觀察哪個元素。 */
   hint?: React.ReactNode
   className?: string
+  /** 固定配對字母；省略時由元件頁依觀察卡順序分配。 */
+  marker?: string
+  /** 小型控制項可將圖形標記放在左側保留區，避免蓋住內容。 */
+  markerPosition?: "outside-left" | "rail-right"
+  /** 只調整視覺框選目標；語意資料仍取自 selector。 */
+  outlineSelector?: string
 }
 
 export function A11yTree({
@@ -53,16 +61,27 @@ export function A11yTree({
   fallback,
   hint,
   className,
+  marker,
+  markerPosition,
+  outlineSelector,
 }: A11yTreeProps) {
   const { node, stale } = useA11yNode(selector, { latch })
 
   // 真的觀察到的值永遠優先。fallback 只在「還沒觀察過」時頂著 —— 包含 latch
   // 保留下來的舊值，那也是真的觀察過的。
-  const shown = node ?? toNode(fallback)
+  // 依值穩定 fallback，避免外層訂閱觀察狀態後因物件參照改變而反覆更新。
+  const fallbackStatus = JSON.stringify(fallback?.status ?? [])
+  const shown = useMemo(() => node ?? toNode(fallback), [node, fallback?.role, fallback?.name, fallback?.description, fallback?.roleDescription, fallbackStatus])
+  const pair = useObservationPair(selector, shown, marker, markerPosition, outlineSelector)
+  const workspace = useDemoHost()
+  const title = pair ? shown ? `${shown.role}${shown.name ? `「${shown.name}」` : "（無名稱）"}` : "等待觀察目標" : undefined
 
   return (
     <A11yTreeView
       node={shown}
+      title={title}
+      pair={pair}
+      announceUpdates={!workspace}
       stale={stale}
       pending={!node && shown !== null}
       hint={hint}

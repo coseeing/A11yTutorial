@@ -9,7 +9,10 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "generate:apg-rules": "node scripts/generate-apg-rules.mjs"
+    "generate:apg-rules": "node scripts/generate-apg-rules.mjs",
+    "generate:catalog": "node scripts/generate-component-catalog.mjs",
+    "prebuild": "npm run generate:catalog",
+    "generate:illustrations": "node scripts/generate-component-illustrations.mjs"
   },
   "dependencies": {
     "dom-accessibility-api": "^0.7.0",

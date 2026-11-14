@@ -3,12 +3,13 @@
 import { Carousel } from "@/components/Carousel/Carousel"
 import { A11yTree } from "@/components/demo/A11yTree"
 import { DemoStage } from "@/components/demo/DemoStage"
+import { DemoWorkspace } from "@/components/demo/DemoWorkspace"
 
 // CarouselDemo — 同一組投影片，兩種選取器。
 //
 // APG 把輪播分成群組式與 Tab 型，而且規定得很細：投影片在群組式裡是 group
 // 加上 aria-roledescription=slide，在 Tab 型裡是 tabpanel 且不得加角色描述。
-// 兩個 demo 並排才看得出這個差別 —— 面板上的 Role 列會直接顯示出來。
+// 兩組 demo 各自對照自己的 Accessibility Tree，配對字母不跨範例累加。
 
 const SLIDES = [
   {
@@ -31,11 +32,14 @@ const SLIDES = [
 export function CarouselDemo() {
   return (
     <div className="flex flex-col gap-32">
-      <div className="flex flex-col gap-24">
+      <p className="typography-body2 m-0 rounded-16 border border-bg-warm-gray bg-neutral-white p-16 text-teal-300">以下兩組範例分別對照自己的 Accessibility Tree。每組標記都從 A 開始，不跨範例累加。</p>
+      <DemoWorkspace title="Demo 1：群組式輪播" headingLevel={3} showGuidance={false}>
+        <section aria-labelledby="carousel-tree-1-heading" className="flex flex-col gap-24">
+          <h3 id="carousel-tree-1-heading" className="typography-headline3 m-0 text-teal-700">Accessibility Tree：Demo 1</h3>
         <DemoStage id="carousel-demo" className="flex-col items-stretch gap-12">
-          <h3 id="carousel-demo-heading" className="typography-strong1 m-0 text-teal-700">
+          <h4 id="carousel-demo-heading" className="typography-strong1 m-0 text-teal-700">
             近期活動
-          </h3>
+          </h4>
           <Carousel slides={SLIDES} labelledBy="carousel-demo-heading" selector="buttons" />
         </DemoStage>
 
@@ -54,16 +58,19 @@ export function CarouselDemo() {
           selector="#carousel-demo [aria-disabled='true']"
           hint="觀察對象：對應目前這張的選取按鈕。"
         />
-      </div>
+        </section>
+      </DemoWorkspace>
 
-      <div className="flex flex-col gap-24">
+      <DemoWorkspace title="Demo 2：Tab 型輪播" headingId="carousel-demo-2-heading" headingLevel={3} showGuidance={false}>
+        <section aria-labelledby="carousel-tree-2-heading" className="flex flex-col gap-24">
+          <h3 id="carousel-tree-2-heading" className="typography-headline3 m-0 text-teal-700">Accessibility Tree：Demo 2</h3>
         <DemoStage id="carousel-tabs-demo" className="flex-col items-stretch gap-12">
-          <h3
+          <h4
             id="carousel-tabs-demo-heading"
             className="typography-strong1 m-0 text-teal-700"
           >
             近期活動（Tab 型選取器）
-          </h3>
+          </h4>
           <Carousel
             slides={SLIDES}
             labelledBy="carousel-tabs-demo-heading"
@@ -81,7 +88,8 @@ export function CarouselDemo() {
           selector="#carousel-tabs-demo [role='tabpanel']:not([hidden])"
           hint="觀察對象：目前顯示的投影片。"
         />
-      </div>
+        </section>
+      </DemoWorkspace>
     </div>
   )
 }

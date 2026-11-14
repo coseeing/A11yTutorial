@@ -19,13 +19,13 @@ const APG_LINK_URL = "https://www.w3.org/WAI/ARIA/apg/patterns/link/"
 export function LinkDemo() {
   return (
     <div className="flex flex-col gap-24">
-      <DemoStage id="link-demo" className="flex-col items-start gap-20">
+      <DemoStage id="link-demo" className="flex-col items-start gap-20 pr-48 tablet:pr-48">
         <p className="typography-body1 m-0 text-teal-700">
           想知道更多細節，可以讀
           <a id="link-demo-text" href={APG_LINK_URL} className={`mx-4 ${LINK_CLASS}`}>
             APG 的 Link Pattern
           </a>
-          。
+          ，了解連結的使用方式。
         </p>
 
         {/* 圖像連結：名稱只能從 aria-label 來，圖示本身對輔助科技是隱形的。 */}
@@ -49,11 +49,11 @@ export function LinkDemo() {
       </DemoStage>
 
       {/* 三個面板對應三種寫法，由正確到有問題排列。 */}
-      <A11yTree selector="#link-demo-text" hint="觀察對象：原生的文字連結。" />
+      <A11yTree markerPosition="rail-right" selector="#link-demo-text" hint="觀察對象：句子中的行內連結「APG 的 Link Pattern」。換行時框線分段貼合連結文字，前後的說明不包含在框線與 Name 裡。" />
 
-      <A11yTree selector="#link-demo-icon" hint="觀察對象：只有圖像的連結。" />
+      <A11yTree markerPosition="rail-right" selector="#link-demo-icon" hint="觀察對象：只有圖像的連結。" />
 
-      <A11yTree selector="#link-demo-fake" hint="觀察對象：用 div 做出來的連結。" />
+      <A11yTree markerPosition="rail-right" selector="#link-demo-fake" hint="觀察對象：用 div 做出來的連結。" />
     </div>
   )
 }

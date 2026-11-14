@@ -25,6 +25,7 @@ type Key = (typeof ITEMS)[number]["key"]
 const GROUP_DESCRIPTION = "變更後立即生效，不需要另外送出。"
 
 export function SwitchDemo() {
+  const [observed, setObserved] = useState<Key>("push")
   const [on, setOn] = useState<Record<Key, boolean>>({
     push: true,
     email: false,
@@ -34,14 +35,16 @@ export function SwitchDemo() {
   return (
     <div className="flex flex-col gap-24">
       <DemoStage id="switch-demo" className="flex-col items-stretch">
-        <ControlGroup label="通知方式" description={GROUP_DESCRIPTION} className="w-full">
+        <ControlGroup label="通知方式" description={GROUP_DESCRIPTION} className="w-full pl-48">
           {ITEMS.map((item) => (
+            <div key={item.key} id={`switch-demo-${item.key}`} onFocusCapture={() => setObserved(item.key)} onClickCapture={() => setObserved(item.key)}>
             <Switch
               key={item.key}
               label={item.label}
               checked={on[item.key]}
               onCheckedChange={(next) => setOn((prev) => ({ ...prev, [item.key]: next }))}
             />
+            </div>
           ))}
         </ControlGroup>
       </DemoStage>
@@ -50,8 +53,10 @@ export function SwitchDemo() {
       <A11yTree selector="#switch-demo fieldset" hint="觀察對象：外層的開關群組。" />
 
       <A11yTree
-        selector="#switch-demo input[role='switch']"
-        hint="觀察對象：第一個開關。"
+        selector={`#switch-demo-${observed} input[role='switch']`}
+        outlineSelector={`#switch-demo-${observed} label`}
+        markerPosition="outside-left"
+        hint="觀察對象：最後點選或聚焦的開關，預設是推播通知。B 框選開關與標籤，資料取自真正的 switch 輸入元件。"
       />
     </div>
   )

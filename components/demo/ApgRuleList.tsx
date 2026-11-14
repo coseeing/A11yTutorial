@@ -54,7 +54,7 @@ function RuleCard({ rule }: { rule: ApgRule }) {
         )}
       </div>
 
-      <p className="typography-strong2 m-0 mt-8 text-teal-700">{rule.name}</p>
+      <h3 className="typography-strong2 m-0 mt-8 text-teal-700">{rule.name}</h3>
       <p className="typography-body2 m-0 mt-8 text-teal-700">{rule.expectation}</p>
     </li>
   )

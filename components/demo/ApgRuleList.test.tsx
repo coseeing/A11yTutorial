@@ -11,6 +11,11 @@ const cardFor = (rule: ApgRule) => screen.getByText(rule.name).closest("li")!
 const listed = (slug: string) => rulesFor(slug).filter((r) => r.difficulty !== 3)
 
 describe("ApgRuleList", () => {
+  it("uses headings for reading navigation without putting static cards in the Tab sequence", () => {
+    render(<ApgRuleList slug="tabs" />)
+    expect(screen.getAllByRole("heading", { level: 3 })).toHaveLength(listed("tabs").length)
+    for (const card of screen.getAllByRole("listitem")) expect(card).not.toHaveAttribute("tabindex")
+  })
   it("列出難度 1 與 2 的規則，難度 3 不列", () => {
     render(<ApgRuleList slug="accordion" />)
 

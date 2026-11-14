@@ -15,8 +15,8 @@ export function DemoSection({
 }) {
   const headingId = `${id}-heading`
   return (
-    <section id={id} aria-labelledby={headingId} className={cn("scroll-mt-32", className)}>
-      <h2 id={headingId} className="typography-headline3 m-0 mb-16 text-teal-700">
+    <section id={id} aria-labelledby={headingId} className={cn("scroll-mt-24", className)}>
+      <h2 id={headingId} tabIndex={-1} className="typography-headline3 m-0 mb-16 scroll-mt-24 rounded-8 text-teal-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-PRIMARY">
         {title}
       </h2>
       {children}

@@ -21,6 +21,7 @@ export function CheckboxDemo() {
     <div className="flex flex-col gap-24">
       <DemoStage id="checkbox-demo" className="flex-col items-stretch gap-16">
         <ControlGroup
+          className="pl-48"
           label="通知方式"
           description="至少選擇一種，否則我們無法通知你。"
         >
@@ -70,6 +71,7 @@ export function CheckboxDemo() {
 
       <A11yTree
         selector="#checkbox-demo-all input"
+        markerPosition="outside-left"
         hint="觀察對象：「全部選取」這個三態核取方塊。"
       />
     </div>

@@ -25,6 +25,7 @@ export default function CheckboxPage() {
             <KeyboardTable
               rows={[
                 { keys: "Space", action: "切換勾選狀態。" },
+                { keys: "Enter", action: "不是核取方塊的標準切換鍵；此範例請使用 Space。" },
                 { keys: "Tab", action: "依序移到群組中的每一個核取方塊。" },
               ]}
             />

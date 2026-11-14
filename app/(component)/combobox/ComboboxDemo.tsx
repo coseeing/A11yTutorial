@@ -5,6 +5,10 @@ import { Combobox } from "@/components/Combobox/Combobox"
 import { DialogCombobox } from "@/components/Combobox/DialogCombobox"
 import { A11yTree } from "@/components/demo/A11yTree"
 import { DemoStage } from "@/components/demo/DemoStage"
+import { useDemoHost, DemoWorkspace } from "@/components/demo/DemoWorkspace"
+import { DemoViewport } from "@/components/demo/DemoViewport"
+import { Button } from "@/components/Button/Button"
+import { focusAnchor } from "@/lib/focus-anchor"
 
 // ComboboxDemo — 同一個 pattern 的兩種彈出內容。
 //
@@ -29,15 +33,32 @@ const CITIES = [
 
 const DATES = ["11 月 1 日（週六）", "11 月 8 日（週六）", "11 月 15 日（週六）"]
 
+function DateDemo({ value, onValueChange }: { value: string; onValueChange: (value: string) => void }) {
+  const workspace = useDemoHost()
+  return <DemoViewport id="combobox-dialog-viewport" title="Combobox 日期對話框局部示範視窗">
+    <div className="w-full pl-40">
+      <DialogCombobox label="出發日期" options={DATES} value={value} onValueChange={onValueChange}
+        dialogClassName="[&>div]:p-16 [&_fieldset]:p-12"
+        afterActions={<Button variant="small" theme="greenStroke" onClick={(event) => {
+          const card = workspace?.observations.find((item) => item.marker === "B")?.cardId
+          if (card) focusAnchor(event, card)
+        }}>查看 Accessibility Tree</Button>} />
+    </div>
+  </DemoViewport>
+}
+
 export function ComboboxDemo() {
   const [city, setCity] = useState("")
   const [date, setDate] = useState("")
 
   return (
     <div className="flex flex-col gap-32">
-      <div className="flex flex-col gap-24">
+      <p className="typography-body2 m-0 rounded-16 border border-bg-warm-gray bg-neutral-white p-16 text-teal-300">清單型與對話框型分成兩組示範，各自對照自己的 Accessibility Tree。每組標記都從 A 開始。</p>
+      <DemoWorkspace title="Demo 1：清單型 Combobox" headingLevel={3} showGuidance={false}>
+        <section aria-labelledby="combobox-tree-1-heading" className="flex flex-col gap-24">
+          <h3 id="combobox-tree-1-heading" className="typography-headline3 m-0 text-teal-700">Accessibility Tree：Demo 1</h3>
         <DemoStage id="combobox-demo" className="flex-col items-stretch">
-          <div className="max-w-[32rem]">
+          <div className="w-full max-w-[32rem] pl-40 pr-40 [&_button]:top-24 [&_[role=listbox]]:static [&_[role=listbox]]:mt-8 [&_[role=option]]:pr-40">
             <Combobox
               label="縣市"
               options={CITIES}
@@ -51,12 +72,14 @@ export function ComboboxDemo() {
         {/* 三個面板由外而內：輸入元件 → 彈出清單 → 自動選取的建議值。 */}
         <A11yTree
           selector="#combobox-demo [role='combobox']"
+          markerPosition="outside-left"
           hint="觀察對象：Combobox 的輸入元件。"
         />
 
         <A11yTree
           latch
           selector="#combobox-demo [role='listbox']"
+          markerPosition="outside-left"
           fallback={{ role: "listbox", name: "縣市建議" }}
           hint="觀察對象：彈出的建議清單。"
         />
@@ -64,32 +87,31 @@ export function ComboboxDemo() {
         <A11yTree
           latch
           selector="#combobox-demo [role='option'][aria-selected='true']"
+          markerPosition="rail-right"
           fallback={{ role: "option", name: "臺北市", status: ["aria-selected=true"] }}
           hint="觀察對象：目前自動選取的建議值。"
         />
-      </div>
+        </section>
+      </DemoWorkspace>
 
-      <div className="flex flex-col gap-24">
-        <DemoStage id="combobox-dialog-demo" className="flex-col items-stretch">
-          <div className="max-w-[32rem]">
-            <DialogCombobox
-              label="出發日期"
-              options={DATES}
-              value={date}
-              onValueChange={setDate}
-            />
-          </div>
+      <DemoWorkspace title="Demo 2：對話框型 Combobox" headingId="combobox-demo-2-heading" headingLevel={3} showGuidance={false}>
+        <section aria-labelledby="combobox-tree-2-heading" className="flex flex-col gap-24">
+          <h3 id="combobox-tree-2-heading" className="typography-headline3 m-0 text-teal-700">Accessibility Tree：Demo 2</h3>
+        <DemoStage id="combobox-dialog-demo" className="flex-col items-stretch p-0 tablet:p-0">
+          <DateDemo value={date} onValueChange={setDate} />
         </DemoStage>
 
+        <p role="note" className="typography-body2 m-0 rounded-16 border border-bg-warm-gray bg-neutral-white p-16 text-teal-300">為方便對照，日期對話框只在嵌入的 Demo 視窗內開啟，外層教學頁仍可閱讀。框內仍使用真正的模態對話框，支援焦點移入、Esc 關閉與返回輸入框；「查看 Accessibility Tree」是教學用導覽。</p>
         {/* 對話框型的兩個面板：輸入元件 → 它開出來的對話框。 */}
         <A11yTree
-          selector="#combobox-dialog-demo [role='combobox']"
+          selector="#combobox-dialog-viewport >>> [role='combobox']"
+          markerPosition="outside-left"
           hint="觀察對象：對話框型的輸入元件。"
         />
 
         <A11yTree
           latch
-          selector="dialog[open]"
+          selector="#combobox-dialog-viewport >>> dialog[open]"
           fallback={{
             role: "dialog",
             name: "選擇出發日期",
@@ -97,7 +119,8 @@ export function ComboboxDemo() {
           }}
           hint="觀察對象：它開出來的對話框。"
         />
-      </div>
+        </section>
+      </DemoWorkspace>
     </div>
   )
 }
