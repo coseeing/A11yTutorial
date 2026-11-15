@@ -2,6 +2,8 @@ import type { Metadata } from "next"
 import { Card } from "@/components/Card/Card"
 import { ArrowRightIcon } from "@/components/Icons/Icons"
 import { Link } from "@/components/Link/Link"
+import { Disclosure } from "@/components/Disclosure/Disclosure"
+import { appPath } from "@/lib/app-path"
 
 export const metadata: Metadata = { title: "活動導覽｜週末修繕工作坊" }
 
@@ -16,7 +18,7 @@ export default function NavigationPracticePage() {
           <div>
             <p className="typography-strong2 mb-8 mt-0">前往課程內容</p>
             {/* Intentionally unnamed link for the workshop exercise. */}
-            <Link href="#workshop-program" className={quickLinkClass}>
+            <Link href={appPath("/test-practice/2/")} className={quickLinkClass}>
               <ArrowRightIcon className="size-20" />
             </Link>
           </div>
@@ -30,6 +32,9 @@ export default function NavigationPracticePage() {
       </Card>
       <Card id="workshop-program" title="課程內容" padded>
         <p className="typography-body1 m-0">帶一件想修理的小物，一起練習延長它的使用壽命。</p>
+        <Disclosure label="查看適合帶來的物品">
+          建議攜帶衣物、背包或小型木製品。現場不受理電器。
+        </Disclosure>
       </Card>
       <Card id="workshop-travel" title="交通資訊" padded>
         <p className="typography-body1 m-0">集合地點為社區活動中心一樓，請從正門進入。</p>

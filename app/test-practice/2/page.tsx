@@ -1,7 +1,17 @@
 import type { Metadata } from "next"
 import { Card } from "@/components/Card/Card"
+import { Button } from "@/components/Button/Button"
+import { Table } from "@/components/Table/Table"
+import { Tabs } from "@/components/Tabs/Tabs"
+import { appPath } from "@/lib/app-path"
 
 export const metadata: Metadata = { title: "課程內容｜週末修繕工作坊" }
+
+const columns = [
+  { key: "className", label: "課程" },
+  { key: "time", label: "時間" },
+  { key: "seats", label: "剩餘名額" },
+]
 
 export default function HeadingsPracticePage() {
   return (
@@ -17,6 +27,23 @@ export default function HeadingsPracticePage() {
           <li>分組修理日常小物</li>
         </ul>
       </Card>
+      <Card title="可報名場次" padded>
+        <Tabs
+          label="修繕場次"
+          items={[
+            {
+              label: "上午場",
+              content: <Table columns={columns} rows={[{ className: "木製品修繕", time: "09:30–11:00", seats: "已額滿" }]} />,
+            },
+            {
+              label: "下午場",
+              // The afternoon table intentionally uses regular cells for its column headers.
+              content: <Table columns={columns} headerCellAs="td" rows={[{ className: "衣物修補", time: "14:00–15:30", seats: "3 位" }]} />,
+            },
+          ]}
+        />
+      </Card>
+      <div><Button href={appPath("/test-practice/3/")} variant="small" theme="light">查看行前提醒</Button></div>
     </>
   )
 }
