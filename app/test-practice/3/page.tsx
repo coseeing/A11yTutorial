@@ -28,7 +28,7 @@ export default function RemindersPracticePage() {
           ]}
         />
       </Card>
-      <Card title="準備確認" padded><PreparationChecklist /></Card>
+      <Card title="報名資料" padded><PreparationChecklist /></Card>
       <Link href={appPath("/test-practice/1/")} className="typography-body1 self-start underline">回到活動導覽</Link>
     </>
   )

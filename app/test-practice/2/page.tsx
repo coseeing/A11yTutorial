@@ -43,6 +43,16 @@ export default function HeadingsPracticePage() {
           ]}
         />
       </Card>
+      <Card title="主辦單位" padded>
+        {/* WAVE alt_suspicious: the CMS placeholder text was left as the image alternative. */}
+        <img
+          src={appPath("/brand/coseeing-logo.svg")}
+          alt="image"
+          width="232"
+          height="32"
+          className="h-auto w-[23.2rem] max-w-full"
+        />
+      </Card>
       <div><Button href={appPath("/test-practice/3/")} variant="small" theme="light">查看行前提醒</Button></div>
     </>
   )

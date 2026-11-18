@@ -30,6 +30,14 @@ export default function NavigationPracticePage() {
           </div>
         </div>
       </Card>
+      <Card title="課程快訊" padded>
+        <p className="typography-body1 mb-12 mt-0">各場次的時間與名額已更新，報名前請先確認。</p>
+        {/* WAVE link_redundant: adjacent links intentionally have the same destination. */}
+        <div className="typography-body1 flex flex-wrap gap-16">
+          <Link href={appPath("/test-practice/2/")} className="underline">瀏覽課程場次</Link>
+          <Link href={appPath("/test-practice/2/")} className="underline">查看剩餘名額</Link>
+        </div>
+      </Card>
       <Card id="workshop-program" title="課程內容" padded>
         <p className="typography-body1 m-0">帶一件想修理的小物，一起練習延長它的使用壽命。</p>
         <Disclosure label="查看適合帶來的物品">
