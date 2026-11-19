@@ -4,6 +4,11 @@
 tree（Role / Name / Status）、鍵盤操作、ARIA 屬性、螢幕閱讀器預期行為與對應的
 WCAG 條款。
 
+學員使用的三頁 `/test-practice/1/`、`2/`、`3/` 已搬到
+[`coseeing/a11y-tutorial`](https://github.com/coseeing/a11y-tutorial) 的
+`wave-practice/` 子專案。本專案保留元件展示與講師示範用的 `/test-demo/`。
+本機資料夾名稱為 `a11y-demo`。
+
 ## 開發
 
 ```bash
